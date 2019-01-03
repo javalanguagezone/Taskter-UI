@@ -9,11 +9,12 @@
 
   <!--user menu-->
   <div *ngIf="loggedInUser">
-    <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+    <img src="{{loggedInUser.avatarURL}}" (click)="userMenu.toggle()" style="width: 40px; height: 40px; border-radius: 5px;" />
   </div>
 </mat-toolbar>
+<!--nav -->
 <mat-sidenav-container style="height:100%;">
-    <mat-sidenav #sidenav mode="side" closed style="height:100%; width:25%;">Sidenav content</mat-sidenav>
-    <mat-sidenav-content >App content components go here!</mat-sidenav-content>
+  <mat-sidenav #sidenav mode="push" closed >Sidenav content</mat-sidenav>
+  <mat-sidenav-content>App content components go here!</mat-sidenav-content>
+  <mat-sidenav #userMenu mode="over" closed position="end">User menu</mat-sidenav>
 </mat-sidenav-container>
-

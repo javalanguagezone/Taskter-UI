@@ -1,9 +1,7 @@
 mat-toolbar {
     justify-content: space-between;
 }
-.example-container {
-    width: 400px;
-    height: 200px;
-    margin: 10px;
-    border: 1px solid #555;
-  }
+mat-sidenav {
+    height: 100%;
+    width: 25%;
+}
