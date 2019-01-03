@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <p>Taskter</p>
+
+  <div *ngIf="loggedInUser">
+    <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+  </div>
+</mat-toolbar>
