@@ -6,16 +6,15 @@ import { UserService, User } from '../../user.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-
+export class HeaderComponent implements OnInit{
   loggedInUser: User = null;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.userService.getCurrentUser()
-    .subscribe(user => {
-      this.loggedInUser = user;
-    });
-  }
-
+      .subscribe(user => {
+        this.loggedInUser = user;
+      });
+    }
 }
+

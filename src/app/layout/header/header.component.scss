@@ -5,3 +5,13 @@ mat-sidenav {
     height: 100%;
     width: 25%;
 }
+#avatarButton
+{
+    &.cdk-program-focused 
+    {
+        ::ng-deep .mat-button-focus-overlay
+        {
+            opacity: 0;  // hide overlay
+        }
+    }
+}
