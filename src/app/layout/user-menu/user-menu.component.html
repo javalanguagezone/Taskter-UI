@@ -5,12 +5,13 @@
 </mat-card>
 <br>
 <br>
-<button mat-button (click)="toggleMenu()">
-  <mat-icon>dashboard</mat-icon>
-  Profile
-</button>
-<br>
-<button mat-button (click)="toggleMenu()">
-  <mat-icon>exit_to_app</mat-icon>
-  Logout
-</button>
+<mat-nav-list>
+  <a mat-list-item (click)="toggleMenu()">
+    <mat-icon matListIcon>dashboard</mat-icon>
+    Profile
+  </a>
+  <a mat-list-item (click)="toggleMenu()">
+    <mat-icon matListIcon>exit_to_app</mat-icon>
+    Logout
+  </a>
+</mat-nav-list>
