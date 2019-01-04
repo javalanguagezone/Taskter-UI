@@ -15,4 +15,5 @@ export class UserService {
 export interface User {
   username: string;
   avatarURL: string;
+  role:string;
 }
