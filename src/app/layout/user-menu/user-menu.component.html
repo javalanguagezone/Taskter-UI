@@ -1,0 +1,16 @@
+<mat-card *ngIf="currentUser" color="primary">
+  <img mat-card-avatar src="{{currentUser.avatarURL}}" />
+  <mat-card-title>{{currentUser.firstName}} {{currentUser.lastName}}</mat-card-title>
+  <mat-card-subtitle>{{currentUser.role}}</mat-card-subtitle>
+</mat-card>
+<br>
+<br>
+<button mat-button (click)="toggleMenu()">
+  <mat-icon>dashboard</mat-icon>
+  Profile
+</button>
+<br>
+<button mat-button (click)="toggleMenu()">
+  <mat-icon>exit_to_app</mat-icon>
+  Logout
+</button>
