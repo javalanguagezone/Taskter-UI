@@ -1,0 +1,20 @@
+mat-card {
+    background: #4a61e0;
+    border-radius: 0px;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+mat-card-title, mat-card-subtitle {
+    color: white;
+}
+mat-card-subtitle {
+    font-style: italic;
+}
+img {
+    height: 32%;
+    width: 35%;
+    border-radius: 20px;
+    margin-bottom: 2em;
+}
