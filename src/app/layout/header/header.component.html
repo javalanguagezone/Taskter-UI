@@ -7,7 +7,7 @@
     <p>Taskter</p>
 
     <div *ngIf="loggedInUser">
-      <button id='avatarButton' mat-icon-button>
+      <button id='avatarButton' mat-icon-button (click)="toggleUserMenu()">
         <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
       </button>
     </div>
