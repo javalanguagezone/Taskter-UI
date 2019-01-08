@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, User } from '../../user.service';
 import { UserMenuService } from '../user-menu/user-menu.service';
 
-
 @Component({
   selector: 'tsk-header',
   templateUrl: './header.component.html',
@@ -23,4 +22,3 @@ export class HeaderComponent implements OnInit {
     this.userMenuService.toggle();
   }
 }
-
