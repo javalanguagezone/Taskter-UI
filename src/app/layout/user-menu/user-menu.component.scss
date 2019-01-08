@@ -1,4 +1,4 @@
-mat-card {
+#card {
     background: #4a61e0;
     border-radius: 0px;
     align-content: center;
@@ -6,15 +6,28 @@ mat-card {
     flex-direction: column;
     align-items: center;
 }
-mat-card-title, mat-card-subtitle {
+#card h2, #card h4 {
     color: white;
+    font-weight: normal;
+
 }
-mat-card-subtitle {
-    font-style: italic;
+#card h4 {
+  font-style: italic;
+  margin-top: 9px;
 }
-img {
+#card h2 {
+  margin-bottom: 9px;
+}
+#card img {
     height: 32%;
     width: 35%;
     border-radius: 71px;
     margin-bottom: 2em;
+    margin-top: 2em;
+}
+#userMenuContent {
+    width: 27em;
+}
+#sideNavContainer {
+    height: 100%;
 }

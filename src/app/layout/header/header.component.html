@@ -1,24 +1,15 @@
 <mat-toolbar color="primary">
-  <!--nav menu-->
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-
-  <!-- logo -->
-  <p>Taskter</p>
-
-  <!--user menu-->
-  <div *ngIf="loggedInUser">
-    <button id='avatarButton' mat-icon-button (click)="userMenu.toggle()">
-      <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+  <div id="toolbarContent">
+    <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
     </button>
+
+    <p>Taskter</p>
+
+    <div *ngIf="loggedInUser">
+      <button id='avatarButton' mat-icon-button (click)="toggleUserMenu()">
+        <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+      </button>
+    </div>
   </div>
 </mat-toolbar>
-<!--nav -->
-<mat-sidenav-container style="height:93%;">
-  <mat-sidenav #sidenav mode="push" closed>Sidenav content</mat-sidenav>
-  <mat-sidenav-content style="text-align: center;">App content components go here!</mat-sidenav-content>
-  <mat-sidenav #userMenu mode="over" closed position="end" fixedInViewport="true" fixedTopGap="0">
-    <tsk-user-menu [currentUser]="loggedInUser" [userMenu]="userMenu"></tsk-user-menu>
-  </mat-sidenav>
-</mat-sidenav-container>
