@@ -11,7 +11,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getCurrentUser() {
-    return this.http.get<User>('/api/users/currentUser')
+    return this.http.get<User>('/api/user/current')
       .pipe(
         retry(3),
         catchError(this.handleError)
