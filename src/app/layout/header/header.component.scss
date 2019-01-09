@@ -1,6 +1,12 @@
-mat-toolbar {
+
+#toolbarContent
+{
+    display:flex;
     justify-content: space-between;
+    flex:1 1 auto;
+    align-items: center;
 }
+
 mat-sidenav {
     height: 100%;
     width: 25%;
@@ -18,7 +24,4 @@ padding:5px;
 .sidenav-icon{
     margin-right:10px; 
 }
-  
 
-  
-  

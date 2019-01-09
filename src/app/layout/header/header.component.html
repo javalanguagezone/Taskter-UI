@@ -1,18 +1,18 @@
 <mat-toolbar color="primary">
-  <!--nav menu-->
+
+  <div id="toolbarContent">
+     <!--nav menu-->
   <button mat-icon-button [class.active]="toggleActive" (click)="toggleNavigationMenu()" >
     <mat-icon>menu</mat-icon>
   </button>
 
-  <!-- logo -->
-  <p>Taskter</p>
+    <p>Taskter</p>
 
-  <!--user menu-->
-  <div *ngIf="loggedInUser">
-    <button mat-icon-button (click)="userMenu.toggle()">
-      <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
-    </button>
+    <div *ngIf="loggedInUser">
+      <button id='avatarButton' mat-icon-button (click)="toggleUserMenu()">
+        <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+      </button>
+    </div>
   </div>
 </mat-toolbar>
-<!--nav -->
 
