@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, User } from '../../user.service';
+
+import { NavigationMenuService } from '../navigation-menu/navigation-menu.service';
+
 import { UserMenuService } from '../user-menu/user-menu.service';
+
 
 @Component({
   selector: 'tsk-header',
@@ -8,8 +12,10 @@ import { UserMenuService } from '../user-menu/user-menu.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
   loggedInUser: User = null;
-  constructor(private userService: UserService, private userMenuService: UserMenuService) { }
+  toggleActive: Boolean = false;
+  constructor(private userService: UserService, private userMenuService: UserMenuService, private sidenav: NavigationMenuService) { }
 
   ngOnInit() {
     this.userService.getCurrentUser()
@@ -18,7 +24,13 @@ export class HeaderComponent implements OnInit {
       });
   }
 
+  toggleNavigationMenu() {
+    this.toggleActive = !this.toggleActive;
+    this.sidenav.toggle();
+  }
+
   toggleUserMenu() {
     this.userMenuService.toggle();
   }
+
 }

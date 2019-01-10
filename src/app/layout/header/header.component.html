@@ -1,8 +1,10 @@
 <mat-toolbar color="primary">
+
   <div id="toolbarContent">
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
-    </button>
+     <!--nav menu-->
+  <button mat-icon-button [class.active]="toggleActive" (click)="toggleNavigationMenu()" >
+    <mat-icon>menu</mat-icon>
+  </button>
 
     <p>Taskter</p>
 
@@ -13,3 +15,4 @@
     </div>
   </div>
 </mat-toolbar>
+

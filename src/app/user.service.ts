@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +33,7 @@ export class UserService {
     // return an observable with a user-facing error message
     return throwError(
       'Something bad happened; please try again later.');
+
   }
 }
 export interface User {
@@ -41,4 +43,5 @@ export interface User {
   role: string;
   avatarURL: string;
 }
+
 
