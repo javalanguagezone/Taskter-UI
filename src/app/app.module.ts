@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
 import { RoleDirective } from './role.directive';
-
+import {TimeSheetModule} from './time-sheet/time-sheet.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { RoleDirective } from './role.directive';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    LayoutModule
+    LayoutModule,
+    TimeSheetModule
   ],
   providers: [],
   bootstrap: [AppComponent]
