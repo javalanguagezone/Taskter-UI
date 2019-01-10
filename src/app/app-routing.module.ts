@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'timeSheets',
+    path: 'timeSheet',
     loadChildren: './time-sheet/time-sheet.module#TimeSheetModule'}
 ];
 
