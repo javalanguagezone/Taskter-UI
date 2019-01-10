@@ -12,7 +12,7 @@ export class NavigationMenuComponent implements OnInit {
 
   loggedInUser: User = null;
   @ViewChild('navigationMenu') public sidenav: MatSidenav;
-  constructor(private userService: UserService,private sidenavService: NavigationMenuService) { }
+  constructor(private userService: UserService, private sidenavService: NavigationMenuService) { }
 
   ngOnInit() {
     this.sidenavService.setSidenav(this.sidenav);

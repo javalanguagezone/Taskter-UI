@@ -14,8 +14,8 @@ import { UserMenuService } from '../user-menu/user-menu.service';
 export class HeaderComponent implements OnInit {
 
   loggedInUser: User = null;
- toggleActive:boolean = false;
-  constructor(private userService: UserService, private userMenuService: UserMenuService) { }
+  toggleActive: Boolean = false;
+  constructor(private userService: UserService, private userMenuService: UserMenuService, private sidenav: NavigationMenuService) { }
 
   ngOnInit() {
     this.userService.getCurrentUser()
@@ -24,12 +24,10 @@ export class HeaderComponent implements OnInit {
       });
   }
 
- toggleNavigationMenu() {
-		this.toggleActive = !this.toggleActive;
-		this.sidenav.toggle();
-
-    console.log('Clicked');
-	}
+  toggleNavigationMenu() {
+    this.toggleActive = !this.toggleActive;
+    this.sidenav.toggle();
+  }
 
   toggleUserMenu() {
     this.userMenuService.toggle();
