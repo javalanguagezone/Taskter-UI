@@ -7,13 +7,11 @@ import { TimesheetService, ITimeSheet } from '../services/timesheet.service';
 })
 export class TimesheetComponent implements OnInit {
 
-  timesheets:ITimeSheet[];
-  constructor(private timeSheetServices:TimesheetService) { }
+  timesheets: ITimeSheet[];
+
+  constructor(private timeSheetServices: TimesheetService) { }
 
   ngOnInit() {
-    
-
-
   }
 
 }

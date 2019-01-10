@@ -23,4 +23,7 @@ export class NavigationMenuComponent implements OnInit {
     });
   }
 
+  onLinkClick() {
+    this.sidenavService.close();
+  }
 }

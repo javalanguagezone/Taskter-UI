@@ -2,7 +2,10 @@
   <mat-sidenav #navigationMenu mode="push" closed class="navigationMenu">
     <mat-nav-list>
       <div class="sidenav-link">
-          <a mat-list-item routerLink='/first' >
+          <a mat-list-item
+              routerLink='/timeSheets/myTimeSheet'
+              (click) = 'onLinkClick()'
+          >
             <i class="material-icons sidenav-icon">access_time</i>
              My Timesheets
            </a>
@@ -46,6 +49,8 @@
     </mat-nav-list>
 
   </mat-sidenav>
-  <mat-sidenav-content style="text-align: center;">App content components go here!</mat-sidenav-content>
+  <mat-sidenav-content style="text-align: center;">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
   <mat-sidenav #userMenu mode="over" closed position="end">User menu</mat-sidenav>
 </mat-sidenav-container>
