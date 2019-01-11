@@ -1,0 +1,30 @@
+table {
+  width: 100%;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.table-container{
+  margin-top: 20px;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.description-cell{
+  text-align: left;
+  font-size: 20px;
+  padding-top: 2em;
+}
+.add-button{
+  padding: 1em;
+  width: 12em;
+  background-color:rgba(63, 81, 181, 1);
+  color:white;
+  margin-top:10px;
+  float: left;
+}
+.date-controls{
+  float: right;
+}
