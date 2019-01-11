@@ -4,7 +4,6 @@ import { MaterialDesignModule } from '../shared/material-design/material-design.
 import { TimesheetComponent } from './timesheet.component';
 import { TimeSheetRoutingModule } from './time-sheet-routing.module';
 
-
 @NgModule({
   declarations: [TimesheetComponent],
   imports: [

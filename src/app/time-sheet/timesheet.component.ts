@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesheetService, ITask } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'tsk-timesheet',
   templateUrl: './timesheet.component.html',
@@ -12,11 +16,22 @@ export class TimesheetComponent implements OnInit {
   date: Date = new Date();
   displayedColumns: string[] = ['Project Description', 'Duration', 'Action'];
   datePicker = new FormControl(this.date);
-  constructor(private timeSheetServices: TimesheetService) { }
+  constructor(
+    private timeSheetServices: TimesheetService,
+    private route: ActivatedRoute,
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.tasks = this.timeSheetServices.getTasks();
-    console.log(this.tasks);
+    this.route.paramMap.subscribe( params => {
+        if (params.keys.length > 0) {
+          this.date.setFullYear(Number(params.get('year')));
+          this.date.setMonth(Number(params.get('month')) - 1);
+          this.date.setDate(Number(params.get('day')));
+        }
+      }
+    );
   }
   getTotalTime() {
     return this.tasks.map(t => t.minutes).reduce(( acc, value ) => acc + value, 0);

@@ -4,7 +4,11 @@ import { TimesheetComponent } from './timesheet.component';
 
 const routes: Routes = [
   {
-    path: 'datePlaceholder',
+    path: '',
+    component: TimesheetComponent
+  },
+  {
+    path: ':year/:month/:day',
     component: TimesheetComponent
   }
 ];
