@@ -9,8 +9,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [],
@@ -25,7 +27,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatExpansionModule,
     MatTableModule,
     MatFormFieldModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatButtonToggleModule,
+    MatNativeDateModule
   ],
   exports: [
     MatToolbarModule,
@@ -37,7 +41,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatExpansionModule,
     MatTableModule,
     MatFormFieldModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatButtonToggleModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialDesignModule { }

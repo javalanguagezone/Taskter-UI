@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { from } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,9 +31,11 @@ export class TimesheetService {
   note: 'Lorem ipsum dolor sit amet'
 
 }];
+
   constructor(private http: HttpClient) { }
+
   getTasks() {
-    return this.tasks;
+    return from<ITask>(this.tasks);
   }
 }
 

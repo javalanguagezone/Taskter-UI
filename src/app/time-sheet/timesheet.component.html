@@ -2,19 +2,32 @@
   <div>
     <mat-card>
       <mat-card-header>
-        <mat-card-title>{{ date | date: "fullDate" }}</mat-card-title>
+        <div class="table-header">
+          <mat-card-title>{{ date | date: "fullDate" }}</mat-card-title>
 
-        <div class="date-controls">
-          <button mat-button>
-            <i class="material-icons">keyboard_arrow_left</i>
-          </button>
-          <button mat-button>Today</button>
-          <button mat-button>
-            <i class="material-icons">keyboard_arrow_right</i>
-          </button>
-          <button mat-button><i class="material-icons">date_range</i></button>
+          <div class="date-controls">
+            <button mat-button>
+              <i class="material-icons" (click)="previousDate()">keyboard_arrow_left</i>
+            </button>
+            <button mat-button (click)="currentDay()">Today</button>
+            <button mat-button>
+              <i class="material-icons" (click)="nextDate()">keyboard_arrow_right</i>
+            </button>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" id="datePicker">
+            <mat-datepicker #picker></mat-datepicker>
+            <button mat-button (click)="picker.open()"><i class="material-icons">date_range</i></button>
 
-          <button mat-button>Day</button> <button mat-button>Week</button>
+            <mat-button-toggle-group
+              name="fontStyle"
+              aria-label="Font Style"
+              disabled
+            >
+              <mat-button-toggle value="day_view" checked="ture"
+                >Day</mat-button-toggle
+              >
+              <mat-button-toggle value="week_view">Week</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
         </div>
       </mat-card-header>
     </mat-card>

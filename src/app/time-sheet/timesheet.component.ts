@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { TimesheetService, ITask } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tsk-timesheet',
   templateUrl: './timesheet.component.html',
   styleUrls: ['./timesheet.component.scss']
 })
-export class TimesheetComponent implements OnInit {
+export class TimesheetComponent implements OnInit, OnChanges {
 
-  tasks: ITask[];
+  tasks: ITask[] = [];
   date: Date = new Date();
   displayedColumns: string[] = ['Project Description', 'Duration', 'Action'];
   datePicker = new FormControl(this.date);
@@ -23,7 +21,12 @@ export class TimesheetComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.tasks = this.timeSheetServices.getTasks();
+    this.timeSheetServices.getTasks()
+    .subscribe(
+      task => {
+        this.tasks.push(task);
+      }
+    );
     this.route.paramMap.subscribe( params => {
         if (params.keys.length > 0) {
           this.date.setFullYear(Number(params.get('year')));
@@ -33,6 +36,11 @@ export class TimesheetComponent implements OnInit {
       }
     );
   }
+
+  ngOnChanges() {
+    console.log('desila se promjena');
+  }
+
   getTotalTime() {
     return this.tasks.map(t => t.minutes).reduce(( acc, value ) => acc + value, 0);
   }
@@ -42,6 +50,22 @@ export class TimesheetComponent implements OnInit {
     let m: any = mins % 60;
     h = h < 10 ? '0' + h : h;
     m = m < 10 ? '0' + m : m;
-    return `${h}:${m}`;
+    return `HH: ${h} MM: ${m}`;
+  }
+
+  nextDate() {
+    const newDate = new Date();
+    newDate.setDate(this.date.getDate() + 1);
+    this.date = newDate;
+  }
+
+  previousDate() {
+    const newDate = new Date();
+    newDate.setDate(this.date.getDate() - 1);
+    this.date = newDate;
+  }
+
+  currentDay() {
+    this.date = new Date();
   }
 }
