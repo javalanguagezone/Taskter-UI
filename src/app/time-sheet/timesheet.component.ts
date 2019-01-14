@@ -1,18 +1,18 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { TimesheetService, ITask } from '../services/timesheet.service';
+import { Component, OnInit } from '@angular/core';
+import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tsk-timesheet',
   templateUrl: './timesheet.component.html',
   styleUrls: ['./timesheet.component.scss']
 })
-export class TimesheetComponent implements OnInit, OnChanges {
 
-  tasks: ITask[] = [];
+export class TimesheetComponent implements OnInit {
+
+  tasks: ProjectTaskEntry[] = [];
   date: Date = new Date();
-  displayedColumns: string[] = ['Project Description', 'Duration', 'Action'];
   datePicker = new FormControl(this.date);
   constructor(
     private timeSheetServices: TimesheetService,
@@ -35,22 +35,6 @@ export class TimesheetComponent implements OnInit, OnChanges {
         }
       }
     );
-  }
-
-  ngOnChanges() {
-    console.log('desila se promjena');
-  }
-
-  getTotalTime() {
-    return this.tasks.map(t => t.minutes).reduce(( acc, value ) => acc + value, 0);
-  }
-
-  formatMinutes(mins: number) {
-    let h: any = Math.floor(mins / 60);
-    let m: any = mins % 60;
-    h = h < 10 ? '0' + h : h;
-    m = m < 10 ? '0' + m : m;
-    return `HH: ${h} MM: ${m}`;
   }
 
   nextDate() {

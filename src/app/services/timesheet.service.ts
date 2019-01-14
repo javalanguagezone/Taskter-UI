@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { from } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class TimesheetService {
 
-  private tasks: ITask[] = [{
+  private tasks: ProjectTaskEntry[] = [{
     client: 'Tacta',
     projectName: 'Taskter - Time tracking' ,
     projectCode: 'TASKTER-TIME',
@@ -32,16 +33,14 @@ export class TimesheetService {
 
 }];
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   getTasks() {
-    return from<ITask>(this.tasks);
+    return from<ProjectTaskEntry>(this.tasks);
   }
 }
 
-
-
-export interface ITask {
+export interface ProjectTaskEntry {
   client: string;
   projectName: string;
   projectCode: string;
