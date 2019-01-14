@@ -21,6 +21,11 @@
   align-items: center;
 }
 
+.date-controls{
+  display: flex;
+  justify-content: flex-end;
+}
+
 #datePicker{
   width: 0%;
   height: 0%;
