@@ -2,11 +2,11 @@
   <ng-container matColumnDef="Project Description">
     <th mat-header-cell *matHeaderCellDef>Project Description</th>
     <td mat-cell *matCellDef="let tasks" class="description-cell">
-      <b>Client: </b> {{ tasks.client }} <br />
+      <b>Client: </b> {{ tasks.clientName }} <br />
       <b>Project: </b>{{ tasks.projectName }} <br />
       <b>Project code: </b> {{ tasks.projectCode }} <br />
       <!-- <h3>{{tasks.projectCode}} {{tasks.projectName}} ({{tasks.client}})</h3>-->
-      <p>{{ tasks.task }} - {{ tasks.note }}</p>
+      <p>{{ tasks.projectTask }} - {{ tasks.note }}</p>
     </td>
     <td mat-footer-cell *matFooterCellDef>Total</td>
   </ng-container>
@@ -14,7 +14,7 @@
   <ng-container matColumnDef="Duration">
     <th mat-header-cell *matHeaderCellDef>Duration</th>
     <td mat-cell *matCellDef="let tasks">
-      <p>{{ formatMinutes(tasks.minutes) }}</p>
+      <p>{{ formatMinutes(tasks.durationInMin) }}</p>
     </td>
 
     <td mat-footer-cell *matFooterCellDef>

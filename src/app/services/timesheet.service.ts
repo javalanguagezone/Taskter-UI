@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { from } from 'rxjs';
+import { from, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { retry, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,7 @@ import { from } from 'rxjs';
 
 export class TimesheetService {
 
-  private tasks: ProjectTaskEntry[] = [{
+  /* private tasks: ProjectTaskEntry[] = [{
     client: 'Tacta',
     projectName: 'Taskter - Time tracking' ,
     projectCode: 'TASKTER-TIME',
@@ -31,20 +33,41 @@ export class TimesheetService {
   minutes: 70,
   note: 'Lorem ipsum dolor sit amet'
 
-}];
+}]; */
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getTasks() {
-    return from<ProjectTaskEntry>(this.tasks);
+    return this.http.get<ProjectTaskEntry>('/api/users/current/entries/2019/01/15')
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+
+  }
+  handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // return an observable with a user-facing error message
+    return throwError(
+      'Something bad happened; please try again later.');
+
   }
 }
 
 export interface ProjectTaskEntry {
-  client: string;
+  clientName: string;
   projectName: string;
   projectCode: string;
-  task: string ;
-  minutes: number;
+  projectTask: string ;
+  durationInMin: number;
   note: string;
 }

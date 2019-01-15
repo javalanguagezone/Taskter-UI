@@ -28,6 +28,7 @@ export class TimesheetComponent implements OnInit {
     .subscribe(
       task => {
         this.tasks.push(task);
+        console.log(this.tasks);
       }
     );
     this.route.paramMap.subscribe( params => {

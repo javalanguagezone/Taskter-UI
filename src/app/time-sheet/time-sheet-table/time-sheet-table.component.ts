@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input } from '@angular/core';
 import { ProjectTaskEntry } from 'src/app/services/timesheet.service';
 
@@ -26,7 +27,7 @@ export class TimeSheetTableComponent implements OnInit {
 
 
   getTotalTime() {
-    return this.tasks.map(t => t.minutes).reduce(( acc, value ) => acc + value, 0);
+    return this.tasks.map(t => t.durationInMin).reduce(( acc, value ) => acc + value, 0);
   }
 
 }
