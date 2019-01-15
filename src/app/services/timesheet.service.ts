@@ -37,8 +37,8 @@ export class TimesheetService {
 
   constructor(private http: HttpClient) { }
 
-  getTasks() {
-    return this.http.get<ProjectTaskEntry>('/api/users/current/entries/2019/01/15')
+  getTasks(day: number, month: number, year: number) {
+    return this.http.get<ProjectTaskEntry>('/api/users/current/entries/' + year + '/' + month + '/' + day)
     .pipe(
       retry(3),
       catchError(this.handleError)

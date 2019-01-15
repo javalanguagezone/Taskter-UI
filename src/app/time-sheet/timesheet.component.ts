@@ -16,6 +16,11 @@ export class TimesheetComponent implements OnInit {
   tasks: ProjectTaskEntry[] = [];
   date: Date = new Date();
   datePicker = new FormControl(this.date);
+
+  day = 15;
+  month = 1;
+  year = 2019;
+
   constructor(
     private timeSheetServices: TimesheetService,
     private route: ActivatedRoute,
@@ -24,12 +29,11 @@ export class TimesheetComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.timeSheetServices.getTasks()
-    .subscribe(
-      task => {
-        this.tasks.push(task);
-        console.log(this.tasks);
-      }
+    this.timeSheetServices.getTasks(this.day, this.month, this.year)
+    .subscribe( task => {
+              this.tasks.push(task);
+              console.log(this.tasks);
+            }
     );
     this.route.paramMap.subscribe( params => {
         if (params.keys.length > 0) {
