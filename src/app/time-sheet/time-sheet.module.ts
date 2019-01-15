@@ -4,8 +4,8 @@ import { MaterialDesignModule } from '../shared/material-design/material-design.
 import { TimesheetComponent } from './timesheet.component';
 import { TimeSheetRoutingModule } from './time-sheet-routing.module';
 import { TimeSheetTableComponent } from './time-sheet-table/time-sheet-table.component';
-import { TimeEntryDialogueComponent } from '../time-entry-dialogue/time-entry-dialogue.component';
-import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
+import { MatDialogModule } from '@angular/material';
 
 @NgModule({
   declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent],
@@ -14,15 +14,13 @@ import { MatDialogModule, MatDialogRef } from '@angular/material';
     MaterialDesignModule,
     TimeSheetRoutingModule,
     MatDialogModule
-    
+
   ],
   exports: [
     TimesheetComponent,
-    TimeEntryDialogueComponent    
-  ],
-  providers:[MatDialogRef],
-  entryComponents: [
     TimeEntryDialogueComponent
-  ]
+  ],
+  providers: [],
+  entryComponents: [TimesheetComponent, TimeEntryDialogueComponent]
 })
 export class TimeSheetModule {}

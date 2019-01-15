@@ -7,36 +7,21 @@
       <div class="date-controls">
 
         <button mat-button>
-          <i class="material-icons" (click)="previousDate()"
-            >keyboard_arrow_left</i
-          >
+          <i class="material-icons" (click)="previousDate()">keyboard_arrow_left</i>
         </button>
         <button mat-button (click)="currentDay()">Today</button>
         <button mat-button>
-          <i class="material-icons" (click)="nextDate()"
-            >keyboard_arrow_right</i
-          >
+          <i class="material-icons" (click)="nextDate()">keyboard_arrow_right</i>
         </button>
 
-        <input
-          matInput
-          [matDatepicker]="picker"
-          placeholder="Choose a date"
-          id="datePicker"
-        />
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" id="datePicker" />
         <mat-datepicker #picker></mat-datepicker>
         <button mat-button (click)="picker.open()">
           <i class="material-icons">date_range</i>
         </button>
 
-        <mat-button-toggle-group
-          name="fontStyle"
-          aria-label="Font Style"
-          disabled
-        >
-          <mat-button-toggle value="day_view" checked="ture"
-            >Day</mat-button-toggle
-          >
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" disabled>
+          <mat-button-toggle value="day_view" checked="ture">Day</mat-button-toggle>
           <mat-button-toggle value="week_view">Week</mat-button-toggle>
         </mat-button-toggle-group>
 
@@ -45,8 +30,5 @@
   </mat-card>
 
   <tsk-time-sheet-table [tasks]="tasks"></tsk-time-sheet-table>
-
-  <button mat-button class="add-button">
-    <tsk-time-entry-dialogue></tsk-time-entry-dialogue>
-  </button>
+  <button *ngIf="tasks" mat-button class="add-button" (click)='openDialog()'></button>
 </div>

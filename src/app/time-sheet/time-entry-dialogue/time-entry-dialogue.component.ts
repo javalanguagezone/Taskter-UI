@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { ProjectTaskEntry } from '../services/timesheet.service';
+import { ProjectTaskEntry } from '../../services/timesheet.service';
 
 
 @Component({
@@ -8,15 +8,11 @@ import { ProjectTaskEntry } from '../services/timesheet.service';
   templateUrl: './time-entry-dialogue.component.html',
   styleUrls: ['./time-entry-dialogue.component.scss']
 })
-export class TimeEntryDialogueComponent implements OnInit {
+export class TimeEntryDialogueComponent {
 
   constructor(public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProjectTaskEntry) { 
+    @Inject(MAT_DIALOG_DATA) public data: ProjectTaskEntry[]) {}
 
-  }
-
-  ngOnInit() {
-  }
   onNoClick(): void {
     this.dialogRef.close();
   }

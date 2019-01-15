@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { TimeEntryDialogueComponent } from '../time-entry-dialogue/time-entry-dialogue.component';
+import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 
 @Component({
   selector: 'tsk-timesheet',
@@ -36,10 +36,7 @@ export class TimesheetComponent implements OnInit {
           this.date.setMonth(Number(params.get('month')) - 1);
           this.date.setDate(Number(params.get('day')));
         }
-      }
-    );
-
-    
+      });
   }
 
   nextDate() {
@@ -66,7 +63,7 @@ export class TimesheetComponent implements OnInit {
 
     dialogueRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      
+
     });
  }
 }
