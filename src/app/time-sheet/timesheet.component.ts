@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { TimeEntryDialogueComponent } from '../time-entry-dialogue/time-entry-dialogue.component';
 
 @Component({
   selector: 'tsk-timesheet',
@@ -17,7 +19,8 @@ export class TimesheetComponent implements OnInit {
   constructor(
     private timeSheetServices: TimesheetService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialogue: MatDialog
     ) {}
 
   ngOnInit() {
@@ -35,6 +38,8 @@ export class TimesheetComponent implements OnInit {
         }
       }
     );
+
+    
   }
 
   nextDate() {
@@ -52,4 +57,16 @@ export class TimesheetComponent implements OnInit {
   currentDay() {
     this.date = new Date();
   }
+
+  openDialog(): void {
+    const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
+      width: '250px',
+      data: this.tasks
+    });
+
+    dialogueRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+    });
+ }
 }
