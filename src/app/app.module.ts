@@ -11,10 +11,12 @@ import { RoleDirective } from './role.directive';
 import { MomentModule } from 'ngx-moment';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     RoleDirective
+
   ],
   imports: [
     BrowserModule,

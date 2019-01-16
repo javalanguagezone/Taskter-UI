@@ -8,9 +8,10 @@ import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dia
 import { MatDialogModule } from '@angular/material';
 import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormatMinutesPipe } from '../pipes/format-minutes.pipe';
 
 @NgModule({
-  declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent],
+  declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent, FormatMinutesPipe],
   imports: [
     CommonModule,
     MaterialDesignModule,
@@ -19,10 +20,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MomentModule,
     FormsModule,
     ReactiveFormsModule
+
   ],
   exports: [
     TimesheetComponent,
-    TimeEntryDialogueComponent
+    TimeEntryDialogueComponent,
+    FormatMinutesPipe
   ],
   providers: [],
   entryComponents: [TimesheetComponent, TimeEntryDialogueComponent]

@@ -14,11 +14,11 @@
   <ng-container matColumnDef="Duration">
     <th mat-header-cell *matHeaderCellDef>Duration</th>
     <td mat-cell *matCellDef="let tasks">
-      <p *ngIf="tasks">{{ formatMinutes(tasks.durationInMin) }}</p>
+      <p *ngIf="tasks">{{ tasks.durationInMin | formatMinutes }}</p>
     </td>
 
     <td mat-footer-cell *matFooterCellDef >
-     <p *ngIf="tasks"> {{ formatMinutes(getTotalTime()) }}</p>
+     <p *ngIf="tasks"> {{ getTotalTime() | formatMinutes }}</p>
     </td>
   </ng-container>
 
