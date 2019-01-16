@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
+import { TimesheetService, ProjectTaskEntry, UserProject } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 
@@ -14,11 +14,12 @@ import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dia
 export class TimesheetComponent implements OnInit {
 
   tasks: ProjectTaskEntry[] = [];
+  currentUserProjects: UserProject[] = [];
   date: Date = new Date();
   datePicker = new FormControl(this.date);
   timeEntries: NewEntry[] = [];
 
-  day = 16;
+  day = 15;
   month = 1;
   year = 2019;
 
@@ -32,9 +33,14 @@ export class TimesheetComponent implements OnInit {
     this.timeSheetServices.getTasks(this.day, this.month, this.year)
     .subscribe( tasks => {
               this.tasks = tasks;
-              console.log(this.tasks);
-            }
-    );
+              // console.log(this.tasks);
+            });
+    this.timeSheetServices.getProjectsForCurrentUser().subscribe(userProjects => {
+      this.currentUserProjects = userProjects;
+        },
+      err => {console.error(err); }
+      );
+
     this.route.paramMap.subscribe( params => {
         if (params.keys.length > 0) {
           this.date.setFullYear(Number(params.get('year')));
@@ -63,7 +69,7 @@ export class TimesheetComponent implements OnInit {
   openDialog(): void {
     const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
       width: '350px',
-      data: this.tasks
+      data: this.currentUserProjects
     });
 
     dialogueRef.afterClosed().subscribe(result => {
@@ -71,7 +77,6 @@ export class TimesheetComponent implements OnInit {
 
     });
  }
- 
 }
 export interface NewEntry {
   currentDate: Date;

@@ -1,32 +1,33 @@
 <h1 mat-dialog-title>New time entry</h1>
-<p mat-dialog-subtitle>{{currentDate | date : 'yyyy-MM-dd'}}</p>
+<p mat-dialog-subtitle>{{currentDate | date : 'dd.MM.yyyy'}}</p>
+<div *ngIf="data">
+<!-- <mat-form-field> -->
+<mat-select #selectProject placeholder="Project" class="dropdown-input">
+  <mat-option *ngFor="let p of data" [value]="p" >{{p.projectName}}</mat-option>
+</mat-select>
+<!-- </mat-form-field> -->
 
-<form>
-  <mat-form-field>
-    <mat-select placeholder = "Project" class="dropdown-input">
-      <mat-option *ngFor="let x of data">{{x.projectName}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+<!-- <mat-form-field> -->
+<mat-select #selectTask *ngIf="selectProject.value" placeholder="Task" class="dropdown-input">
+  <mat-option *ngFor="let t of selectProject.value.tasks" [value]="t">{{t.name}}</mat-option> -->
+</mat-select>
+<!-- </mat-form-field> -->
 
-  <mat-form-field>
-    <mat-select placeholder = "Task" class="dropdown-input">
-      <mat-option *ngFor="let x of data">{{x.projectTask}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+<p>Time</p>
+<div class="time-input-container">
+  <!-- <mat-form-field class="time-input-container"> -->
+  <input matInput placeholder="Hours" type="number" max="11" />
+  <input matInput placeholder="Minutes" type="number" max="59" />
+  <!-- </mat-form-field> -->
+</div>
+<p>Notes</p>
+<!-- <mat-form-field > -->
+<textarea matInput class="input-field" placeholder="Notes"></textarea>
+<!-- </mat-form-field> -->
 
-  <p>Time</p>
-  <mat-form-field class="time-input-container">
-    <input matInput  placeholder="Hours" type="number" max="11"/>
-    <input matInput  placeholder="Minutes"  type="number" max="59" />
-  </mat-form-field>
-
-  <p>Notes</p>
-  <mat-form-field >
-      <textarea matInput class="input-field" placeholder="Notes" ></textarea>
-  </mat-form-field>
-
-  <mat-form-field >
-    <button mat-button  cdkFocusInitial cdkFocusIntial>Add Entry</button>
-    <button mat-button (click)="onNoClick()">Cancel</button>
-  </mat-form-field>
-</form>
+<br>
+<!-- <mat-form-field > -->
+<button mat-button cdkFocusInitial color="primary">Add Entry</button>
+<button mat-button (click)="onNoClick()" color="warn">Cancel</button>
+<!-- </mat-form-field> -->
+</div>
