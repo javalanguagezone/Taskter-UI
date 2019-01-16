@@ -81,14 +81,4 @@ export class TimesheetComponent implements OnInit {
     this.router.navigate([`timeSheet`]);
   }
 
-  openDialog(): void {
-    const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
-      width: '250px',
-      data: this.tasks
-    });
-
-    dialogueRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
- }
 }
