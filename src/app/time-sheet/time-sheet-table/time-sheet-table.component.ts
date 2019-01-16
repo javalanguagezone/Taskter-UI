@@ -17,9 +17,6 @@ export class TimeSheetTableComponent implements OnInit {
   ngOnInit() {
   }
 
-
-
-
   getTotalTime() {
     return this.tasks.map(t => t.durationInMin).reduce(( acc, value ) => acc + value, 0);
   }

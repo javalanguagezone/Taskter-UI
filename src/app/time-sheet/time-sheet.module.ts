@@ -20,7 +20,6 @@ import { FormatMinutesPipe } from '../pipes/format-minutes.pipe';
     MomentModule,
     FormsModule,
     ReactiveFormsModule
-
   ],
   exports: [
     TimesheetComponent,
