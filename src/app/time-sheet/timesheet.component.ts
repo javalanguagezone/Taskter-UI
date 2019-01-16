@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 
@@ -30,8 +29,7 @@ export class TimesheetComponent implements OnInit {
   constructor(
     private timeSheetServices: TimesheetService,
     private route: ActivatedRoute,
-    private router: Router,
-    private dialogue: MatDialog
+    private router: Router
     ) {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
      }
