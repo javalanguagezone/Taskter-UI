@@ -16,22 +16,22 @@ export class TimesheetComponent implements OnInit {
   tasks: ProjectTaskEntry[] = [];
   date: Date = new Date();
   datePicker = new FormControl(this.date);
+  timeEntries: NewEntry[] = [];
 
-  day = 15;
+  day = 16;
   month = 1;
   year = 2019;
 
   constructor(
     private timeSheetServices: TimesheetService,
     private route: ActivatedRoute,
-    private router: Router,
     private dialogue: MatDialog
     ) {}
 
   ngOnInit() {
     this.timeSheetServices.getTasks(this.day, this.month, this.year)
-    .subscribe( task => {
-              this.tasks.push(task);
+    .subscribe( tasks => {
+              this.tasks = tasks;
               console.log(this.tasks);
             }
     );
@@ -62,7 +62,7 @@ export class TimesheetComponent implements OnInit {
 
   openDialog(): void {
     const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
-      width: '250px',
+      width: '350px',
       data: this.tasks
     });
 
@@ -71,4 +71,12 @@ export class TimesheetComponent implements OnInit {
 
     });
  }
+ 
+}
+export interface NewEntry {
+  currentDate: Date;
+  projectName: string;
+  projectTask: string ;
+  durationInMin: number;
+  note: string;
 }
