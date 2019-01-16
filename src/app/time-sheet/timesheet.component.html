@@ -15,9 +15,10 @@
           <i class="material-icons">keyboard_arrow_right</i>
         </button>
 
-        <!--<input matInput [matDatepicker]="picker" placeholder="Choose a date" id="datePicker" />-->
+        <input matInput [matDatepicker]="picker" [formControl]="datePicker" (dateChange)='onDatePickerChange()' id="datePicker"/>
 
-        <mat-datepicker #picker (selectedChanged)="onChange($event)"></mat-datepicker>
+        <mat-datepicker #picker></mat-datepicker>
+
         <button mat-button (click)="picker.open()">
           <i class="material-icons">date_range</i>
         </button>

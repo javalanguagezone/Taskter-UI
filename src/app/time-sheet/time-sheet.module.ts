@@ -7,6 +7,8 @@ import { TimeSheetTableComponent } from './time-sheet-table/time-sheet-table.com
 import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 import { MatDialogModule } from '@angular/material';
 import { MomentModule } from 'ngx-moment';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent],
   imports: [
@@ -14,8 +16,9 @@ import { MomentModule } from 'ngx-moment';
     MaterialDesignModule,
     TimeSheetRoutingModule,
     MatDialogModule,
-    MomentModule
-
+    MomentModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     TimesheetComponent,

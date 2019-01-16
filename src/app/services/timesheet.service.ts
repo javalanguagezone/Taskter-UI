@@ -9,42 +9,17 @@ import { retry, catchError } from 'rxjs/operators';
 
 export class TimesheetService {
 
-  /* private tasks: ProjectTaskEntry[] = [{
-    client: 'Tacta',
-    projectName: 'Taskter - Time tracking' ,
-    projectCode: 'TASKTER-TIME',
-    task: 'Design',
-    minutes: 60,
-    note: 'Lorem ipsum dolor sit amet'
-},
-{
-  client: 'Tacta',
-  projectName: 'Taskter - Time tracking' ,
-  projectCode: 'TASKTER-TIME',
-  task: 'Programming',
-  minutes: 30,
-  note: 'Lorem ipsum dolor sit amet'
-},
-{
-  client: 'Tacta',
-  projectName: 'Taskter - Time tracking' ,
-  projectCode: 'TASKTER-TIME',
-  task: 'Analaysis',
-  minutes: 70,
-  note: 'Lorem ipsum dolor sit amet'
-
-}]; */
-
   constructor(private http: HttpClient) { }
 
-  getTasks(day: number, month: number, year: number) {
-    return this.http.get<ProjectTaskEntry[]>('/api/users/current/entries/' + year + '/' + month + '/' + day)
+  getTasks(year: number, month: number, day: number) {
+    return this.http.get<ProjectTaskEntry[]>(`/api/users/current/entries/${year}/${month}/${day}`)
     .pipe(
       retry(3),
       catchError(this.handleError)
     );
 
   }
+
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

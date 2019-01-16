@@ -5,7 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 import * as moment from 'moment';
-import { ReplaySubject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
 @Component({
   selector: 'tsk-timesheet',
   templateUrl: './timesheet.component.html',
@@ -14,73 +15,70 @@ import { ReplaySubject, BehaviorSubject } from 'rxjs';
 
 export class TimesheetComponent implements OnInit {
 
+
+  datePicker = new FormControl();
   tasks: ProjectTaskEntry[] = [];
 
-
-
   _date: BehaviorSubject<moment.Moment> = new BehaviorSubject(moment(new Date()));
+
   get date() {
     return this._date.getValue();
   }
   set date(value: moment.Moment) {
-    console.log(value);
     this._date.next(value);
   }
-
-  datePicker = new FormControl(this._date);
 
   constructor(
     private timeSheetServices: TimesheetService,
     private route: ActivatedRoute,
     private router: Router,
     private dialogue: MatDialog
-    ) { }
+    ) {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+     }
 
 
-    getTaskByDate(day, month, year): void {
-      this.timeSheetServices.getTasks(day, month, year)
-      .subscribe( task => {
-                this.tasks = task;
-                console.log(this.tasks);
-              }
-      );
-    }
+  getTaskByDate(year, month, day): void {
+    this.timeSheetServices.getTasks(year, month, day)
+    .subscribe( task => {
+              this.tasks = task;
+            }
+    );
+  }
   ngOnInit() {
-    console.log(this._date);
 
-    this.getTaskByDate(this.date.date(), this.date.month() + 1 , this.date.year());
+    this.route.paramMap
+    .subscribe( params => {
 
-
-    this.route.paramMap.subscribe( params => {
         if (params.keys.length > 0) {
           this.date.year(Number(params.get('year')));
           this.date.month(Number(params.get('month')) - 1);
           this.date.date(Number(params.get('day')));
         }
+
+        this.datePicker = new FormControl(new Date(this.date.year(), this.date.month(), this.date.date()));
+        this.getTaskByDate(this.date.year(), this.date.month() + 1 , this.date.date());
       });
+
   }
 
-
-  onChange(event: any, newDate: any): void {
-
-    this.getTaskByDate(this.date.date(), this.date.month() + 1 , this.date.year());
+  onDatePickerChange() {
+    this.date = moment( this.datePicker.value );
+    this.router.navigate([`timeSheet/${this.date.year()}/${this.date.month() + 1}/${this.date.date()}`]);
   }
+
   nextDate() {
-
     const tomorrow  = this.date.add(1, 'days');
-    this.date = tomorrow;
-    this.getTaskByDate(this.date.date(), this.date.month() + 1 , this.date.year());
+    this.router.navigate([`timeSheet/${tomorrow.year()}/${tomorrow.month() + 1}/${tomorrow.date()}`]);
   }
 
   previousDate() {
     const yesterday = this.date.add(-1, 'days');
-    this.date = yesterday;
-    this.getTaskByDate(this.date.date(), this.date.month() + 1 , this.date.year());
+    this.router.navigate([`timeSheet/${yesterday.year()}/${yesterday.month() + 1}/${yesterday.date()}`]);
   }
 
   currentDay() {
-    this.date = moment(new Date());
-    this.getTaskByDate(this.date.date(), this.date.month() + 1 , this.date.year());
+    this.router.navigate([`timeSheet`]);
   }
 
   openDialog(): void {
@@ -91,7 +89,6 @@ export class TimesheetComponent implements OnInit {
 
     dialogueRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-
     });
  }
 }
