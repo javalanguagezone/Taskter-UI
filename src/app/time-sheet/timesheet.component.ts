@@ -3,7 +3,6 @@ import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.servic
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 
