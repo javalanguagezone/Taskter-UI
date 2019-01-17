@@ -39,6 +39,7 @@ export class TimesheetService {
 }
 
 export interface ProjectTaskEntry {
+  id: number;
   clientName: string;
   projectName: string;
   projectCode: string;
