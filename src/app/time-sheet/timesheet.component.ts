@@ -35,11 +35,11 @@ export class TimesheetComponent implements OnInit {
               this.tasks = tasks;
               // console.log(this.tasks);
             });
-    this.timeSheetServices.getProjectsForCurrentUser().subscribe(userProjects => {
-      this.currentUserProjects = userProjects;
-        },
-      err => {console.error(err); }
-      );
+    this.timeSheetServices.getProjectsForCurrentUser()
+      .subscribe(userProjects => {
+        this.currentUserProjects = userProjects; },
+        err => {console.error(err); }
+        );
 
     this.route.paramMap.subscribe( params => {
         if (params.keys.length > 0) {
@@ -69,7 +69,7 @@ export class TimesheetComponent implements OnInit {
   openDialog(): void {
     const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
       width: '350px',
-      data: this.currentUserProjects
+      data: [this.currentUserProjects, this.date]
     });
 
     dialogueRef.afterClosed().subscribe(result => {

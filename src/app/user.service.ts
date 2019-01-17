@@ -37,7 +37,7 @@ export class UserService {
   }
 }
 export interface User {
-  userId: number,
+  userId: number;
   username: string;
   firstName: string;
   lastName: string;
