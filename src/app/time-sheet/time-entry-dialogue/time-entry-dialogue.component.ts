@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserProject } from '../../services/timesheet.service';
-import { NewEntry } from '../timesheet.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { User, UserService } from 'src/app/user.service';
 import * as moment from 'moment';
@@ -47,9 +46,18 @@ export class TimeEntryDialogueComponent implements OnInit {
      Day: this.currentDate.date(),
      Month: this.currentDate.month() + 1,
      Year: this.currentDate.year()
-  };
+    };
     console.warn(entry);
   }
  }
+ export interface NewEntry {
+  UserId: number;
+  TaskId: number;
+  DurationInMin: number;
+  Note: string;
+  Day: number;
+  Month: number;
+  Year: number;
+}
 
 

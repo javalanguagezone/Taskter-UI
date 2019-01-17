@@ -19,8 +19,6 @@ export class TimesheetComponent implements OnInit {
   datePicker = new FormControl();
   tasks: ProjectTaskEntry[] = [];
   currentUserProjects: UserProject[] = [];
-  timeEntries: NewEntry[] = [];
-
   _date: BehaviorSubject<moment.Moment> = new BehaviorSubject(moment(new Date()));
 
   get date() {
@@ -95,13 +93,4 @@ export class TimesheetComponent implements OnInit {
       console.log('dialog closed!');
     });
   }
-}
-export class NewEntry {
-  UserId: number;
-  TaskId: number;
-  DurationInMin: number;
-  Note: string;
-  Day: number;
-  Month: number;
-  Year: number;
 }
