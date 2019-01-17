@@ -6,6 +6,7 @@ import { TimeSheetRoutingModule } from './time-sheet-routing.module';
 import { TimeSheetTableComponent } from './time-sheet-table/time-sheet-table.component';
 import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 import { MatDialogModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent],
@@ -13,7 +14,8 @@ import { MatDialogModule } from '@angular/material';
     CommonModule,
     MaterialDesignModule,
     TimeSheetRoutingModule,
-    MatDialogModule
+    MatDialogModule,
+    ReactiveFormsModule
 
   ],
   exports: [

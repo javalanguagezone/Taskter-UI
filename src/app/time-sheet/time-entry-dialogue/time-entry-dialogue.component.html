@@ -1,33 +1,30 @@
 <h1 mat-dialog-title>New time entry</h1>
 <p mat-dialog-subtitle>{{currentDate | date : 'dd.MM.yyyy'}}</p>
-<div *ngIf="data">
-<!-- <mat-form-field> -->
-<mat-select #selectProject placeholder="Project" class="dropdown-input">
-  <mat-option *ngFor="let p of data" [value]="p" >{{p.projectName}}</mat-option>
-</mat-select>
-<!-- </mat-form-field> -->
 
-<!-- <mat-form-field> -->
-<mat-select #selectTask *ngIf="selectProject.value" placeholder="Task" class="dropdown-input">
-  <mat-option *ngFor="let t of selectProject.value.tasks" [value]="t">{{t.name}}</mat-option> -->
-</mat-select>
-<!-- </mat-form-field> -->
+<form [formGroup]=TimeEntryForm (ngSubmit)="onSubmit()">
+  <div *ngIf="data">
+      <mat-select formControlName = "projectName" #selectProject placeholder="Project" class="dropdown-input">
+        <mat-option *ngFor="let p of data" [value]="p">{{p.projectName}}</mat-option>
+      </mat-select>
+  
 
-<p>Time</p>
-<div class="time-input-container">
-  <!-- <mat-form-field class="time-input-container"> -->
-  <input matInput placeholder="Hours" type="number" max="11" />
-  <input matInput placeholder="Minutes" type="number" max="59" />
-  <!-- </mat-form-field> -->
-</div>
-<p>Notes</p>
-<!-- <mat-form-field > -->
-<textarea matInput class="input-field" placeholder="Notes"></textarea>
-<!-- </mat-form-field> -->
+    
+      <mat-select formControlName = 'task' matSelect #selectTask *ngIf="selectProject.value" placeholder="Task" class="dropdown-input">
+        <mat-option *ngFor="let t of selectProject.value.tasks" [value]="t">{{t.name}}</mat-option>
+      </mat-select>
+   
 
-<br>
-<!-- <mat-form-field > -->
-<button mat-button cdkFocusInitial color="primary">Add Entry</button>
-<button mat-button (click)="onNoClick()" color="warn">Cancel</button>
-<!-- </mat-form-field> -->
-</div>
+    <p>Time</p>
+    <div class="time-input-container">
+        <input matInput formControlName="hours" placeholder="Hours" type="number" max="11">
+        <input matInput formControlName = 'minutes' placeholder="Minutes" type="number" max="59">
+    </div>
+    <p>Notes</p>
+
+      <textarea matInput formControlName = 'notes' class="input-field" placeholder="Notes"></textarea>
+      <br>
+       
+      <button mat-button cdkFocusInitial color="primary" type="submit" >Add Entry</button>
+      <button mat-button (click)="onNoClick()" color="warn">Cancel</button>    
+  </div>
+</form>

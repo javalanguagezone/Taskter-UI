@@ -78,10 +78,12 @@ export class TimesheetComponent implements OnInit {
     });
  }
 }
-export interface NewEntry {
-  currentDate: Date;
-  projectName: string;
-  projectTask: string ;
-  durationInMin: number;
-  note: string;
+export class NewEntry {
+  UserId: number;
+  TaskId: number;
+  DurationInMin: number;
+  Note: string;
+  Day: number;
+  Month: number;
+  Year: number ;
 }
