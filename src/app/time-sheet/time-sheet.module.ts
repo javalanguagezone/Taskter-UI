@@ -6,21 +6,25 @@ import { TimeSheetRoutingModule } from './time-sheet-routing.module';
 import { TimeSheetTableComponent } from './time-sheet-table/time-sheet-table.component';
 import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
 import { MatDialogModule } from '@angular/material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { MomentModule } from 'ngx-moment';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormatMinutesPipe } from '../pipes/format-minutes.pipe';
 
 @NgModule({
-  declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent],
+  declarations: [TimesheetComponent, TimeSheetTableComponent, TimeEntryDialogueComponent, FormatMinutesPipe],
   imports: [
     CommonModule,
     MaterialDesignModule,
     TimeSheetRoutingModule,
     MatDialogModule,
+    MomentModule,
+    FormsModule,
     ReactiveFormsModule
-
   ],
   exports: [
     TimesheetComponent,
-    TimeEntryDialogueComponent
+    TimeEntryDialogueComponent,
+    FormatMinutesPipe
   ],
   providers: [],
   entryComponents: [TimesheetComponent, TimeEntryDialogueComponent]

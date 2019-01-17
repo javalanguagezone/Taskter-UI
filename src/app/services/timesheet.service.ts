@@ -10,12 +10,12 @@ import { retry, catchError } from 'rxjs/operators';
 export class TimesheetService {
   constructor(private http: HttpClient) { }
 
-  getTasks(day: number, month: number, year: number) {
-    return this.http.get<ProjectTaskEntry[]>('/api/users/current/entries/' + year + '/' + month + '/' + day)
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
+  getTasks(year: number, month: number, day: number) {
+    return this.http.get<ProjectTaskEntry[]>(`/api/users/current/entries/${year}/${month}/${day}`)
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
     }
   getProjectsForCurrentUser() {
     return this.http.get<UserProject[]>('/api/users/current/projects').pipe(catchError(this.handleError));

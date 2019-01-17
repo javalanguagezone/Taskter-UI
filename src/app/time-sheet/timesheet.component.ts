@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesheetService, ProjectTaskEntry, UserProject } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dialogue.component';
+import * as moment from 'moment';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'tsk-timesheet',
@@ -13,57 +15,74 @@ import { TimeEntryDialogueComponent } from './time-entry-dialogue/time-entry-dia
 
 export class TimesheetComponent implements OnInit {
 
+
+  datePicker = new FormControl();
   tasks: ProjectTaskEntry[] = [];
   currentUserProjects: UserProject[] = [];
-  date: Date = new Date();
-  datePicker = new FormControl(this.date);
   timeEntries: NewEntry[] = [];
 
-  day = 15;
-  month = 1;
-  year = 2019;
+  _date: BehaviorSubject<moment.Moment> = new BehaviorSubject(moment(new Date()));
+
+  get date() {
+    return this._date.getValue();
+  }
+  set date(value: moment.Moment) {
+    this._date.next(value);
+  }
 
   constructor(
     private timeSheetServices: TimesheetService,
     private route: ActivatedRoute,
-    private dialogue: MatDialog
-    ) {}
+    private dialogue: MatDialog,
+    private router: Router) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
+
+  getTaskByDate(year, month, day): void {
+    this.timeSheetServices.getTasks(year, month, day)
+      .subscribe(task => {
+        this.tasks = task; }
+      );
+  }
 
   ngOnInit() {
-    this.timeSheetServices.getTasks(this.day, this.month, this.year)
-    .subscribe( tasks => {
-              this.tasks = tasks;
-              // console.log(this.tasks);
-            });
+    this.route.paramMap.subscribe(params => {
+      if (params.keys.length > 0) {
+        this.date.year(Number(params.get('year')));
+        this.date.month(Number(params.get('month')) - 1);
+        this.date.date(Number(params.get('day')));
+      }
+
+      this.datePicker = new FormControl(new Date(this.date.year(), this.date.month(), this.date.date()));
+      this.getTaskByDate(this.date.year(), this.date.month() + 1, this.date.date());
+    });
+
     this.timeSheetServices.getProjectsForCurrentUser()
       .subscribe(userProjects => {
-        this.currentUserProjects = userProjects; },
-        err => {console.error(err); }
-        );
+        this.currentUserProjects = userProjects;
+      },
+        err => { console.error(err); }
+      );
 
-    this.route.paramMap.subscribe( params => {
-        if (params.keys.length > 0) {
-          this.date.setFullYear(Number(params.get('year')));
-          this.date.setMonth(Number(params.get('month')) - 1);
-          this.date.setDate(Number(params.get('day')));
-        }
-      });
+  }
+
+  onDatePickerChange() {
+    this.date = moment(this.datePicker.value);
+    this.router.navigate([`timeSheet/${this.date.year()}/${this.date.month() + 1}/${this.date.date()}`]);
   }
 
   nextDate() {
-    const newDate = new Date();
-    newDate.setDate(this.date.getDate() + 1);
-    this.date = newDate;
+    const tomorrow = this.date.add(1, 'days');
+    this.router.navigate([`timeSheet/${tomorrow.year()}/${tomorrow.month() + 1}/${tomorrow.date()}`]);
   }
 
   previousDate() {
-    const newDate = new Date();
-    newDate.setDate(this.date.getDate() - 1);
-    this.date = newDate;
+    const yesterday = this.date.add(-1, 'days');
+    this.router.navigate([`timeSheet/${yesterday.year()}/${yesterday.month() + 1}/${yesterday.date()}`]);
   }
 
   currentDay() {
-    this.date = new Date();
+    this.router.navigate([`timeSheet`]);
   }
 
   openDialog(): void {
@@ -73,10 +92,9 @@ export class TimesheetComponent implements OnInit {
     });
 
     dialogueRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-
+      console.log('dialog closed!');
     });
- }
+  }
 }
 export class NewEntry {
   UserId: number;
@@ -85,5 +103,5 @@ export class NewEntry {
   Note: string;
   Day: number;
   Month: number;
-  Year: number ;
+  Year: number;
 }

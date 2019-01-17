@@ -17,15 +17,6 @@ export class TimeSheetTableComponent implements OnInit {
   ngOnInit() {
   }
 
-  formatMinutes(mins: number) {
-    let h: any = Math.floor(mins / 60);
-    let m: any = mins % 60;
-    h = h < 10 ? '0' + h : h;
-    m = m < 10 ? '0' + m : m;
-    return `HH: ${h} MM: ${m}`;
-  }
-
-
   getTotalTime() {
     return this.tasks.map(t => t.durationInMin).reduce(( acc, value ) => acc + value, 0);
   }
