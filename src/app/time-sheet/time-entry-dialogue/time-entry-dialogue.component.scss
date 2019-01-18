@@ -1,17 +1,14 @@
-.time-input-container{
-    display: flex;
-    flex-direction: row;
-    *+*{
-        margin-left: 10px;
-    };
-    outline: none;
-
-}
-.time-input-container input{
-    width: 40%;  
-}
 
 .dropdown-input{
     margin-top: 15px;
-    border-bottom: 1px groove black;
+}
+.content, .dialogHeader{
+  text-align: center;
+}
+.actions {
+  display: flex;
+  justify-content: center;
+}
+.subtitle {
+  font-style: italic;
 }

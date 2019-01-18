@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TimesheetService, ProjectTaskEntry, UserProject } from '../services/timesheet.service';
+import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -18,7 +18,6 @@ export class TimesheetComponent implements OnInit {
 
   datePicker = new FormControl();
   tasks: ProjectTaskEntry[] = [];
-  currentUserProjects: UserProject[] = [];
   _date: BehaviorSubject<moment.Moment> = new BehaviorSubject(moment(new Date()));
 
   get date() {
@@ -54,14 +53,6 @@ export class TimesheetComponent implements OnInit {
       this.datePicker = new FormControl(new Date(this.date.year(), this.date.month(), this.date.date()));
       this.getTaskByDate(this.date.year(), this.date.month() + 1, this.date.date());
     });
-
-    this.timeSheetServices.getProjectsForCurrentUser()
-      .subscribe(userProjects => {
-        this.currentUserProjects = userProjects;
-      },
-        err => { console.error(err); }
-      );
-
   }
 
   onDatePickerChange() {
@@ -86,7 +77,7 @@ export class TimesheetComponent implements OnInit {
   openDialog(): void {
     const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
       width: '350px',
-      data: [this.currentUserProjects, this.date]
+      data: this.date
     });
 
     dialogueRef.afterClosed().subscribe(result => {

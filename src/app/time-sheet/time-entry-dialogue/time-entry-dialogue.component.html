@@ -1,27 +1,43 @@
-<h1 mat-dialog-title>New time entry</h1>
-<p mat-dialog-subtitle>{{data[1] | date : 'dd.MM.yyyy'}}</p>
+<div class="dialogHeader">
+  <h1 mat-dialog-title>New time entry</h1>
+  <p class="subtitle">{{currentDate | date : 'dd.MM.yyyy'}}</p>
+</div>
 
-<form [formGroup]=TimeEntryForm (ngSubmit)="onSubmit()">
-  <div *ngIf="data[0]">
-      <mat-select formControlName = "project" #selectProject placeholder="Project" class="dropdown-input">
-        <mat-option *ngFor="let p of data[0]" [value]="p">{{p.projectName}}</mat-option>
-      </mat-select>
+<form [formGroup]="TimeEntryForm" (ngSubmit)="onSubmit()">
 
-      <mat-select formControlName="task" matSelect #selectTask *ngIf="selectProject.value" placeholder="Task" class="dropdown-input">
-        <mat-option *ngFor="let t of selectProject.value.tasks" [value]="t">{{t.name}}</mat-option>
-      </mat-select>
+  <div class="content">
+    <mat-dialog-content class="dialog-container-width">
 
-    <p>Time</p>
-    <div class="time-input-container">
-        <input matInput formControlName="hours" placeholder="Hours" type="number" max="11">
-        <input matInput formControlName="minutes" placeholder="Minutes" type="number" max="59">
-    </div>
-    <p>Notes</p>
+      <mat-form-field>
+        <mat-select formControlName="project" placeholder="Project" class="dropdown-input" required>
+          <mat-option *ngFor="let p of userProjects" [value]="p" (onSelectionChange)="toggleTaskDropdown()">{{p.projectName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <textarea matInput formControlName="notes" class="input-field" placeholder="Notes"></textarea>
-      <br>
+      <mat-form-field>
+        <mat-select formControlName="task" matSelect placeholder="Task" class="dropdown-input" required>
+          <mat-option *ngFor="let t of f.project.value.tasks" [value]="t">{{t.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <button mat-button cdkFocusInitial color="primary" type="submit" >Add Entry</button>
-      <button mat-button (click)="onNoClick()" color="warn">Cancel</button>
+      <mat-form-field class="input-field">
+        <input matInput type="number" formControlName="hours" placeholder="Hours" required>
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <input matInput type="number" formControlName="minutes" placeholder="Minutes" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <textarea matInput formControlName="notes" placeholder="Notes"></textarea>
+      </mat-form-field>
+
+    </mat-dialog-content>
+  </div>
+
+  <div class="actions">
+    <mat-dialog-actions>
+      <button mat-button cdkFocusInitial color="primary" type="submit">Add Entry</button>
+      <button mat-button mat-dialog-close (click)="onNoClick()" color="warn" type="button">Cancel</button>
+    </mat-dialog-actions>
   </div>
 </form>

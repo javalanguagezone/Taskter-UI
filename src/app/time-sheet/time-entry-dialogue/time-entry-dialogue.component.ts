@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { UserProject } from '../../services/timesheet.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { User, UserService } from 'src/app/user.service';
+import { Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { TimeEntryDialogueService, UserProject, NewEntry } from './TimeEntryDialogueService';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -13,51 +14,76 @@ import * as moment from 'moment';
 export class TimeEntryDialogueComponent implements OnInit {
   currentUser: User = {} as User;
   currentDate: moment.Moment;
-
-  TimeEntryForm = new FormGroup({
-    project: new FormControl(''),
-    task: new FormControl(''),
-    hours: new FormControl(''),
-    minutes: new FormControl(''),
-    notes: new FormControl('')
-  });
+  userProjects: UserProject[] = [];
+  TimeEntryForm: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: [UserProject[], moment.Moment],
-     private userService: UserService) {}
+    @Inject(MAT_DIALOG_DATA) public data: moment.Moment,
+    private userService: UserService, private timeEntryService: TimeEntryDialogueService) {}
 
   ngOnInit(): void {
+    this.currentDate = this.data;
     this.userService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
-      this.currentDate = this.data[1];
+    });
+
+    this.timeEntryService.getProjectsForCurrentUser().subscribe(projects => {
+      this.userProjects = projects;
+    });
+
+    this.TimeEntryForm = new FormGroup({
+      project: new FormControl('', [Validators.required]),
+      task: new FormControl({value: '', disabled: true}, [Validators.required]),
+      hours: new FormControl('', [Validators.required]),
+      minutes: new FormControl('', [Validators.required]),
+      notes: new FormControl('')
     });
   }
+
+  get f(): any { return this.TimeEntryForm.controls; }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  toggleTaskDropdown() {
+    this.f.task.reset();
+    if (this.f.task.status === 'DISABLED') {
+      this.f.task.enable();
+    }
+  }
+
   onSubmit() {
+    if (this.TimeEntryForm.invalid) {
+      return;
+    }
     const entry: NewEntry = {
-     UserId: this.currentUser.userId,
-     TaskId: this.TimeEntryForm.controls['task'].value['taskID'],
-     DurationInMin: this.TimeEntryForm.controls['hours'].value * 60 + this.TimeEntryForm.controls['minutes'].value,
-     Note: this.TimeEntryForm.controls['minutes'].value,
-     Day: this.currentDate.date(),
-     Month: this.currentDate.month() + 1,
-     Year: this.currentDate.year()
+     userId: this.currentUser.userId,
+     projectTaskId: this.TimeEntryForm.controls['task'].value['taskID'],
+     durationInMin: this.TimeEntryForm.controls['hours'].value * 60 + this.TimeEntryForm.controls['minutes'].value,
+     note: this.TimeEntryForm.controls['notes'].value,
+     day: this.currentDate.date(),
+     month: this.currentDate.month() + 1,
+     year: this.currentDate.year()
     };
-    console.warn(entry);
+
+    this.timeEntryService.addTimeEntry(entry).subscribe(res => {},
+        err => { console.error(err); }
+      );
+
+    this.resetFormControl();
+  }
+
+  resetFormControl() {
+    this.TimeEntryForm.reset({
+      project: '',
+      task: {value: '', disabled: true},
+      hours: '',
+      minutes: '',
+      notes: ''
+    });
+    // this.TimeEntryForm.markAsPristine();
+    // this.TimeEntryForm.markAsUntouched();
   }
  }
- export interface NewEntry {
-  UserId: number;
-  TaskId: number;
-  DurationInMin: number;
-  Note: string;
-  Day: number;
-  Month: number;
-  Year: number;
-}
-
 

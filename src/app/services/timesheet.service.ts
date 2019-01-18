@@ -17,9 +17,6 @@ export class TimesheetService {
       catchError(this.handleError)
     );
     }
-  getProjectsForCurrentUser() {
-    return this.http.get<UserProject[]>('/api/users/current/projects').pipe(catchError(this.handleError));
-  }
 
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -47,15 +44,3 @@ export interface ProjectTaskEntry {
   note: string;
 }
 
-export interface Task {
-  taskID: number;
-  name: string;
-  billable: boolean;
-}
-export interface UserProject {
-  projectID: number;
-  projectName: string;
-  clientName: string;
-  projectCode: string;
-  tasks: Task[];
-}
