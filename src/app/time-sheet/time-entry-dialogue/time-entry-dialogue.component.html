@@ -3,7 +3,7 @@
   <p class="subtitle">{{currentDate | date : 'dd.MM.yyyy'}}</p>
 </div>
 
-<form [formGroup]="TimeEntryForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="TimeEntryForm" (ngSubmit)="onSubmit()" #formDirective="ngForm" >
 
   <div class="content">
     <mat-dialog-content class="dialog-container-width">

@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { User, UserService } from 'src/app/user.service';
-import { Validators } from '@angular/forms';
+import { Validators, NgForm } from '@angular/forms';
 import * as moment from 'moment';
 import { TimeEntryDialogueService, UserProject, NewEntry } from './TimeEntryDialogueService';
+
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -16,6 +17,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   currentDate: moment.Moment;
   userProjects: UserProject[] = [];
   TimeEntryForm: FormGroup;
+  @ViewChild('formDirective') private formDirective: NgForm;
 
   constructor(public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
     @Inject(MAT_DIALOG_DATA) public data: moment.Moment,
@@ -75,6 +77,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   }
 
   resetFormControl() {
+    this.formDirective.resetForm();
     this.TimeEntryForm.reset({
       project: '',
       task: {value: '', disabled: true},
@@ -82,8 +85,6 @@ export class TimeEntryDialogueComponent implements OnInit {
       minutes: '',
       notes: ''
     });
-    // this.TimeEntryForm.markAsPristine();
-    // this.TimeEntryForm.markAsUntouched();
   }
  }
 
