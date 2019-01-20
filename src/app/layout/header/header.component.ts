@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, User } from '../../user.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 
 import { NavigationMenuService } from '../navigation-menu/navigation-menu.service';
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TimesheetService, ProjectTaskEntry } from '../services/timesheet.service';
+import { TimesheetService } from '../services/timesheet.service';
+import { ProjectTaskEntry } from '../models/projectTaskEntry.model';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';

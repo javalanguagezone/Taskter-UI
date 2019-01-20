@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Input } from '@angular/core';
-import { ProjectTaskEntry } from 'src/app/services/timesheet.service';
+import { ProjectTaskEntry } from '../../models/projectTaskEntry.model';
 
 @Component({
   selector: 'tsk-time-sheet-table',

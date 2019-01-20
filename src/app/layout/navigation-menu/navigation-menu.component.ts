@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { User, UserService } from 'src/app/user.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 import { NavigationMenuService } from './navigation-menu.service';
 import { MatSidenav } from '@angular/material';
 

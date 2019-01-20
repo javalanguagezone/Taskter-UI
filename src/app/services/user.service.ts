@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { User } from '../models/user.model';
 
 
 @Injectable({
@@ -36,12 +37,4 @@ export class UserService {
 
   }
 }
-export interface User {
-  username: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  avatarURL: string;
-}
-
 

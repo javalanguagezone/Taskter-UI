@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { from, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
+import { ProjectTaskEntry } from '../models/projectTaskEntry.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +37,4 @@ export class TimesheetService {
       'Something bad happened; please try again later.');
 
   }
-}
-
-export interface ProjectTaskEntry {
-  id: number;
-  clientName: string;
-  projectName: string;
-  projectCode: string;
-  projectTask: string ;
-  durationInMin: number;
-  note: string;
 }
