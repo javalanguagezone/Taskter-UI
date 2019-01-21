@@ -1,4 +1,22 @@
-<tsk-header></tsk-header>
+<mat-sidenav-container fullscreen>
+  <mat-sidenav
+    [opened]="userMenuOpen"
+    mode="over"
+    position="end"
+    (closedStart)="closeUserProfile()"
+  >
+  <tsk-user-menu></tsk-user-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <tsk-header></tsk-header>
+    <mat-sidenav-container class="sidenav-container" hasBackdrop="false">
+      <mat-sidenav [opened]="navigationOpen" mode="side">
+        <tsk-navigation-menu></tsk-navigation-menu>
+      </mat-sidenav>
+      <mat-sidenav-content>
 
-<tsk-navigation-menu></tsk-navigation-menu>
-<tsk-user-menu></tsk-user-menu>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>

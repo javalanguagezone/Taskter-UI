@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { ProjectTaskEntry } from '../../models/projectTaskEntry.model';
-
+import { ProjectTaskEntry } from '../../../shared/models/projectTaskEntry.model';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',

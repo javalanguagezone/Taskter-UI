@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
 import { RoleDirective } from './role.directive';
 import { MomentModule } from 'ngx-moment';
-
+import { MatSidenavModule } from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +20,8 @@ import { MomentModule } from 'ngx-moment';
     BrowserAnimationsModule,
     HttpClientModule,
     LayoutModule,
-    MomentModule
+    MomentModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

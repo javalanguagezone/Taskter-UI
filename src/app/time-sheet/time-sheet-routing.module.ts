@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TimesheetComponent } from './timesheet.component';
+import { TimesheetComponent } from './components/time-sheet/timesheet.component';
 
 const routes: Routes = [
   {

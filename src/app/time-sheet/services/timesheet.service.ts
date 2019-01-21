@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { from, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
-import { ProjectTaskEntry } from '../models/projectTaskEntry.model';
+import { ProjectTaskEntry } from '../../shared/models/projectTaskEntry.model';
 
 @Injectable({
   providedIn: 'root'

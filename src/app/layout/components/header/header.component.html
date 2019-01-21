@@ -1,0 +1,19 @@
+
+
+<mat-toolbar color="primary">
+  <div class="flex w-100">
+    <div class="col">
+      <button mat-icon-button (click)="toggleNavigationMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div class="col text-center">
+      <p>Taskter</p>
+    </div>
+    <div *ngIf="loggedInUser" class="col text-right">
+      <button id='avatarButton' mat-icon-button (click)="openUserProfile()">
+        <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+      </button>
+    </div>
+  </div>
+</mat-toolbar>

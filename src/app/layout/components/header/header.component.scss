@@ -1,5 +1,16 @@
 
-#toolbarContent
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  > .col {
+    flex: 0 0 33.33%
+  }
+}
+/* #toolbarContent
+
 {
     display:flex;
     justify-content: space-between;
@@ -18,10 +29,10 @@ padding:5px;
 }
 .sidenav-item{
     border-bottom: 1px solid rgba(224, 224, 224, 1);
-   
-    
+
+
     }
 .sidenav-icon{
-    margin-right:10px; 
-}
+    margin-right:10px;
+} */
 
