@@ -42,6 +42,7 @@ export class TimeEntryDialogueComponent implements OnInit {
       minutes: new FormControl(null, [Validators.required]),
       notes: new FormControl(null)
     });
+
   }
 
   get f(): any {
@@ -68,6 +69,7 @@ export class TimeEntryDialogueComponent implements OnInit {
 
     this.postNewEntry();
     this.form.resetForm();
+    this.onNoClick();
   }
 
   getCurrentUser(): void {
