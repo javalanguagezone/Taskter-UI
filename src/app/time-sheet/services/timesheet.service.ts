@@ -3,6 +3,8 @@ import { throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { ProjectTaskEntry } from '../../shared/models/projectTaskEntry.model';
+import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
+import { UserProject } from 'src/app/shared/models/userProject.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,25 +48,4 @@ export class TimesheetService {
     return throwError(
       'Something bad happened; please try again later.');
   }
-}
-export interface Task {
-  taskID: number;
-  name: string;
-  billable: boolean;
-}
-export interface UserProject {
-  projectID: number;
-  projectName: string;
-  clientName: string;
-  projectCode: string;
-  tasks: Task[];
-}
-export interface NewEntry {
-  userId: number;
-  projectTaskId: number;
-  durationInMin: number;
-  note: string;
-  day: number;
-  month: number;
-  year: number;
 }

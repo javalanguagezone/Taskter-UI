@@ -1,15 +1,13 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
 import { Validators } from '@angular/forms';
 import * as moment from 'moment';
-import {
-  TimesheetService,
-  UserProject,
-  NewEntry
-} from '../../services/timesheet.service';
+import { TimesheetService } from '../../services/timesheet.service';
 import { User } from 'src/app/shared/models/user.model';
+import { UserProject } from 'src/app/shared/models/userProject.model';
+import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -21,14 +19,13 @@ export class TimeEntryDialogueComponent implements OnInit {
   currentDate: moment.Moment;
   userProjects: UserProject[] = [];
   TimeEntryForm: FormGroup;
-  @ViewChild('form') form: FormGroupDirective;
 
   constructor(
     public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
     @Inject(MAT_DIALOG_DATA) public data: moment.Moment,
     private userService: UserService,
     private timeEntryService: TimesheetService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentDate = this.data;
@@ -50,7 +47,7 @@ export class TimeEntryDialogueComponent implements OnInit {
     return this.TimeEntryForm.controls;
   }
 
-  onNoClick(): void {
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
@@ -68,9 +65,9 @@ export class TimeEntryDialogueComponent implements OnInit {
       return;
     }
 
+    this.closeDialog();
     this.postNewEntry();
-    this.form.resetForm();
-    this.onNoClick();
+    this.TimeEntryForm.reset();
   }
 
   getCurrentUser(): void {
@@ -104,7 +101,7 @@ export class TimeEntryDialogueComponent implements OnInit {
     };
 
     this.timeEntryService.addTimeEntry(entry).subscribe(
-      () => {},
+      () => { },
       err => {
         console.error(err);
       }
