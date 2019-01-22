@@ -11,7 +11,7 @@ export class TimesheetService {
   constructor(private http: HttpClient) { }
 
   getTasks(year: number, month: number, day: number) {
-    return this.http.get<ProjectTaskEntry[]>(`/api/entries/${year}/${month}/${day}`)
+    return this.http.get<ProjectTaskEntry[]>(`/api/users/current/entries/${year}/${month}/${day}`)
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -27,7 +27,7 @@ export class TimesheetService {
   }
 
   getProjectsForCurrentUser() {
-    return this.http.get<UserProject[]>('/api/projects').pipe(catchError(this.handleError));
+    return this.http.get<UserProject[]>('/api/users/current/projects').pipe(catchError(this.handleError));
   }
 
   handleError(error: HttpErrorResponse) {
