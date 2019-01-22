@@ -1,5 +1,5 @@
-<table mat-table [dataSource]="tasks" class="mat-elevation-z8">
-  <ng-container matColumnDef="Project Description">
+<table mat-table [dataSource]="tasks"  class="mat-elevation-z8">
+  <ng-container  matColumnDef="Project Description">
     <th mat-header-cell *matHeaderCellDef>Project Description</th>
     <td mat-cell *matCellDef="let tasks" class="description-cell">
       <b>Client: </b> {{ tasks.clientName }} <br />
