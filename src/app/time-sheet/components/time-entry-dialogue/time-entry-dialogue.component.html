@@ -1,12 +1,12 @@
 <div class="dialogHeader">
-  <h1 mat-dialog-title>New time entry</h1>
-  <p class="subtitle">{{currentDate | date : 'dd.MM.yyyy'}}</p>
+  <h1 mat-dialog-title class="title">New time entry</h1>
+  <p class="subtitle"> {{currentDate.format("dddd, D MMM")}}</p>
 </div>
 
 <form [formGroup]="TimeEntryForm" #form="ngForm" (ngSubmit)="onSubmit()">
 
   <div class="content">
-    <mat-dialog-content class="dialog-container-width">
+    <mat-dialog-content>
 
       <mat-form-field>
         <mat-select formControlName="project" placeholder="Project" class="dropdown-input" required>
@@ -30,11 +30,9 @@
         <input matInput type="number" formControlName="minutes" placeholder="Minutes" required>
         <mat-error *ngIf="f.minutes.errors?.required">Number of minutes is required</mat-error>
       </mat-form-field>
-
       <mat-form-field>
         <textarea matInput formControlName="notes" placeholder="Notes"></textarea>
       </mat-form-field>
-
     </mat-dialog-content>
   </div>
 

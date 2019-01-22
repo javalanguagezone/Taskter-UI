@@ -1,14 +1,18 @@
-
 .dropdown-input{
   margin-top: 15px;
 }
 .content, .dialogHeader{
-text-align: center;
+  text-align: center;
 }
 .actions {
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .subtitle {
-font-style: italic;
+  font-style: italic;
+  font-size: 0.8em;
+  margin-top: 10px;
+}
+.title {
+  margin-bottom: 10px;
 }
