@@ -26,7 +26,4 @@ export class NavigationMenuComponent implements OnInit {
   toggleNavigationMenu() {
     this.layoutService.navigationToggle();
   }
-  onLinkClick() {
-    this.toggleNavigationMenu();
-  }
 }
