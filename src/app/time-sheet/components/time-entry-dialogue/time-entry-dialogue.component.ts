@@ -4,10 +4,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
 import { Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { TimesheetService } from '../../services/timesheet.service';
 import { User } from 'src/app/shared/models/user.model';
 import { UserProject } from 'src/app/shared/models/userProject.model';
-import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
+import { TimeEntryDialogueService } from '../../services/timeEntryDialogue.service';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -24,7 +23,7 @@ export class TimeEntryDialogueComponent implements OnInit {
     public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
     @Inject(MAT_DIALOG_DATA) public data: moment.Moment,
     private userService: UserService,
-    private timeEntryService: TimesheetService
+    private timeEntryDialogueService: TimeEntryDialogueService
   ) { }
 
   ngOnInit(): void {
@@ -77,7 +76,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   }
 
   getUserProjects(): void {
-    this.timeEntryService.getProjectsForCurrentUser().subscribe(
+    this.timeEntryDialogueService.getProjectsForCurrentUser().subscribe(
       projects => {
         this.userProjects = projects;
       },
@@ -88,19 +87,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   }
 
   postNewEntry() {
-    const entry: NewEntry = {
-      userId: this.currentUser.userId,
-      projectTaskId: this.TimeEntryForm.controls['task'].value['taskID'],
-      durationInMin:
-        this.TimeEntryForm.controls['hours'].value * 60 +
-        this.TimeEntryForm.controls['minutes'].value,
-      note: this.TimeEntryForm.controls['notes'].value,
-      day: this.currentDate.date(),
-      month: this.currentDate.month() + 1,
-      year: this.currentDate.year()
-    };
-
-    this.timeEntryService.addTimeEntry(entry).subscribe(
+    this.timeEntryDialogueService.addTimeEntry(this.TimeEntryForm.value, this.currentUser.userId, this.currentDate).subscribe(
       () => { },
       err => {
         console.error(err);
