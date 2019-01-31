@@ -7,8 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
 import { RoleDirective } from './role.directive';
-
-
+import { MomentModule } from 'ngx-moment';
+import { MatSidenavModule } from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +19,9 @@ import { RoleDirective } from './role.directive';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    LayoutModule
+    LayoutModule,
+    MomentModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

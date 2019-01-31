@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { User, UserService } from 'src/app/user.service';
-import { NavigationMenuService } from './navigation-menu.service';
-import { MatSidenav } from '@angular/material';
+import { UserService } from '../../../shared/services/user.service';
+import { User } from '../../../shared/models/user.model';
+
+import { LayoutService } from 'src/app/layout/services/layout.service';
 
 @Component({
   selector: 'tsk-navigation-menu',
@@ -11,16 +12,18 @@ import { MatSidenav } from '@angular/material';
 export class NavigationMenuComponent implements OnInit {
 
   loggedInUser: User = null;
-  @ViewChild('navigationMenu') public sidenav: MatSidenav;
-  constructor(private userService: UserService, private sidenavService: NavigationMenuService) { }
+
+  constructor(private userService: UserService, private layoutService: LayoutService) { }
 
   ngOnInit() {
-    this.sidenavService.setSidenav(this.sidenav);
+
     this.userService.getCurrentUser()
     .subscribe(user => {
       this.loggedInUser = user;
       console.log(this.loggedInUser);
     });
   }
-
+  toggleNavigationMenu() {
+    this.layoutService.navigationToggle();
+  }
 }
