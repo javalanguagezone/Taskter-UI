@@ -4,7 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'timeSheet',
-    loadChildren: './time-sheet/time-sheet.module#TimeSheetModule'}
+    loadChildren: './time-sheet/time-sheet.module#TimeSheetModule'
+  },
+  {
+    path: 'adminPanel',
+    loadChildren: './admin-panel/admin-panel.module#AdminPanelModule'
+  }
 ];
 
 @NgModule({
