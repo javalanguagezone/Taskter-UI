@@ -1,6 +1,6 @@
 <div class="dialogHeader">
-  <h1 mat-dialog-title class="title">New time entry</h1>
-  <p class="subtitle"> {{currentDate.format("dddd, D MMM")}}</p>
+  <h1 mat-dialog-title class="title">{{pageTitle}}</h1>
+  <p class="subtitle"> {{currentDate?.format("dddd, D MMM")}}</p>
 </div>
 
 <form [formGroup]="TimeEntryForm" (ngSubmit)="onSubmit()">

@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import {throwError, of, Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
 import { UserProject } from 'src/app/shared/models/userProject.model';
 import * as moment from 'moment';
 
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class TimeEntryDialogueService {
   constructor(private http: HttpClient) {}
+   Entry: NewEntry = { userId: 1, durationInMin: 65, day: 1, month: 2, year: 2019,  note: 'note', projectTaskId:  1 };
 
   addTimeEntry(formValue: any, currentUserId: number, currentDate: moment.Moment) {
     const newEntry: NewEntry = {
@@ -26,6 +29,10 @@ export class TimeEntryDialogueService {
       retry(3),
       catchError(this.handleError)
     );
+  }
+
+  getTaskEntry(id: number): Observable<NewEntry> {
+    return of(this.Entry);
   }
 
   getProjectsForCurrentUser() {
@@ -44,4 +51,7 @@ export class TimeEntryDialogueService {
     }
     return throwError('Something bad happened; please try again later.');
   }
+
+
+
 }
