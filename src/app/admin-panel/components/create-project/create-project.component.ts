@@ -3,10 +3,12 @@ import { User } from '../../../shared/models/user.model';
 import { Client } from '../../../shared/models/client.model';
 import { UserService } from '../../../shared/services/user.service';
 import { ClientService } from '../../../shared/services/client.service';
-import { FormControl, ReactiveFormsModule, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormControl, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Observable, forkJoin, BehaviorSubject, merge } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Task } from '../../../shared/models/task.model';
+import { CreateProject } from '../../../shared/models/createProject.model';
+import { ProjectService } from '../../services/project.service';
 
 
 @Component({
@@ -14,19 +16,21 @@ import { Task } from '../../../shared/models/task.model';
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss']
 })
+
 export class CreateProjectComponent implements OnInit {
 
-  allUsers: User[] = [];
+  users: User[] = [];
   clients: Client[] = [];
 
-  selectedUsers: User[] = [];
+  selectedUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   newTasks: Task[] = [];
 
   projectForm = this.fb.group({
     projectName: ['', [Validators.required]],
+    projectCode: ['', [Validators.required]],
     client: ['', [Validators.required]],
     addUserControl: [],
-    addTaskControl: []
+    addTaskControl: ['', [Validators.required]]
   });
 
   filteredClients: Observable<Client[]>;
@@ -35,12 +39,36 @@ export class CreateProjectComponent implements OnInit {
   constructor(
     private userService: UserService,
     private clientService: ClientService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private projectService: ProjectService
   ) {}
 
   ngOnInit() {
-    this.getAllUsers();
-    this.getAllClients();
+
+    forkJoin(
+      this.userService.getAllUsers(),
+      this.clientService.getAllClients()
+    )
+    .subscribe(([users, clients]) => {
+      this.users = users;
+      this.clients = clients;
+
+      this.filteredUsers = merge (
+        this.projectForm.get('addUserControl').valueChanges,
+        this.selectedUsers
+      )
+        .pipe(
+          startWith<string>(''),
+          map(value => typeof value === 'string' ? value : ''),
+          map(user => user ? this._filterUsers(user) : this._filterUsers(user))
+        );
+      this.filteredClients = this.projectForm.get('client').valueChanges
+      .pipe(
+        startWith<string | Client>(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(client => client ? this._filterClients(client) : this.clients.slice())
+      );
+    });
   }
 
   _filterClients(value: string): Client[] {
@@ -49,16 +77,30 @@ export class CreateProjectComponent implements OnInit {
     return this.clients.filter(client => client.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
+  displayClient(client?: Client): string | undefined {
+    return client ? client.name : undefined;
+  }
+
+  removeUser(index: number) {
+    const selectedUsers = this.selectedUsers.getValue();
+    selectedUsers.splice(index, 1);
+    this.selectedUsers.next(selectedUsers);
+  }
+
+  addUser(id) {
+    this.selectedUsers.next([...this.selectedUsers.getValue(), this.users.find(user => user.userId === id)]);
+  }
+
   _filterUsers(value: string): User[] {
     const filterUser = value.toLowerCase();
-    return this.allUsers.filter(user => user.username.toLowerCase().indexOf(filterUser) === 0
-    && !this.selectedUsers.includes(user));
+    return this.users.filter(user => user.username.toLowerCase().indexOf(filterUser) === 0
+    && !this.selectedUsers.value.includes(user));
   }
 
   addTask() {
     const task: Task = {
-      taskID: null,
-      name: this.projectForm.value.addTaskControl.value,
+      taskID: undefined,
+      name: this.projectForm.value.addTaskControl,
       billable: false
     };
 
@@ -66,78 +108,23 @@ export class CreateProjectComponent implements OnInit {
     this.newTasks.push(task);
   }
 
-  getAllUsers() {
-    this.userService.getAllUsers()
-    .subscribe(
-      users => {
-        this.allUsers = users;
-
-        this.filteredUsers = this.projectForm.get('addUserControl').valueChanges
-        .pipe(
-          startWith<string | User>(''),
-          map(value => typeof value === 'string' ? value : value.username),
-          map(user => user ? this._filterUsers(user) : this._filterUsers(user))
-        );
-      }
-    );
-  }
-
-  displayUser(user?: User): string | undefined {
-    return user ? user.username : undefined;
-  }
-
-  removeUser(index: number): void {
-    this.selectedUsers.splice(index, 1);
-
-    if (this.allUsers.length === this.selectedUsers.length) {
-      this.projectForm.get('addUserControl').disable();
-    } else {
-      this.projectForm.get('addUserControl').enable();
-    }
-  }
-
-  addUser() {
-    if (this.projectForm.value.addUserControl.hasOwnProperty('userId')) {
-      this.selectedUsers.push(this.projectForm.value.addUserControl);
-    }
-
-    this.projectForm.get('addUserControl').setValue('');
-    if (this.allUsers.length === this.selectedUsers.length) {
-      this.projectForm.get('addUserControl').disable();
-    } else {
-      this.projectForm.get('addUserControl').enable();
-    }
-  }
-
-  getAllClients() {
-    this.clientService.getAllUsers()
-    .subscribe(
-      clients => {
-        this.clients = clients;
-
-        this.filteredClients = this.projectForm.get('client').valueChanges
-        .pipe(
-          startWith<string | Client>(''),
-          map(value => typeof value === 'string' ? value : value.name),
-          map(client => client ? this._filterClients(client) : this.clients.slice())
-        );
-      }
-    );
-  }
-
-  displayClient(client?: Client): string | undefined {
-    return client ? client.name : undefined;
-  }
-
-  onBillableChange(index) {
-    this.newTasks[index].billable = !this.newTasks[index.billable];
-  }
-
   removeTask(index) {
     this.newTasks.splice(index, 1);
   }
 
+  onBillableChange(index) {
+    this.newTasks[index].billable = !this.newTasks[index].billable;
+  }
+
   onSubmit() {
-    console.log(this.projectForm.value);
+    const createProject: CreateProject = {
+      projectName: this.projectForm.value.projectName,
+      client: this.projectForm.value.client,
+      projectCode: this.projectForm.value.projectCode,
+      tasks: this.newTasks,
+      userIds: Array.from(this.selectedUsers.value, u => u.userId)
+    };
+
+    this.projectService.addProject(createProject);
   }
 }

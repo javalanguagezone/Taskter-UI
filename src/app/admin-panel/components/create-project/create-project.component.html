@@ -1,3 +1,4 @@
+<div class="container">
 <h1>Crete new project</h1>
 <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
   <div class="controlls">
@@ -6,6 +7,14 @@
         matInput
         placeholder="Project name"
         formControlName="projectName"
+      /> </mat-form-field
+    ><br />
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Project code"
+        formControlName="projectCode"
       /> </mat-form-field
     ><br />
 
@@ -28,23 +37,21 @@
     ><br />
 
     <mat-form-field>
-      <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayUser">
-        <mat-option *ngFor="let user of (filteredUsers | async)" [value]="user">
-          {{ user.username }}
-        </mat-option>
-      </mat-autocomplete>
       <input
         matInput
         type="text"
         placeholder="Find user"
         formControlName="addUserControl"
-        [matAutocomplete]="auto2"
       />
     </mat-form-field>
 
-    <button (click)="addUser()">Add User</button><br />
+    Choose users:
+    <div *ngFor="let user of (filteredUsers | async)">
+      <button (click)="addUser(user.userId)">{{user.userId}}  {{ user.username }}</button>
+    </div>
 
-    <div *ngFor="let user of selectedUsers; let i = index">
+    Chosen users:
+    <div *ngFor="let user of (selectedUsers | async); let i = index">
       {{ user.username }}
 
       <button mat-icon-button (click)="removeUser(i)">
@@ -63,11 +70,12 @@
       /> </mat-form-field
     ><br />
 
-    <button (click)="addTask()">Add Task</button><br />
+    <button (click)="addTask()" [disabled]="projectForm.get('addTaskControl').invalid">Add Task</button><br />
 
     <div *ngFor="let task of newTasks; let i = index">
       {{ task.name }}
-      <input type="checkbox" (onchange)="onBillableChange(i)" />Billable
+
+      <input type="checkbox" (mousedown)="onBillableChange(i)" />Billable
 
       <button mat-icon-button (click)="removeTask(i)">
         <mat-icon aria-label="Example icon-button with a heart icon"
@@ -91,3 +99,4 @@
     </mat-dialog-actions>
   </div>
 </form>
+</div>

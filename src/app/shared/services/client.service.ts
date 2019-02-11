@@ -12,7 +12,7 @@ export class ClientService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers() {
+  getAllClients() {
     return this.http.get<Client[]>('api/clients')
     .pipe(
       retry(3),
