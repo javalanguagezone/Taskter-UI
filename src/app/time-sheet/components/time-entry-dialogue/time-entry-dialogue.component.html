@@ -8,17 +8,17 @@
   <div class="content">
     <mat-dialog-content>
       <mat-form-field>
-        <mat-select formControlName="project" placeholder="Project" class="dropdown-input" required>
-          <mat-option *ngFor="let p of userProjects" [value]="p" (onSelectionChange)="toggleTaskDropdown()">{{p.projectName}}</mat-option>
+        <mat-select formControlName="projectID" placeholder="Project" class="dropdown-input" required>
+          <mat-option *ngFor="let p of userProjects" [value]="p.projectID" (onSelectionChange)="toggleTaskDropdown()">{{p.projectName}}</mat-option>
         </mat-select>
-        <mat-error *ngIf="f.project.errors?.required">Project name is required</mat-error>
+        <mat-error *ngIf="f.projectID.errors?.required">Project name is required</mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-select formControlName="task" matSelect placeholder="Task" class="dropdown-input" required>
-          <mat-option *ngFor="let t of f.project.value?.tasks" [value]="t">{{t.name}}</mat-option>
+        <mat-select formControlName="taskID" matSelect placeholder="Task" class="dropdown-input" required>
+          <mat-option *ngFor="let t of projectTasks" [value]="t.taskID">{{t.name}}</mat-option>
         </mat-select>
-        <mat-error *ngIf="f.task.errors?.required">Task name is required</mat-error>
+        <mat-error *ngIf="f.taskID.errors?.required">Task name is required</mat-error>
       </mat-form-field>
 
       <mat-form-field>

@@ -8,6 +8,7 @@ import { User } from 'src/app/shared/models/user.model';
 import { UserProject } from 'src/app/shared/models/userProject.model';
 import { TimeEntryDialogueService } from '../../services/timeEntryDialogue.service';
 import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
+import { Task } from 'src/app/shared/models/task.model';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -19,6 +20,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   currentUser: User = {} as User;
   currentDate: moment.Moment;
   userProjects: UserProject[] = [];
+  projectTasks: Task[] = [];
   TimeEntryForm: FormGroup;
   editEntry: NewEntry;
   entryId: number;
@@ -35,8 +37,8 @@ export class TimeEntryDialogueComponent implements OnInit {
     this.getCurrentUser();
     this.getUserProjects();
     this.TimeEntryForm = new FormGroup({
-      project: new FormControl(null, [Validators.required]),
-      task: new FormControl({ value: null, disabled: true }, [
+      projectID: new FormControl(null, [Validators.required]),
+      taskID: new FormControl({ value: null, disabled: true }, [
         Validators.required
       ]),
       hours: new FormControl(null, [Validators.required]),
@@ -54,11 +56,14 @@ export class TimeEntryDialogueComponent implements OnInit {
   }
 
   toggleTaskDropdown() {
-    this.f.task.reset();
-    if (this.f.task.status === 'DISABLED') {
-      this.f.task.enable();
+    this.f.taskID.reset();
+
+   this.projectTasks = this.userProjects.find(x => x.projectID === this.TimeEntryForm.get('projectID').value).tasks;
+
+    if (this.f.taskID.status === 'DISABLED') {
+      this.f.taskID.enable();
     } else {
-      this.f.task.disable();
+      this.f.taskID.disable();
     }
   }
 
@@ -92,7 +97,7 @@ export class TimeEntryDialogueComponent implements OnInit {
       this.pageTitle = 'Add New Entry';
     } else {
       this.pageTitle = `Edit Entry`;
-    }
+
 
     const projekt = this.nekafunkcija();
     console.log(projekt.tasks.find(x => x.taskID === this.editEntry.projectTaskId));
@@ -102,18 +107,18 @@ export class TimeEntryDialogueComponent implements OnInit {
 
     // Update the data on the form
     this.TimeEntryForm.patchValue({
-      project: projekt,
-      task: projekt.tasks.find(x => x.taskID === this.editEntry.projectTaskId),
+      projectID: projekt,
+      taskID: projekt.tasks.find(x => x.taskID === this.editEntry.projectTaskId),
       hours: hours ,
       minutes: min,
       notes: this.editEntry.note
 
     });
     this.TimeEntryForm.get('project').valueChanges.subscribe(val => {
-      this.TimeEntryForm.controls.task.setValue = val.tasks.find(x => x.taskID === this.editEntry.projectTaskId);
+      console.log('Nermin');
     });
     console.log(this.TimeEntryForm);
-
+}
 
   }
   nekafunkcija(): UserProject {
