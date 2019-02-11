@@ -14,7 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatNativeDateModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { MatNativeDateModule, MatSelectModule, MatInputModule, MatAutocompleteModule } from '@angular/material';
 
 @NgModule({
   declarations: [],
@@ -34,7 +34,8 @@ import { MatNativeDateModule, MatSelectModule, MatInputModule } from '@angular/m
     MatNativeDateModule,
     MatDialogModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatToolbarModule,
@@ -51,7 +52,8 @@ import { MatNativeDateModule, MatSelectModule, MatInputModule } from '@angular/m
     MatNativeDateModule,
     MatDialogModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialDesignModule { }

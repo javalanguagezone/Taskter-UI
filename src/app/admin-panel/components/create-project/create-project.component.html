@@ -1,3 +1,93 @@
-<p>
-  create-project works!
-</p>
+<h1>Crete new project</h1>
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+  <div class="controlls">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Project name"
+        formControlName="projectName"
+      /> </mat-form-field
+    ><br />
+
+    <mat-form-field>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClient">
+        <mat-option
+          *ngFor="let client of (filteredClients | async)"
+          [value]="client"
+        >
+          {{ client.name }}
+        </mat-option>
+      </mat-autocomplete>
+      <input
+        matInput
+        type="text"
+        placeholder="Client"
+        formControlName="client"
+        [matAutocomplete]="auto"
+      /> </mat-form-field
+    ><br />
+
+    <mat-form-field>
+      <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayUser">
+        <mat-option *ngFor="let user of (filteredUsers | async)" [value]="user">
+          {{ user.username }}
+        </mat-option>
+      </mat-autocomplete>
+      <input
+        matInput
+        type="text"
+        placeholder="Find user"
+        formControlName="addUserControl"
+        [matAutocomplete]="auto2"
+      />
+    </mat-form-field>
+
+    <button (click)="addUser()">Add User</button><br />
+
+    <div *ngFor="let user of selectedUsers; let i = index">
+      {{ user.username }}
+
+      <button mat-icon-button (click)="removeUser(i)">
+        <mat-icon aria-label="Example icon-button with a heart icon"
+          >delete</mat-icon
+        >
+      </button>
+      <br />
+    </div>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Add task"
+        formControlName="addTaskControl"
+      /> </mat-form-field
+    ><br />
+
+    <button (click)="addTask()">Add Task</button><br />
+
+    <div *ngFor="let task of newTasks; let i = index">
+      {{ task.name }}
+      <input type="checkbox" (onchange)="onBillableChange(i)" />Billable
+
+      <button mat-icon-button (click)="removeTask(i)">
+        <mat-icon aria-label="Example icon-button with a heart icon"
+          >delete</mat-icon
+        >
+      </button>
+    </div>
+  </div>
+
+  <div class="actions">
+    <mat-dialog-actions>
+      <button
+        mat-button
+        cdkFocusInitial
+        color="primary"
+        type="submit"
+        [disabled]="projectForm.untouched"
+      >
+        Create Project
+      </button>
+    </mat-dialog-actions>
+  </div>
+</form>
