@@ -5,6 +5,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
 import { UserProject } from 'src/app/shared/models/userProject.model';
 import * as moment from 'moment';
+import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
 
 
 @Injectable({
@@ -13,12 +14,11 @@ import * as moment from 'moment';
 
 export class TimeEntryDialogueService {
   constructor(private http: HttpClient) {}
-   Entry: NewEntry = { userId: 1, durationInMin: 65, day: 1, month: 2, year: 2019,  note: 'note', projectTaskId:  1 };
 
   addTimeEntry(formValue: any, currentUserId: number, currentDate: moment.Moment) {
     const newEntry: NewEntry = {
       userId: currentUserId,
-      projectTaskId: formValue.task.taskID,
+      projectTaskId: formValue.taskID,
       durationInMin: formValue.hours * 60 + formValue.minutes,
       note: formValue.notes,
       day: currentDate.date(),
@@ -31,8 +31,15 @@ export class TimeEntryDialogueService {
     );
   }
 
-  getTaskEntry(id: number): Observable<NewEntry> {
-    return of(this.Entry);
+  updateTaskEntry(entry: TaskEntryUpdate) {
+          return this.http.put<TaskEntryUpdate>('/api/users/current/entries', entry).pipe(
+            retry(3),
+            catchError(this.handleError)
+          );
+  }
+
+  getTaskEntry(id: number): Observable<TaskEntryUpdate> {
+    return this.http.get<TaskEntryUpdate>(`/api/users/current/entries/${id}`);
   }
 
   getProjectsForCurrentUser() {

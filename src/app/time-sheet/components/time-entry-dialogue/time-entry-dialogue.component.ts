@@ -9,6 +9,7 @@ import { UserProject } from 'src/app/shared/models/userProject.model';
 import { TimeEntryDialogueService } from '../../services/timeEntryDialogue.service';
 import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
 import { Task } from 'src/app/shared/models/task.model';
+import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -22,7 +23,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   userProjects: UserProject[] = [];
   projectTasks: Task[] = [];
   TimeEntryForm: FormGroup;
-  editEntry: NewEntry;
+  editEntry: TaskEntryUpdate;
   entryId: number;
   constructor(
     public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
@@ -34,8 +35,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   ngOnInit(): void {
     this.currentDate = this.data.date;
     this.entryId = this.data.EntryId;
-    this.getCurrentUser();
-    this.getUserProjects();
+
     this.TimeEntryForm = new FormGroup({
       projectID: new FormControl(null, [Validators.required]),
       taskID: new FormControl({ value: null, disabled: true }, [
@@ -44,6 +44,14 @@ export class TimeEntryDialogueComponent implements OnInit {
       hours: new FormControl(null, [Validators.required]),
       minutes: new FormControl(null, [Validators.required]),
       notes: new FormControl(null)
+    });
+    this.getCurrentUser();
+    this.getUserProjects();
+    this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
+      if (val !== null) {
+        this.projectTasks = this.userProjects.find(x => x.projectID === val).tasks;
+        this.toggleTaskDropdown();
+      }
     });
 
   }
@@ -57,87 +65,77 @@ export class TimeEntryDialogueComponent implements OnInit {
 
   toggleTaskDropdown() {
     this.f.taskID.reset();
-
-   this.projectTasks = this.userProjects.find(x => x.projectID === this.TimeEntryForm.get('projectID').value).tasks;
-
-    if (this.f.taskID.status === 'DISABLED') {
+    if (this.f.taskID.status === 'INVALID' || this.f.taskID.status === 'DISABLED') {
       this.f.taskID.enable();
     } else {
       this.f.taskID.disable();
     }
+    console.log('vrijednost forme poslije toggletaskdropdown:', this.TimeEntryForm);
   }
 
   onSubmit() {
     if (this.TimeEntryForm.invalid || this.TimeEntryForm.untouched) {
       return;
     } else if (this.entryId === 0) {
-      this.closeDialog();
+
       this.postNewEntry();
-      this.TimeEntryForm.reset();
+
     } else {
 
-      this.closeDialog();
+      this.editEntry.projectId = this.TimeEntryForm.get('projectID').value;
+      this.editEntry.projectTaskId = this.TimeEntryForm.get('taskID').value;
+      this.editEntry.durationInMin = this.TimeEntryForm.get('hours').value * 60 + this.TimeEntryForm.get('minutes').value;
+      this.editEntry.note = this.TimeEntryForm.get('notes').value;
+      this.updateEntry();
 
+    }
+    this.closeDialog();
+    this.TimeEntryForm.reset();
+  }
+
+  getEntry(): void {
+    if (this.entryId !== 0) {
+      this.timeEntryDialogueService.getTaskEntry(this.entryId).subscribe(
+        (entry: TaskEntryUpdate) => { this.displayEntry(entry); }
+      );
+    } else {
+      this.displayEntry(null);
     }
 
   }
 
-  getEntry(): void {
-    this.timeEntryDialogueService.getTaskEntry(this.entryId).subscribe(
-      (entry: NewEntry) => { this.displayEntry(entry); }
-    );
-  }
-
-  displayEntry(entry: NewEntry): void {
+  displayEntry(entry: TaskEntryUpdate): void {
     if (this.TimeEntryForm) {
       this.TimeEntryForm.reset();
     }
     this.editEntry = entry;
+
     if (this.entryId === 0) {
       this.pageTitle = 'Add New Entry';
+
     } else {
       this.pageTitle = `Edit Entry`;
+      this.f.taskID.enable();
+
+      const hours = Math.floor(this.editEntry.durationInMin / 60);
+      const min = this.editEntry.durationInMin % 60;
 
 
-    const projekt = this.nekafunkcija();
-    console.log(projekt.tasks.find(x => x.taskID === this.editEntry.projectTaskId));
-    const hours = Math.floor(this.editEntry.durationInMin / 60);
-    const min =  this.editEntry.durationInMin % 60;
+      // Update the data on the form
+      this.TimeEntryForm.patchValue({
+        projectID: this.editEntry.projectId,
+        taskID: this.editEntry.projectTaskId,
+        hours: hours,
+        minutes: min,
+        notes: this.editEntry.note
+
+      });
 
 
-    // Update the data on the form
-    this.TimeEntryForm.patchValue({
-      projectID: projekt,
-      taskID: projekt.tasks.find(x => x.taskID === this.editEntry.projectTaskId),
-      hours: hours ,
-      minutes: min,
-      notes: this.editEntry.note
-
-    });
-    this.TimeEntryForm.get('project').valueChanges.subscribe(val => {
-      console.log('Nermin');
-    });
-    console.log(this.TimeEntryForm);
-}
-
-  }
-  nekafunkcija(): UserProject {
-    console.log('usao');
-    let key: UserProject;
-    console.log('Duzina userprojects ' + this.userProjects.length);
-    for (let i = 0; i < this.userProjects.length; i++) {
-      console.log('Duzina tasks ' + this.userProjects[i].tasks.length);
-      for (let j = 0; j < this.userProjects[i].tasks.length; j++) {
-        const currentTask = this.userProjects[i].tasks[j];
-        console.log(currentTask);
-        if (currentTask.taskID === this.editEntry.projectTaskId) {
-          key = this.userProjects[i];
-          console.log(key);
-          return key;
-        }
-      }
     }
+
   }
+
   getCurrentUser(): void {
     this.userService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
@@ -159,6 +157,15 @@ export class TimeEntryDialogueComponent implements OnInit {
 
   postNewEntry() {
     this.timeEntryDialogueService.addTimeEntry(this.TimeEntryForm.value, this.currentUser.userId, this.currentDate).subscribe(
+      () => { },
+      err => {
+        console.error(err);
+      }
+    );
+  }
+
+  updateEntry() {
+    this.timeEntryDialogueService.updateTaskEntry(this.editEntry).subscribe(
       () => { },
       err => {
         console.error(err);
