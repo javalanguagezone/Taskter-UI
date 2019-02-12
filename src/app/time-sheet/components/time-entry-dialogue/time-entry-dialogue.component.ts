@@ -7,9 +7,9 @@ import * as moment from 'moment';
 import { User } from 'src/app/shared/models/user.model';
 import { UserProject } from 'src/app/shared/models/userProject.model';
 import { TimeEntryDialogueService } from '../../services/timeEntryDialogue.service';
-import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
 import { Task } from 'src/app/shared/models/task.model';
 import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'tsk-time-entry-dialogue',
@@ -18,6 +18,7 @@ import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
 })
 export class TimeEntryDialogueComponent implements OnInit {
   pageTitle = '';
+  observables: any = [];
   currentUser: User = {} as User;
   currentDate: moment.Moment;
   userProjects: UserProject[] = [];
@@ -45,14 +46,42 @@ export class TimeEntryDialogueComponent implements OnInit {
       minutes: new FormControl(null, [Validators.required]),
       notes: new FormControl(null)
     });
-    this.getCurrentUser();
-    this.getUserProjects();
-    this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
-      if (val !== null) {
-        this.projectTasks = this.userProjects.find(x => x.projectID === val).tasks;
-        this.toggleTaskDropdown();
+    /*  this.getCurrentUser();
+     this.getUserProjects(); */
+
+
+    this.observables.push(this.userService.getCurrentUser());
+
+    this.observables.push(this.timeEntryDialogueService.getProjectsForCurrentUser());
+    if (this.entryId !== 0) {
+      this.observables.push(this.timeEntryDialogueService.getTaskEntry(this.entryId));
+
+
+    }
+
+    forkJoin(this.observables).subscribe(
+      responseList => {
+        this.currentUser = responseList[0] as User;
+        this.userProjects = responseList[1] as UserProject[];
+
+        console.log(1);
+        this.editEntry = responseList[2] as TaskEntryUpdate;
+        console.log(2);
+
+        this.displayEntry(this.editEntry);
+        console.log(3);
+
       }
+
+    );
+    this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
+      console.log(4);
+
+      this.projectTasks = this.userProjects.find(x => x.projectID === val).tasks;
+      this.toggleTaskDropdown();
+
     });
+
 
   }
   get f(): any {
@@ -64,13 +93,13 @@ export class TimeEntryDialogueComponent implements OnInit {
   }
 
   toggleTaskDropdown() {
-    this.f.taskID.reset();
+    // this.f.taskID.reset();
     if (this.f.taskID.status === 'INVALID' || this.f.taskID.status === 'DISABLED') {
       this.f.taskID.enable();
     } else {
       this.f.taskID.disable();
     }
-    console.log('vrijednost forme poslije toggletaskdropdown:', this.TimeEntryForm);
+
   }
 
   onSubmit() {
@@ -108,15 +137,12 @@ export class TimeEntryDialogueComponent implements OnInit {
     if (this.TimeEntryForm) {
       this.TimeEntryForm.reset();
     }
-    this.editEntry = entry;
 
     if (this.entryId === 0) {
       this.pageTitle = 'Add New Entry';
 
     } else {
       this.pageTitle = `Edit Entry`;
-      this.f.taskID.enable();
-
       const hours = Math.floor(this.editEntry.durationInMin / 60);
       const min = this.editEntry.durationInMin % 60;
 
