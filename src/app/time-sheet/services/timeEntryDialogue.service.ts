@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {throwError, of, Observable } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { NewEntry } from 'src/app/shared/models/newTaskEntry.model';
@@ -7,13 +7,11 @@ import { UserProject } from 'src/app/shared/models/userProject.model';
 import * as moment from 'moment';
 import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
 
-
 @Injectable({
   providedIn: 'root'
 })
-
 export class TimeEntryDialogueService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   addTimeEntry(formValue: any, currentUserId: number, currentDate: moment.Moment) {
     const newEntry: NewEntry = {
@@ -32,10 +30,10 @@ export class TimeEntryDialogueService {
   }
 
   updateTaskEntry(entry: TaskEntryUpdate) {
-          return this.http.put<TaskEntryUpdate>('/api/users/current/entries', entry).pipe(
-            retry(3),
-            catchError(this.handleError)
-          );
+    return this.http.put<TaskEntryUpdate>('/api/users/current/entries', entry).pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   getTaskEntry(id: number): Observable<TaskEntryUpdate> {
@@ -58,7 +56,4 @@ export class TimeEntryDialogueService {
     }
     return throwError('Something bad happened; please try again later.');
   }
-
-
-
 }

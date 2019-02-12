@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./time-entry-dialogue.component.scss']
 })
 export class TimeEntryDialogueComponent implements OnInit {
-  pageTitle = '';
+  pageTitle = 'Add New Entry';
   observables: any = [];
   currentUser: User = {} as User;
   currentDate: moment.Moment;
@@ -36,7 +36,6 @@ export class TimeEntryDialogueComponent implements OnInit {
   ngOnInit(): void {
     this.currentDate = this.data.date;
     this.entryId = this.data.EntryId;
-
     this.TimeEntryForm = new FormGroup({
       projectID: new FormControl(null, [Validators.required]),
       taskID: new FormControl({ value: null, disabled: true }, [
@@ -46,139 +45,80 @@ export class TimeEntryDialogueComponent implements OnInit {
       minutes: new FormControl(null, [Validators.required]),
       notes: new FormControl(null)
     });
-    /*  this.getCurrentUser();
-     this.getUserProjects(); */
-
 
     this.observables.push(this.userService.getCurrentUser());
-
     this.observables.push(this.timeEntryDialogueService.getProjectsForCurrentUser());
-    if (this.entryId !== 0) {
+    if (this.isEdit) {
       this.observables.push(this.timeEntryDialogueService.getTaskEntry(this.entryId));
-
-
     }
 
     forkJoin(this.observables).subscribe(
       responseList => {
         this.currentUser = responseList[0] as User;
         this.userProjects = responseList[1] as UserProject[];
-
-        console.log(1);
         this.editEntry = responseList[2] as TaskEntryUpdate;
-        console.log(2);
-
-        this.displayEntry(this.editEntry);
-        console.log(3);
-
+        if (this.isEdit) {
+          this.displayEntry();
+        }
+        this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
+          this.toggleTaskDropdown(val);
+        });
       }
-
     );
-    this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
-      console.log(4);
-
-      this.projectTasks = this.userProjects.find(x => x.projectID === val).tasks;
-      this.toggleTaskDropdown();
-
-    });
-
-
   }
+
   get f(): any {
     return this.TimeEntryForm.controls;
+  }
+
+  get isEdit(): boolean {
+    return this.entryId ? true : false;
   }
 
   closeDialog(): void {
     this.dialogRef.close();
   }
 
-  toggleTaskDropdown() {
-    // this.f.taskID.reset();
+  toggleTaskDropdown(selectedProjectId: number) {
+    this.f.taskID.reset();
     if (this.f.taskID.status === 'INVALID' || this.f.taskID.status === 'DISABLED') {
       this.f.taskID.enable();
     } else {
       this.f.taskID.disable();
     }
-
+    this.projectTasks = this.userProjects.find(x => x.projectID === selectedProjectId).tasks;
   }
 
   onSubmit() {
     if (this.TimeEntryForm.invalid || this.TimeEntryForm.untouched) {
       return;
-    } else if (this.entryId === 0) {
-
+    } else if (this.isEdit) {
       this.postNewEntry();
-
     } else {
-
       this.editEntry.projectId = this.TimeEntryForm.get('projectID').value;
       this.editEntry.projectTaskId = this.TimeEntryForm.get('taskID').value;
       this.editEntry.durationInMin = this.TimeEntryForm.get('hours').value * 60 + this.TimeEntryForm.get('minutes').value;
       this.editEntry.note = this.TimeEntryForm.get('notes').value;
       this.updateEntry();
-
     }
     this.closeDialog();
-    this.TimeEntryForm.reset();
   }
 
-  getEntry(): void {
-    if (this.entryId !== 0) {
-      this.timeEntryDialogueService.getTaskEntry(this.entryId).subscribe(
-        (entry: TaskEntryUpdate) => { this.displayEntry(entry); }
-      );
-    } else {
-      this.displayEntry(null);
-    }
-
-  }
-
-  displayEntry(entry: TaskEntryUpdate): void {
+  displayEntry(): void {
     if (this.TimeEntryForm) {
       this.TimeEntryForm.reset();
     }
-
-    if (this.entryId === 0) {
-      this.pageTitle = 'Add New Entry';
-
-    } else {
-      this.pageTitle = `Edit Entry`;
-      const hours = Math.floor(this.editEntry.durationInMin / 60);
-      const min = this.editEntry.durationInMin % 60;
-
-
-      // Update the data on the form
-      this.TimeEntryForm.patchValue({
-        projectID: this.editEntry.projectId,
-        taskID: this.editEntry.projectTaskId,
-        hours: hours,
-        minutes: min,
-        notes: this.editEntry.note
-
-      });
-
-
-    }
-
-  }
-
-  getCurrentUser(): void {
-    this.userService.getCurrentUser().subscribe(user => {
-      this.currentUser = user;
+    this.pageTitle = 'Edit Entry';
+    const hours = Math.floor(this.editEntry.durationInMin / 60);
+    const min = this.editEntry.durationInMin % 60;
+    this.toggleTaskDropdown(this.editEntry.projectId);
+    this.TimeEntryForm.patchValue({
+      projectID: this.editEntry.projectId,
+      taskID: this.editEntry.projectTaskId,
+      hours: hours,
+      minutes: min,
+      notes: this.editEntry.note
     });
-  }
-
-  getUserProjects(): void {
-    this.timeEntryDialogueService.getProjectsForCurrentUser().subscribe(
-      projects => {
-        this.userProjects = projects;
-        this.getEntry();
-
-      },
-      err => {
-        console.log(err);
-      }
-    );
   }
 
   postNewEntry() {
