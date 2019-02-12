@@ -9,7 +9,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Task } from '../../../shared/models/task.model';
 import { CreateProject } from '../../../shared/models/createProject.model';
 import { ProjectService } from '../../services/project.service';
-
+import { projectFormValidator } from '../../helpers/projectFormValidator';
 
 @Component({
   selector: 'tsk-create-project',
@@ -125,6 +125,13 @@ export class CreateProjectComponent implements OnInit {
       userIds: Array.from(this.selectedUsers.value, u => u.userId)
     };
 
-    this.projectService.addProject(createProject);
+    if (projectFormValidator(createProject)) {
+      this.projectService.addProject(createProject).subscribe(
+        null,
+        err => console.log(err)
+      );
+    } else {
+      console.log('Validacija nije prosla');
+    }
   }
 }
