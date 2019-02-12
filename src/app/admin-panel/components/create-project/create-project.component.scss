@@ -8,4 +8,24 @@
 .controlls{
   display: flex;
   flex-direction: column;
+  width: 100%
+}
+
+.form{
+  width: 70%;
+}
+
+.userInput{
+  display: flex;
+  justify-content:space-between;
+}
+
+.vertical-flex{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.actions{
+  margin-top: 2em;
 }

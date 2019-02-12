@@ -1,102 +1,123 @@
 <div class="container">
-<h1>Crete new project</h1>
-<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-  <div class="controlls">
-    <mat-form-field>
-      <input
-        matInput
-        placeholder="Project name"
-        formControlName="projectName"
-      /> </mat-form-field
-    ><br />
+  <h1>Crete new project</h1>
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="controlls">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Project name"
+          formControlName="projectName"
+        /> </mat-form-field
+      ><br />
 
-    <mat-form-field>
-      <input
-        matInput
-        placeholder="Project code"
-        formControlName="projectCode"
-      /> </mat-form-field
-    ><br />
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Project code"
+          formControlName="projectCode"
+        /> </mat-form-field
+      ><br />
 
-    <mat-form-field>
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClient">
-        <mat-option
-          *ngFor="let client of (filteredClients | async)"
-          [value]="client"
-        >
-          {{ client.name }}
-        </mat-option>
-      </mat-autocomplete>
-      <input
-        matInput
-        type="text"
-        placeholder="Client"
-        formControlName="client"
-        [matAutocomplete]="auto"
-      /> </mat-form-field
-    ><br />
+      <mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClient">
+          <mat-option
+            *ngFor="let client of (filteredClients | async)"
+            [value]="client"
+          >
+            {{ client.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <input
+          matInput
+          type="text"
+          placeholder="Client"
+          formControlName="client"
+          [matAutocomplete]="auto"
+        /> </mat-form-field
+      ><br />
+      <h2>Choose users:</h2>
+      <div class="userInput">
+        <div class="vertical-flex">
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              placeholder="Find user"
+              formControlName="addUserControl"
+            />
+          </mat-form-field>
+          Users:
+          <div *ngFor="let user of (filteredUsers | async)">
+            <button mat-stroked-button (click)="addUser(user.userId)">
+              {{ user.userId }} {{ user.username }}
+            </button>
+          </div>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="vertical-flex">
+          Chosen users:
+          <div *ngFor="let user of (selectedUsers | async); let i = index">
+            {{ user.username }}
 
-    <mat-form-field>
-      <input
-        matInput
-        type="text"
-        placeholder="Find user"
-        formControlName="addUserControl"
-      />
-    </mat-form-field>
+            <button mat-icon-button (click)="removeUser(i)">
+              <mat-icon aria-label="Example icon-button with a heart icon"
+                >delete</mat-icon
+              >
+            </button>
+            <br />
+          </div>
+        </div>
+      </div>
 
-    Choose users:
-    <div *ngFor="let user of (filteredUsers | async)">
-      <button (click)="addUser(user.userId)">{{user.userId}}  {{ user.username }}</button>
+      <h2>Define tasks:</h2>
+      <div class="userInput">
+        <div class="vertical-flex">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Add task"
+              formControlName="addTaskControl"
+            /> </mat-form-field
+          ><br />
+          <button
+            mat-stroked-button
+            (click)="addTask()"
+            [disabled]="projectForm.get('addTaskControl').invalid"
+          >
+            Add Task
+          </button>
+        </div>
+
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="vertical-flex">
+          New Tasks:
+          <div *ngFor="let task of newTasks; let i = index">
+            {{ task.name }}
+
+            <mat-checkbox (mousedown)="onBillableChange(i)">
+              Billable</mat-checkbox
+            >
+
+            <button mat-icon-button (click)="removeTask(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    Chosen users:
-    <div *ngFor="let user of (selectedUsers | async); let i = index">
-      {{ user.username }}
-
-      <button mat-icon-button (click)="removeUser(i)">
-        <mat-icon aria-label="Example icon-button with a heart icon"
-          >delete</mat-icon
+    <div class="actions">
+      <mat-dialog-actions>
+        <button
+          mat-raised-button
+          cdkFocusInitial
+          color="primary"
+          type="submit"
+          [disabled]="projectForm.untouched"
         >
-      </button>
-      <br />
+          Create Project
+        </button>
+      </mat-dialog-actions>
     </div>
-
-    <mat-form-field>
-      <input
-        matInput
-        placeholder="Add task"
-        formControlName="addTaskControl"
-      /> </mat-form-field
-    ><br />
-
-    <button (click)="addTask()" [disabled]="projectForm.get('addTaskControl').invalid">Add Task</button><br />
-
-    <div *ngFor="let task of newTasks; let i = index">
-      {{ task.name }}
-
-      <input type="checkbox" (mousedown)="onBillableChange(i)" />Billable
-
-      <button mat-icon-button (click)="removeTask(i)">
-        <mat-icon aria-label="Example icon-button with a heart icon"
-          >delete</mat-icon
-        >
-      </button>
-    </div>
-  </div>
-
-  <div class="actions">
-    <mat-dialog-actions>
-      <button
-        mat-button
-        cdkFocusInitial
-        color="primary"
-        type="submit"
-        [disabled]="projectForm.untouched"
-      >
-        Create Project
-      </button>
-    </mat-dialog-actions>
-  </div>
-</form>
+  </form>
 </div>

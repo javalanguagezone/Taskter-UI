@@ -5,7 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialogModule } from '@angular/material';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -35,7 +36,9 @@ import { MatNativeDateModule, MatSelectModule, MatInputModule, MatAutocompleteMo
     MatDialogModule,
     MatSelectModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatCheckboxModule
   ],
   exports: [
     MatToolbarModule,
@@ -53,7 +56,9 @@ import { MatNativeDateModule, MatSelectModule, MatInputModule, MatAutocompleteMo
     MatDialogModule,
     MatSelectModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialDesignModule { }
