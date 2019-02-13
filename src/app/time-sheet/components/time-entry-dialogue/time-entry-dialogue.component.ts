@@ -92,7 +92,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   onSubmit() {
     if (this.TimeEntryForm.invalid || this.TimeEntryForm.untouched) {
       return;
-    } else if (this.isEdit) {
+    } else if (!this.isEdit) {
       this.postNewEntry();
     } else {
       this.editEntry.projectId = this.TimeEntryForm.get('projectID').value;
