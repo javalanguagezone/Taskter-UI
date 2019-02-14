@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Crete new project</h1>
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="form">
+  <form [formGroup]="projectForm" class="form">
     <div class="controlls">
       <mat-form-field>
         <input
@@ -19,22 +19,11 @@
       ><br />
 
       <mat-form-field>
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClient">
-          <mat-option
-            *ngFor="let client of (filteredClients | async)"
-            [value]="client"
-          >
-            {{ client.name }}
-          </mat-option>
-        </mat-autocomplete>
-        <input
-          matInput
-          type="text"
-          placeholder="Client"
-          formControlName="client"
-          [matAutocomplete]="auto"
-        /> </mat-form-field
-      ><br />
+        <mat-select formControlName="client" placeholder="Client" class="dropdown-input" >
+          <mat-option *ngFor="let client of clients" [value]="client">{{ client.id }} {{client.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <h2>Choose users:</h2>
       <div class="userInput">
         <div class="vertical-flex">
@@ -105,14 +94,16 @@
         </div>
       </div>
     </div>
-
+    <div *ngFor="let error of errors" class="errors">
+      <p>{{ error }} </p>
+    </div>
     <div class="actions">
       <mat-dialog-actions>
         <button
           mat-raised-button
           cdkFocusInitial
           color="primary"
-          type="submit"
+          (click)="onSubmit()"
           [disabled]="projectForm.untouched"
         >
           Create Project

@@ -18,7 +18,7 @@ import { projectFormValidator } from '../../helpers/projectFormValidator';
 })
 
 export class CreateProjectComponent implements OnInit {
-
+  errors: string[] = null;
   users: User[] = [];
   clients: Client[] = [];
 
@@ -26,11 +26,11 @@ export class CreateProjectComponent implements OnInit {
   newTasks: Task[] = [];
 
   projectForm = this.fb.group({
-    projectName: ['', [Validators.required]],
-    projectCode: ['', [Validators.required]],
-    client: ['', [Validators.required]],
+    projectName: [''],
+    projectCode: [''],
+    client: [],
     addUserControl: [],
-    addTaskControl: ['', [Validators.required]]
+    addTaskControl: ['']
   });
 
   filteredClients: Observable<Client[]>;
@@ -124,14 +124,13 @@ export class CreateProjectComponent implements OnInit {
       tasks: this.newTasks,
       userIds: Array.from(this.selectedUsers.value, u => u.userId)
     };
+    this.errors = projectFormValidator(createProject);
 
-    if (projectFormValidator(createProject)) {
+    if (!this.errors) {
       this.projectService.addProject(createProject).subscribe(
         null,
         err => console.log(err)
       );
-    } else {
-      console.log('Validacija nije prosla');
     }
   }
 }
