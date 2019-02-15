@@ -18,7 +18,6 @@ import { forkJoin } from 'rxjs';
 })
 export class TimeEntryDialogueComponent implements OnInit {
   hideSpinner = false;
-
   pageTitle = 'Add New Entry';
   observables: any = [];
   currentUser: User = {} as User;
@@ -65,7 +64,7 @@ export class TimeEntryDialogueComponent implements OnInit {
         this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
           this.toggleTaskDropdown(val);
         });
-        this.hideSpinner = true;
+        this.toggleSpinner();
       }
     );
   }
@@ -90,6 +89,10 @@ export class TimeEntryDialogueComponent implements OnInit {
       this.f.taskID.disable();
     }
     this.projectTasks = this.userProjects.find(x => x.projectID === selectedProjectId).tasks;
+  }
+
+  toggleSpinner() {
+    this.hideSpinner ? this.hideSpinner = false : this.hideSpinner = true;
   }
 
   onSubmit() {
