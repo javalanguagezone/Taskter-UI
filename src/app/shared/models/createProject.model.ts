@@ -3,7 +3,7 @@ import { Client } from './client.model';
 
 export interface CreateProject {
   projectName: string;
-  client: Client;
+  clientId: number;
   projectCode: string;
   tasks: Task[];
   userIds: number[];
