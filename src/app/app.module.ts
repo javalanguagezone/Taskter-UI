@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
 import { RoleDirective } from './role.directive';
 import { MomentModule } from 'ngx-moment';
-import { MatSidenavModule } from '@angular/material';
+import { MatSidenavModule, MatSnackBarModule } from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +21,8 @@ import { MatSidenavModule } from '@angular/material';
     HttpClientModule,
     LayoutModule,
     MomentModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

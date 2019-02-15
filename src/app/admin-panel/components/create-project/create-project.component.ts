@@ -10,6 +10,7 @@ import { Task } from '../../../shared/models/task.model';
 import { CreateProject } from '../../../shared/models/createProject.model';
 import { ProjectService } from '../../services/project.service';
 import { projectFormValidator } from '../../helpers/projectFormValidator';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'tsk-create-project',
@@ -40,8 +41,9 @@ export class CreateProjectComponent implements OnInit {
     private userService: UserService,
     private clientService: ClientService,
     private fb: FormBuilder,
-    private projectService: ProjectService
-  ) {}
+    private projectService: ProjectService,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
 
@@ -49,26 +51,26 @@ export class CreateProjectComponent implements OnInit {
       this.userService.getAllUsers(),
       this.clientService.getAllClients()
     )
-    .subscribe(([users, clients]) => {
-      this.users = users;
-      this.clients = clients;
+      .subscribe(([users, clients]) => {
+        this.users = users;
+        this.clients = clients;
 
-      this.filteredUsers = merge (
-        this.projectForm.get('addUserControl').valueChanges,
-        this.selectedUsers
-      )
-        .pipe(
-          startWith<string>(''),
-          map(value => typeof value === 'string' ? value : ''),
-          map(user => user ? this._filterUsers(user) : this._filterUsers(user))
-        );
-      this.filteredClients = this.projectForm.get('client').valueChanges
-      .pipe(
-        startWith<string | Client>(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(client => client ? this._filterClients(client) : this.clients.slice())
-      );
-    });
+        this.filteredUsers = merge(
+          this.projectForm.get('addUserControl').valueChanges,
+          this.selectedUsers
+        )
+          .pipe(
+            startWith<string>(''),
+            map(value => typeof value === 'string' ? value : ''),
+            map(user => user ? this._filterUsers(user) : this._filterUsers(user))
+          );
+        this.filteredClients = this.projectForm.get('client').valueChanges
+          .pipe(
+            startWith<string | Client>(''),
+            map(value => typeof value === 'string' ? value : value.name),
+            map(client => client ? this._filterClients(client) : this.clients.slice())
+          );
+      });
   }
 
   _filterClients(value: string): Client[] {
@@ -94,7 +96,7 @@ export class CreateProjectComponent implements OnInit {
   _filterUsers(value: string): User[] {
     const filterUser = value.toLowerCase();
     return this.users.filter(user => user.username.toLowerCase().indexOf(filterUser) === 0
-    && !this.selectedUsers.value.includes(user));
+      && !this.selectedUsers.value.includes(user));
   }
 
   addTask() {
@@ -128,9 +130,15 @@ export class CreateProjectComponent implements OnInit {
 
     if (!this.errors) {
       this.projectService.addProject(createProject).subscribe(
-        null,
+        () => this.openSnackBar(),
         err => console.log(err)
       );
     }
+  }
+
+  openSnackBar() {
+    this.snackBar.open('Success!', 'New Project added!', {
+      duration: 2000,
+    });
   }
 }

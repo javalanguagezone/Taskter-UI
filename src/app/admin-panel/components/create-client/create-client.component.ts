@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators} from '@angular/forms'; 
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from 'src/app/shared/services/client.service';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -13,7 +14,9 @@ export class CreateClientComponent implements OnInit {
   clientName: string;
   clientForm: FormGroup;
 
-  constructor(private clientservice: ClientService) { }
+  constructor(
+    private clientservice: ClientService,
+    private snackBar: MatSnackBar) { }
 
 
   ngOnInit(): void {
@@ -22,20 +25,26 @@ export class CreateClientComponent implements OnInit {
     });
   }
 
-  onSubmit(){
-    if(this.clientForm.invalid || this.clientForm.untouched)
+  onSubmit() {
+    if (this.clientForm.invalid || this.clientForm.untouched || this.clientForm.value == "")
       return;
 
     this.postNewClient();
     this.clientForm.reset();
+
+
   }
   postNewClient() {
     this.clientservice.addNewClient(this.clientForm.value).subscribe(
       () => { },
-      (err: any) =>{
+      (err: any) => {
         console.warn(err);
       }
     )
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 }

@@ -3,13 +3,16 @@
   <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="form">
     <div class="controlls">
       <mat-form-field>
-        <input matInput placeholder="Client name" formControlName="name" />
+        <input matInput placeholder="Client name" formControlName="name" #action/>
       </mat-form-field><br />
     </div>
 
+
+
+
     <div class="actions">
       <mat-dialog-actions>
-        <button mat-raised-button cdkFocusInitial color="primary" type="submit" >
+        <button mat-raised-button cdkFocusInitial color="primary" type="submit" (click)="openSnackBar('Cliend added!', action.value)">
           Create Client
         </button>
       </mat-dialog-actions>
