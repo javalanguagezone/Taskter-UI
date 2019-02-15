@@ -17,6 +17,8 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./time-entry-dialogue.component.scss']
 })
 export class TimeEntryDialogueComponent implements OnInit {
+  hideSpinner = false;
+
   pageTitle = 'Add New Entry';
   observables: any = [];
   currentUser: User = {} as User;
@@ -63,6 +65,7 @@ export class TimeEntryDialogueComponent implements OnInit {
         this.TimeEntryForm.get('projectID').valueChanges.subscribe(val => {
           this.toggleTaskDropdown(val);
         });
+        this.hideSpinner = true;
       }
     );
   }

@@ -4,8 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatDialogModule } from '@angular/material';
-
+import { MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -34,7 +33,8 @@ import { MatNativeDateModule, MatSelectModule, MatInputModule } from '@angular/m
     MatNativeDateModule,
     MatDialogModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatToolbarModule,
@@ -51,7 +51,8 @@ import { MatNativeDateModule, MatSelectModule, MatInputModule } from '@angular/m
     MatNativeDateModule,
     MatDialogModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialDesignModule { }
