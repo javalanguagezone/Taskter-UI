@@ -33,7 +33,6 @@ export class CreateProjectComponent implements OnInit {
     addTaskControl: ['']
   });
 
-  filteredClients: Observable<Client[]>;
   filteredUsers: Observable<User[]>;
 
   constructor(
@@ -62,32 +61,16 @@ export class CreateProjectComponent implements OnInit {
           map(value => typeof value === 'string' ? value : ''),
           map(user => user ? this._filterUsers(user) : this._filterUsers(user))
         );
-      this.filteredClients = this.projectForm.get('client').valueChanges
-      .pipe(
-        startWith<string | Client>(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(client => client ? this._filterClients(client) : this.clients.slice())
-      );
     });
   }
 
-  _filterClients(value: string): Client[] {
-    const filterValue = value.toLowerCase();
-
-    return this.clients.filter(client => client.name.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  displayClient(client?: Client): string | undefined {
-    return client ? client.name : undefined;
-  }
-
-  removeUser(index: number) {
+  onRemoveUser(index: number): void {
     const selectedUsers = this.selectedUsers.getValue();
     selectedUsers.splice(index, 1);
     this.selectedUsers.next(selectedUsers);
   }
 
-  addUser(id) {
+  onAddUser(id: number): void {
     this.selectedUsers.next([...this.selectedUsers.getValue(), this.users.find(user => user.userId === id)]);
   }
 
@@ -97,7 +80,7 @@ export class CreateProjectComponent implements OnInit {
     && !this.selectedUsers.value.includes(user));
   }
 
-  addTask() {
+  onAddTask(): void {
     const task: Task = {
       taskID: undefined,
       name: this.projectForm.value.addTaskControl,
@@ -108,22 +91,23 @@ export class CreateProjectComponent implements OnInit {
     this.newTasks.push(task);
   }
 
-  removeTask(index) {
+  onRemoveTask(index: number): void {
     this.newTasks.splice(index, 1);
   }
 
-  onBillableChange(index) {
+  onBillableChange(index: number): void {
     this.newTasks[index].billable = !this.newTasks[index].billable;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const createProject: CreateProject = {
       projectName: this.projectForm.value.projectName,
-      client: this.projectForm.value.client,
+      clientId: this.projectForm.value.client ? this.projectForm.value.client.id : null,
       projectCode: this.projectForm.value.projectCode,
       tasks: this.newTasks,
       userIds: Array.from(this.selectedUsers.value, u => u.userId)
     };
+
     this.errors = projectFormValidator(createProject);
 
     if (!this.errors) {

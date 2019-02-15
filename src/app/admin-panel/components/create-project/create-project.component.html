@@ -19,13 +19,19 @@
       ><br />
 
       <mat-form-field>
-        <mat-select formControlName="client" placeholder="Client" class="dropdown-input" >
-          <mat-option *ngFor="let client of clients" [value]="client">{{ client.id }} {{client.name}}</mat-option>
+        <mat-select
+          formControlName="client"
+          placeholder="Client"
+          class="dropdown-input"
+        >
+          <mat-option *ngFor="let client of clients" [value]="client"
+            >{{ client.id }} {{ client.name }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
 
       <h2>Choose users:</h2>
-      <div class="userInput">
+      <div class="input">
         <div class="vertical-flex">
           <mat-form-field>
             <input
@@ -37,7 +43,7 @@
           </mat-form-field>
           Users:
           <div *ngFor="let user of (filteredUsers | async)">
-            <button mat-stroked-button (click)="addUser(user.userId)">
+            <button mat-stroked-button (click)="onAddUser(user.userId)">
               {{ user.userId }} {{ user.username }}
             </button>
           </div>
@@ -48,7 +54,7 @@
           <div *ngFor="let user of (selectedUsers | async); let i = index">
             {{ user.username }}
 
-            <button mat-icon-button (click)="removeUser(i)">
+            <button mat-icon-button (click)="onRemoveUser(i)">
               <mat-icon aria-label="Example icon-button with a heart icon"
                 >delete</mat-icon
               >
@@ -59,7 +65,7 @@
       </div>
 
       <h2>Define tasks:</h2>
-      <div class="userInput">
+      <div class="input">
         <div class="vertical-flex">
           <mat-form-field>
             <input
@@ -70,7 +76,7 @@
           ><br />
           <button
             mat-stroked-button
-            (click)="addTask()"
+            (click)="onAddTask()"
             [disabled]="projectForm.get('addTaskControl').invalid"
           >
             Add Task
@@ -87,7 +93,7 @@
               Billable</mat-checkbox
             >
 
-            <button mat-icon-button (click)="removeTask(i)">
+            <button mat-icon-button (click)="onRemoveTask(i)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -95,7 +101,7 @@
       </div>
     </div>
     <div *ngFor="let error of errors" class="errors">
-      <p>{{ error }} </p>
+      <p>{{ error }}</p>
     </div>
     <div class="actions">
       <mat-dialog-actions>

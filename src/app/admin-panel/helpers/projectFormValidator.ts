@@ -9,7 +9,7 @@ export function projectFormValidator(data: CreateProject): string[] | null {
   if (!data.projectCode) {
     error.push('Project code must not be empty.');
   }
-  if (!data.client) {
+  if (!data.clientId) {
     error.push('Project client must not be empty.');
   }
   if (data.userIds.length === 0) {

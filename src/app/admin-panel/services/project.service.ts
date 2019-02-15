@@ -12,7 +12,7 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  addProject(data) {
+  addProject(data: CreateProject) {
     return this.http.post<CreateProject>('/api/project', data)
       .pipe(
         retry(3),
