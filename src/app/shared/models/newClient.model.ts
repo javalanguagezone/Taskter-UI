@@ -1,4 +1,3 @@
-export interface NewClient
-{
+export interface NewClient {
     name: string;
 }

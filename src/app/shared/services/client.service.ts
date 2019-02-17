@@ -20,12 +20,12 @@ export class ClientService {
       catchError(this.handleError)
     );
   }
-  addNewClient(clientName: string){
-    
+  addNewClient(clientName: string) {
+
     return this.http.post<NewClient>('/api/client', clientName).pipe(
       retry(3),
       catchError(this.handleError)
-    )
+    );
   }
 
   private handleError(error: HttpErrorResponse) {

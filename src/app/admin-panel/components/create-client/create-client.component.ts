@@ -26,8 +26,9 @@ export class CreateClientComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.clientForm.invalid || this.clientForm.untouched || this.clientForm.value == "")
+    if (this.clientForm.invalid || this.clientForm.untouched || this.clientForm.value === '') {
       return;
+    }
 
     this.postNewClient();
     this.clientForm.reset();
@@ -40,11 +41,11 @@ export class CreateClientComponent implements OnInit {
       (err: any) => {
         console.warn(err);
       }
-    )
+    );
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: 2000
     });
   }
 }
