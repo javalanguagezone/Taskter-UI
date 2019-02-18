@@ -10,7 +10,7 @@ import { TimeEntryDialogueService } from '../../services/timeEntryDialogue.servi
 import { Task } from 'src/app/shared/models/task.model';
 import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
 import { forkJoin } from 'rxjs';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'tsk-time-entry-dialogue',
   templateUrl: './time-entry-dialogue.component.html',
@@ -28,6 +28,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   editEntry: TaskEntryUpdate;
   entryId: number;
   constructor(
+    private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<TimeEntryDialogueComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private userService: UserService,
@@ -106,8 +107,10 @@ export class TimeEntryDialogueComponent implements OnInit {
       this.editEntry.durationInMin = this.TimeEntryForm.get('hours').value * 60 + this.TimeEntryForm.get('minutes').value;
       this.editEntry.note = this.TimeEntryForm.get('notes').value;
       this.updateEntry();
+
     }
-    this.closeDialog();
+
+
   }
 
   displayEntry(): void {
@@ -129,8 +132,16 @@ export class TimeEntryDialogueComponent implements OnInit {
 
   postNewEntry() {
     this.timeEntryDialogueService.addTimeEntry(this.TimeEntryForm.value, this.currentUser.userId, this.currentDate).subscribe(
-      () => { },
+      () => {
+        this.closeDialog();
+        this.snackBar.open('Success', 'Close', {
+          duration: 2000,
+        });
+      },
       err => {
+        this.snackBar.open(err, 'Close', {
+          duration: 2000,
+        });
         console.error(err);
       }
     );
@@ -138,8 +149,16 @@ export class TimeEntryDialogueComponent implements OnInit {
 
   updateEntry() {
     this.timeEntryDialogueService.updateTaskEntry(this.editEntry).subscribe(
-      () => { },
+      () => {
+        this.closeDialog();
+        this.snackBar.open('Success', 'Close', {
+        duration: 2000,
+      });
+    },
       err => {
+        this.snackBar.open(err, 'Close', {
+          duration: 2000,
+        });
         console.error(err);
       }
     );
