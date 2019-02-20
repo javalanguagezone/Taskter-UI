@@ -6,9 +6,11 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { MaterialDesignModule } from '../shared/material-design/material-design.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateClientComponent } from './components/create-client/create-client.component';
+import { ProjectsListComponent } from './components/projects-list/projects-list.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 @NgModule({
-  declarations: [CreateProjectComponent, CreateClientComponent],
+  declarations: [CreateProjectComponent, CreateClientComponent, ProjectsListComponent, ProjectDetailsComponent],
   imports: [
     CommonModule,
     AdminPanelRoutingModule,

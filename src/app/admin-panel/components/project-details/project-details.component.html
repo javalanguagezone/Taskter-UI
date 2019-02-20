@@ -1,0 +1,51 @@
+<div class="details-container">
+    <mat-card>
+        <div>
+            <div class= "title">
+              <h2 class = "title"> Project details:   {{project.projectName}}</h2>
+            </div>
+            <div style="float:right;">
+                <button mat-button class="back-button" routerLink='/adminPanel/projects' >Back</button>
+                <button mat-button class="edit-button">Edit</button>
+
+            </div>
+
+        </div>
+
+
+    <div style="margin-top: 50px">
+
+            <div class = "details-row">
+                 <b>Name: </b> {{ project.projectName }} <br />
+             </div>
+             <div class = "details-row">
+                 <b>Code: </b>{{ project.projectCode }} <br />
+             </div>
+             <div class = "details-row">
+                 <b>Client: </b> {{ project.clientName }} <br />
+             </div>
+            </div>
+       </mat-card>
+
+    <div class="details">
+        <mat-card>
+           <h3>Assigned users</h3>
+           <mat-list role="list">
+              <mat-list-item role="listitem">Item 1</mat-list-item>
+              <mat-list-item role="listitem">Item 2</mat-list-item>
+              <mat-list-item role="listitem">Item 3</mat-list-item>
+            </mat-list>
+        </mat-card>
+    </div>
+    <div class="details">
+        <mat-card>
+            <h3>Project tasks</h3>
+            <mat-list role="list">
+               <mat-list-item role="listitem">Item 1</mat-list-item>
+               <mat-list-item role="listitem">Item 2</mat-list-item>
+               <mat-list-item role="listitem">Item 3</mat-list-item>
+             </mat-list>
+         </mat-card>
+    </div>
+
+  </div>
