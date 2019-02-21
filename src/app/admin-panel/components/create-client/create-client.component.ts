@@ -42,6 +42,7 @@ export class CreateClientComponent implements OnInit {
         console.warn(err);
       }
     );
+    this.openSnackBar('Cliend added!', this.clientForm.get('name').value);
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
