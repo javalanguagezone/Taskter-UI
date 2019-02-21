@@ -45,14 +45,14 @@ export class ProjectsListComponent implements OnInit {
     this.projectService.getProjects()
       .subscribe(project => {
         this.projects = project;
+        this.dataSource = new MatTableDataSource(this.projects);
+
       }
       );
   }
   ngOnInit() {
    this.getProjects();
-   console.log(this.projects);
-   this.dataSource = new MatTableDataSource(this.projects);
   }
 
-  
+
 }

@@ -11,26 +11,26 @@ import { Project } from 'src/app/shared/models/project.model';
 
 export class ProjectService {
 
-  mockProjects: Project[] = [
-    {
-      projectId: 1,
-      projectName: 'First project',
-      projectCode: 'CO-989-FR',
-      clientName: 'Tacta'
-    },
-    {
-      projectId: 2,
-      projectName: 'Second project',
-      projectCode: 'CO-989-SC',
-      clientName: 'Mistral'
-    },
-    {
-      projectId: 3,
-      projectName: 'Third project',
-      projectCode: 'CO-989-TH',
-      clientName: 'BHT'
-    },
-  ];
+  // mockProjects: Project[] = [
+  //   {
+  //     projectId: 1,
+  //     projectName: 'First project',
+  //     projectCode: 'CO-989-FR',
+  //     clientName: 'Tacta'
+  //   },
+  //   {
+  //     projectId: 2,
+  //     projectName: 'Second project',
+  //     projectCode: 'CO-989-SC',
+  //     clientName: 'Mistral'
+  //   },
+  //   {
+  //     projectId: 3,
+  //     projectName: 'Third project',
+  //     projectCode: 'CO-989-TH',
+  //     clientName: 'BHT'
+  //   },
+  // ];
   constructor(private http: HttpClient) {}
 
   addProject(data: CreateProject) {
@@ -42,11 +42,17 @@ export class ProjectService {
   }
 
   getProjects() {
-    return of(this.mockProjects);
+    return this.http.get<Project[]>('/api/projects').pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   getProjectById(id: number) {
-    return of(this.mockProjects.find(x => x.projectId === id));
+   return this.http.get<Project>(`/api/projects/${id}`).pipe(
+    retry(3),
+    catchError(this.handleError)
+  );
   }
 
   handleError(error: HttpErrorResponse) {

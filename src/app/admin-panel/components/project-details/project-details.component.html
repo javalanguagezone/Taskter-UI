@@ -27,6 +27,28 @@
             </div>
        </mat-card>
 
+       <!-- <div class="details">
+          <mat-card>
+              <h3>Project tasks</h3>
+              <mat-list role="list" >
+                 <mat-list-item role="listitem" *ngFor="let task of project.tasks">{{task.name}}</mat-list-item>
+               </mat-list>
+           </mat-card>
+      </div> -->
+
+      <mat-accordion class="details">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                  <h3>Project tasks</h3>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+                    <mat-list role="list" >
+                       <mat-list-item role="listitem" *ngFor="let task of project.tasks">{{task.name}}</mat-list-item>
+                     </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+
     <div class="details">
         <mat-card>
            <h3>Assigned users</h3>
@@ -37,15 +59,6 @@
             </mat-list>
         </mat-card>
     </div>
-    <div class="details">
-        <mat-card>
-            <h3>Project tasks</h3>
-            <mat-list role="list">
-               <mat-list-item role="listitem">Item 1</mat-list-item>
-               <mat-list-item role="listitem">Item 2</mat-list-item>
-               <mat-list-item role="listitem">Item 3</mat-list-item>
-             </mat-list>
-         </mat-card>
-    </div>
+
 
   </div>
