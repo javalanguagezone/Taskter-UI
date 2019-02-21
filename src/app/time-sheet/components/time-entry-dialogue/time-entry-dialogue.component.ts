@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
 import { Validators } from '@angular/forms';
 import * as moment from 'moment';
@@ -11,6 +11,8 @@ import { Task } from 'src/app/shared/models/task.model';
 import { TaskEntryUpdate } from 'src/app/shared/models/TaskEntryUpdate';
 import { forkJoin } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DurationErrorStateMatcher } from './helpers/durationErrorStateMatcher';
+import { isNumber } from 'util';
 @Component({
   selector: 'tsk-time-entry-dialogue',
   templateUrl: './time-entry-dialogue.component.html',
@@ -19,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TimeEntryDialogueComponent implements OnInit {
   hideSpinner = false;
   pageTitle = 'Add New Entry';
+  durationCrossFieldMatcher = new DurationErrorStateMatcher();
   observables: any = [];
   currentUser: User = {} as User;
   currentDate: moment.Moment;
@@ -43,8 +46,10 @@ export class TimeEntryDialogueComponent implements OnInit {
       taskID: new FormControl({ value: null, disabled: true }, [
         Validators.required
       ]),
-      hours: new FormControl(null, [Validators.required]),
-      minutes: new FormControl(null, [Validators.required]),
+      duration: new FormGroup({
+        hours: new FormControl(null, [Validators.required, Validators.min(0)]),
+        minutes: new FormControl(null, [Validators.required, Validators.min(0)])
+      }, { validators: this.durationValidator }),
       notes: new FormControl(null)
     });
 
@@ -99,18 +104,13 @@ export class TimeEntryDialogueComponent implements OnInit {
   onSubmit() {
     if (this.TimeEntryForm.invalid || this.TimeEntryForm.untouched) {
       return;
-    } else if (!this.isEdit) {
+    }
+    this.toggleSpinner();
+    if (!this.isEdit) {
       this.postNewEntry();
     } else {
-      this.editEntry.projectId = this.TimeEntryForm.get('projectID').value;
-      this.editEntry.projectTaskId = this.TimeEntryForm.get('taskID').value;
-      this.editEntry.durationInMin = this.TimeEntryForm.get('hours').value * 60 + this.TimeEntryForm.get('minutes').value;
-      this.editEntry.note = this.TimeEntryForm.get('notes').value;
       this.updateEntry();
-
     }
-
-
   }
 
   displayEntry(): void {
@@ -124,8 +124,10 @@ export class TimeEntryDialogueComponent implements OnInit {
     this.TimeEntryForm.patchValue({
       projectID: this.editEntry.projectId,
       taskID: this.editEntry.projectTaskId,
-      hours: hours,
-      minutes: min,
+      duration: {
+        hours: hours,
+        minutes: min
+      },
       notes: this.editEntry.note
     });
   }
@@ -133,34 +135,48 @@ export class TimeEntryDialogueComponent implements OnInit {
   postNewEntry() {
     this.timeEntryDialogueService.addTimeEntry(this.TimeEntryForm.value, this.currentUser.userId, this.currentDate).subscribe(
       () => {
+        this.toggleSpinner();
         this.closeDialog();
-        this.snackBar.open('Success', 'Close', {
-          duration: 2000,
+        this.snackBar.open('Successfully added a new entry !', 'Close', {
+          duration: 3000,
         });
       },
       err => {
-        this.snackBar.open(err, 'Close', {
-          duration: 2000,
-        });
+        this.toggleSpinner();
+        this.snackBar.open(err, 'Close');
         console.error(err);
       }
     );
   }
 
   updateEntry() {
+    this.editEntry.projectId = this.TimeEntryForm.get('projectID').value;
+    this.editEntry.projectTaskId = this.TimeEntryForm.get('taskID').value;
+    this.editEntry.durationInMin = this.f.duration.controls.hours.value * 60 + this.f.duration.controls.minutes.value;
+    this.editEntry.note = this.TimeEntryForm.get('notes').value;
     this.timeEntryDialogueService.updateTaskEntry(this.editEntry).subscribe(
       () => {
+        this.toggleSpinner();
         this.closeDialog();
-        this.snackBar.open('Success', 'Close', {
-        duration: 2000,
-      });
-    },
-      err => {
-        this.snackBar.open(err, 'Close', {
-          duration: 2000,
+        this.snackBar.open('Successfully updated the entry !', 'Close', {
+          duration: 3000,
         });
+      },
+      err => {
+        this.toggleSpinner();
+        this.snackBar.open(err, 'Close');
         console.error(err);
       }
     );
   }
+
+  durationValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+    const hours = control.get('hours').value;
+    const minutes = control.get('minutes').value;
+    if (isNumber(hours) && isNumber(minutes) && (hours + minutes === 0)) {
+      return { 'durationInvalid': true };
+    }
+    return null;
+  }
+
 }

@@ -13,8 +13,17 @@
   font-size: 0.8em;
   margin-top: 10px;
 }
-.title {
+.mb-10px {
   margin-bottom: 10px;
+}
+.content > mat-form-field {
+  margin-bottom: 1.5em;
+}
+.duration > mat-form-field {
+  margin-bottom: 1.5em;
+}
+.content:last-child{
+  margin-bottom: 0.5em;
 }
 #spinnerWrapper
 {

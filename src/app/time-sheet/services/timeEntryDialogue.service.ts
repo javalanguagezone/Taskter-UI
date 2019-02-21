@@ -17,7 +17,7 @@ export class TimeEntryDialogueService {
     const newEntry: NewEntry = {
       userId: currentUserId,
       projectTaskId: formValue.taskID,
-      durationInMin: formValue.hours * 60 + formValue.minutes,
+      durationInMin: formValue.duration.hours * 60 + formValue.duration.minutes,
       note: formValue.notes,
       day: currentDate.date(),
       month: currentDate.month() + 1,

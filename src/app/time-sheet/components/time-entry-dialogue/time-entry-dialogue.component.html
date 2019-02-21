@@ -4,46 +4,50 @@
 
 <div id="content" *ngIf="hideSpinner">
   <div class="dialogHeader">
-    <h1 mat-dialog-title class="title">{{pageTitle}}</h1>
+    <h1 mat-dialog-title class="mb-10px">{{pageTitle}}</h1>
     <p class="subtitle"> {{currentDate?.format("dddd, D MMM")}}</p>
   </div>
 
   <form [formGroup]="TimeEntryForm" (ngSubmit)="onSubmit()">
-
-    <div class="content">
-      <mat-dialog-content>
+    <mat-dialog-content>
+      <div class="content">
         <mat-form-field>
           <mat-select formControlName="projectID" placeholder="Project" class="dropdown-input" required>
             <mat-option *ngFor="let p of userProjects" [value]="p.projectID">{{p.projectName}}</mat-option>
           </mat-select>
           <mat-error *ngIf="f.projectID.errors?.required">Project name is required</mat-error>
         </mat-form-field>
-
         <mat-form-field>
           <mat-select formControlName="taskID" matSelect placeholder="Task" class="dropdown-input" required>
             <mat-option *ngFor="let t of projectTasks" [value]="t.taskID">{{t.name}}</mat-option>
           </mat-select>
           <mat-error *ngIf="f.taskID.errors?.required">Task name is required</mat-error>
         </mat-form-field>
-
-        <mat-form-field>
-          <input matInput type="number" formControlName="hours" placeholder="Hours" required>
-          <mat-error *ngIf="f.hours.errors?.required">Number of hours is required</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="number" formControlName="minutes" placeholder="Minutes" required>
-          <mat-error *ngIf="f.minutes.errors?.required">Number of minutes is required</mat-error>
-        </mat-form-field>
+        <div formGroupName="duration" class="duration">
+          <mat-form-field>
+            <input matInput type="number" formControlName="hours" placeholder="Hours" required
+              [errorStateMatcher]='durationCrossFieldMatcher'>
+            <mat-error *ngIf="f.duration.controls.hours.errors?.required">Number of hours is required !</mat-error>
+            <mat-error *ngIf="f.duration.controls.hours.errors?.min">This cannot be a negative number !</mat-error>
+            <mat-error *ngIf="f.duration.errors?.durationInvalid">Total duration must be more than zero !</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="number" formControlName="minutes" placeholder="Minutes" required
+              [errorStateMatcher]='durationCrossFieldMatcher'>
+            <mat-error *ngIf="f.duration.controls.minutes.errors?.required">Number of minutes is required !</mat-error>
+            <mat-error *ngIf="f.duration.controls.minutes.errors?.min">This cannot be a negative number !</mat-error>
+            <mat-error *ngIf="f.duration.errors?.durationInvalid">Total duration must be more than zero !</mat-error>
+          </mat-form-field>
+        </div>
         <mat-form-field>
           <textarea matInput formControlName="notes" placeholder="Notes"></textarea>
         </mat-form-field>
-      </mat-dialog-content>
-    </div>
+      </div>
+    </mat-dialog-content>
 
     <div class="actions">
       <mat-dialog-actions>
-        <button mat-button cdkFocusInitial color="primary" type="submit"
-          [disabled]="TimeEntryForm.untouched">Save</button>
+        <button mat-button cdkFocusInitial color="primary" type="submit">Save</button>
         <button mat-button mat-dialog-close (click)="closeDialog()" color="warn" type="button">Cancel</button>
       </mat-dialog-actions>
     </div>
