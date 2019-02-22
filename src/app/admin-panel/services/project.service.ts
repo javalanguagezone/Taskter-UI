@@ -4,33 +4,13 @@ import { retry, catchError } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
 import { CreateProject } from '../../shared/models/createProject.model';
 import { Project } from 'src/app/shared/models/project.model';
+import { User } from 'src/app/shared/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProjectService {
-
-  // mockProjects: Project[] = [
-  //   {
-  //     projectId: 1,
-  //     projectName: 'First project',
-  //     projectCode: 'CO-989-FR',
-  //     clientName: 'Tacta'
-  //   },
-  //   {
-  //     projectId: 2,
-  //     projectName: 'Second project',
-  //     projectCode: 'CO-989-SC',
-  //     clientName: 'Mistral'
-  //   },
-  //   {
-  //     projectId: 3,
-  //     projectName: 'Third project',
-  //     projectCode: 'CO-989-TH',
-  //     clientName: 'BHT'
-  //   },
-  // ];
   constructor(private http: HttpClient) {}
 
   addProject(data: CreateProject) {
@@ -54,6 +34,13 @@ export class ProjectService {
     catchError(this.handleError)
   );
   }
+
+  getUsersByProjectId(id: number) {
+    return this.http.get<User[]>(`/api/projects/${id}/users`).pipe(
+     retry(3),
+     catchError(this.handleError)
+   );
+   }
 
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

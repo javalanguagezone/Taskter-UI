@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/shared/models/project.model';
+import { User } from 'src/app/shared/models/user.model';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'tsk-project-details',
@@ -11,23 +13,42 @@ import { Project } from 'src/app/shared/models/project.model';
 export class ProjectDetailsComponent implements OnInit {
 
   project: Project;
-
+  users: User[];
+  observables: any = [];
+  projectId: number;
   constructor(private projectService: ProjectService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(
       params => {
-        const id = +params.get('id');
-        this.getProject(id);
-        console.log(this.project);
+        this.projectId = +params.get('id');
       }
+    );
+
+    this.observables.push(this.projectService.getProjectById(this.projectId));
+    this.observables.push(this.projectService.getUsersByProjectId(this.projectId));
+
+    forkJoin(this.observables).subscribe(
+       responseList => {
+         this.project = responseList[0] as Project;
+         this.users = responseList[1] as User[];
+       }
     );
   }
 
-  getProject(id: number){
-    this.projectService.getProjectById(id).subscribe(
-      project => { this.project = project; }
-    );
-  }
+  // getUsersByProjectId(id: number) {
+  //   this.projectService.getUsersByProjectId(id).subscribe(
+  //     users => { this.users = users; }
+  //   );
+  // }
+
+  // getProject(id: number) {
+  //   this.projectService.getProjectById(id).subscribe(
+  //     project => {
+  //     this.project = project;
+  //       this.getUsersByProjectId(id);
+  //     }
+  //   );
+  // }
 
 }
