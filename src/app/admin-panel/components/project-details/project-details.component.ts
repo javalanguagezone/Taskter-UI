@@ -35,20 +35,4 @@ export class ProjectDetailsComponent implements OnInit {
        }
     );
   }
-
-  // getUsersByProjectId(id: number) {
-  //   this.projectService.getUsersByProjectId(id).subscribe(
-  //     users => { this.users = users; }
-  //   );
-  // }
-
-  // getProject(id: number) {
-  //   this.projectService.getProjectById(id).subscribe(
-  //     project => {
-  //     this.project = project;
-  //       this.getUsersByProjectId(id);
-  //     }
-  //   );
-  // }
-
 }
