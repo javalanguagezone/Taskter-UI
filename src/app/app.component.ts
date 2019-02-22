@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LayoutService } from './layout/services/layout.service';
 import { takeUntil } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent  implements OnDestroy {
+export class AppComponent implements OnDestroy, OnInit {
   title = 'taskter-ui';
 
   onDestroy$ = new Subject();
@@ -16,6 +16,9 @@ export class AppComponent  implements OnDestroy {
   navigationOpen: boolean;
 
   constructor(private layoutService: LayoutService) {
+  }
+
+  ngOnInit() {
     this.layoutService
       .onUserProfileToggle()
       .pipe(takeUntil(this.onDestroy$))
