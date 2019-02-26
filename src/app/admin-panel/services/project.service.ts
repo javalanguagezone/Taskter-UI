@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { CreateProject } from '../../shared/models/createProject.model';
+import { Project } from 'src/app/shared/models/project.model';
+import { User } from 'src/app/shared/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProjectService {
-
   constructor(private http: HttpClient) {}
 
   addProject(data: CreateProject) {
@@ -19,6 +20,27 @@ export class ProjectService {
         catchError(this.handleError)
       );
   }
+
+  getProjects() {
+    return this.http.get<Project[]>('/api/projects').pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+  }
+
+  getProjectById(id: number) {
+   return this.http.get<Project>(`/api/projects/${id}`).pipe(
+    retry(3),
+    catchError(this.handleError)
+  );
+  }
+
+  getUsersByProjectId(id: number) {
+    return this.http.get<User[]>(`/api/projects/${id}/users`).pipe(
+     retry(3),
+     catchError(this.handleError)
+   );
+   }
 
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
