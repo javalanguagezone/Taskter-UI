@@ -1,110 +1,139 @@
 <div class="container">
   <h1>Crete new project</h1>
-  <form [formGroup]="projectForm" class="form">
-    <div class="controlls">
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Project name"
-          formControlName="projectName"
-        /> </mat-form-field
-      ><br />
 
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Project code"
-          formControlName="projectCode"
-        /> </mat-form-field
-      ><br />
+  <mat-horizontal-stepper [linear]="true" #stepper class="controlls">
+    <mat-step [stepControl]="basicInfoFormGroup">
+      <ng-template matStepLabel>Basic info</ng-template>
+      <form [formGroup]="basicInfoFormGroup">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Project name"
+            formControlName="projectName"
+          /> </mat-form-field
+        ><br />
 
-      <mat-form-field>
-        <mat-select
-          formControlName="client"
-          placeholder="Client"
-          class="dropdown-input"
-        >
-          <mat-option *ngFor="let client of clients" [value]="client"
-            >{{ client.id }} {{ client.name }}</mat-option
-          >
-        </mat-select>
-      </mat-form-field>
-
-      <h2>Choose users:</h2>
-      <div class="input">
-        <div class="vertical-flex">
-          <mat-form-field>
-            <input
-              matInput
-              type="text"
-              placeholder="Find user"
-              formControlName="addUserControl"
-            />
-          </mat-form-field>
-          Users:
-          <div *ngFor="let user of (filteredUsers | async)">
-            <button mat-stroked-button (click)="onAddUser(user.userId)">
-              {{ user.userId }} {{ user.username }}
-            </button>
-          </div>
-        </div>
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="vertical-flex">
-          Chosen users:
-          <div *ngFor="let user of (selectedUsers | async); let i = index">
-            {{ user.username }}
-
-            <button mat-icon-button (click)="onRemoveUser(i)">
-              <mat-icon aria-label="Example icon-button with a heart icon"
-                >delete</mat-icon
-              >
-            </button>
-            <br />
-          </div>
-        </div>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Project code"
+            formControlName="projectCode"
+          /> </mat-form-field
+        ><br />
+      </form>
+      <div>
+        <button mat-button matStepperNext>Next</button>
       </div>
-
-      <h2>Define tasks:</h2>
-      <div class="input">
-        <div class="vertical-flex">
-          <mat-form-field>
-            <input
-              matInput
-              placeholder="Add task"
-              formControlName="addTaskControl"
-            /> </mat-form-field
-          ><br />
-          <button
-            mat-stroked-button
-            (click)="onAddTask()"
-            [disabled]="projectForm.get('addTaskControl').invalid"
+    </mat-step>
+    <mat-step [stepControl]="projectClientFormGroup">
+      <ng-template matStepLabel>Choose client</ng-template>
+      <form [formGroup]="projectClientFormGroup">
+        <mat-form-field>
+          <mat-select
+            formControlName="client"
+            placeholder="Client"
+            class="dropdown-input"
           >
-            Add Task
-          </button>
-        </div>
-
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="vertical-flex">
-          New Tasks:
-          <div *ngFor="let task of newTasks; let i = index">
-            {{ task.name }}
-
-            <mat-checkbox (mousedown)="onBillableChange(i)">
-              Billable</mat-checkbox
+            <mat-option *ngFor="let client of clients" [value]="client"
+              >{{ client.id }} {{ client.name }}</mat-option
             >
+          </mat-select>
+        </mat-form-field>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step [completed]="usersCompleted">
+      <ng-template matStepLabel>Add users</ng-template>
+      <form [formGroup]="projectForm" class="form">
+        <div class="input">
+          <div class="vertical-flex">
+            <mat-form-field>
+              <input
+                matInput
+                type="text"
+                placeholder="Find user"
+                formControlName="addUserControl"
+              />
+            </mat-form-field>
+            Users:
+            <div *ngFor="let user of (filteredUsers | async)">
+              <button mat-stroked-button (click)="onAddUser(user.userId)">
+                {{ user.userId }} {{ user.username }}
+              </button>
+            </div>
+          </div>
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="vertical-flex">
+            Chosen users:
+            <div *ngFor="let user of (selectedUsers | async); let i = index">
+              {{ user.username }}
 
-            <button mat-icon-button (click)="onRemoveTask(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button mat-icon-button (click)="onRemoveUser(i)">
+                <mat-icon aria-label="Example icon-button with a heart icon"
+                  >delete</mat-icon
+                >
+              </button>
+              <br />
+            </div>
           </div>
         </div>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
       </div>
-    </div>
-    <div *ngFor="let error of errors" class="errors">
-      <p>{{ error }}</p>
-    </div>
-    <div class="actions">
-      <mat-dialog-actions>
+    </mat-step>
+    <mat-step [completed]="tasksCompleted">
+      <ng-template matStepLabel>Add tasks</ng-template>
+      <form [formGroup]="projectForm" class="form">
+        <div class="input">
+          <div class="vertical-flex">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Add task"
+                formControlName="addTaskControl"
+              /> </mat-form-field
+            ><br />
+            <button
+              mat-stroked-button
+              (click)="onAddTask()"
+              [disabled]="projectForm.get('addTaskControl').invalid"
+            >
+              Add Task
+            </button>
+          </div>
+
+          <mat-divider [vertical]="true"></mat-divider>
+          <div class="vertical-flex">
+            New Tasks:
+            <div *ngFor="let task of newTasks; let i = index">
+              {{ task.name }}
+
+              <mat-checkbox (mousedown)="onBillableChange(i)">
+                Billable</mat-checkbox
+              >
+
+              <button mat-icon-button (click)="onRemoveTask(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Finish</ng-template>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
         <button
           mat-raised-button
           cdkFocusInitial
@@ -114,6 +143,17 @@
         >
           Create Project
         </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <form [formGroup]="projectForm" class="form">
+    <div *ngFor="let error of errors" class="errors">
+      <p>{{ error }}</p>
+    </div>
+    <div class="actions">
+      <mat-dialog-actions>
+
       </mat-dialog-actions>
     </div>
   </form>

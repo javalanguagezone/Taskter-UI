@@ -24,14 +24,23 @@ export class CreateProjectComponent implements OnInit {
   clients: Client[] = [];
 
   selectedUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  usersCompleted: Boolean = false;
+
   newTasks: Task[] = [];
+  tasksCompleted: Boolean = false;
 
   projectForm = this.fb.group({
-    projectName: [''],
-    projectCode: [''],
-    client: [],
     addUserControl: [],
     addTaskControl: ['']
+  });
+
+  basicInfoFormGroup = this.fb.group({
+    projectName: ['', Validators.required],
+    projectCode: ['', Validators.required]
+  });
+
+  projectClientFormGroup = this.fb.group({
+    client: [null, Validators.required]
   });
 
   filteredUsers: Observable<User[]>;
@@ -70,10 +79,16 @@ export class CreateProjectComponent implements OnInit {
     const selectedUsers = this.selectedUsers.getValue();
     selectedUsers.splice(index, 1);
     this.selectedUsers.next(selectedUsers);
+
+    if (this.selectedUsers.getValue().length === 0) {
+      this.usersCompleted = false;
+    }
   }
 
   onAddUser(id: number): void {
     this.selectedUsers.next([...this.selectedUsers.getValue(), this.users.find(user => user.userId === id)]);
+
+    this.usersCompleted = true;
   }
 
   _filterUsers(value: string): User[] {
@@ -91,10 +106,16 @@ export class CreateProjectComponent implements OnInit {
 
     this.projectForm.get('addTaskControl').setValue('');
     this.newTasks.push(task);
+
+    this.tasksCompleted = true;
   }
 
   onRemoveTask(index: number): void {
     this.newTasks.splice(index, 1);
+
+    if (this.newTasks.length === 0) {
+      this.tasksCompleted = false;
+    }
   }
 
   onBillableChange(index: number): void {
@@ -103,9 +124,9 @@ export class CreateProjectComponent implements OnInit {
 
   onSubmit(): void {
     const createProject: CreateProject = {
-      projectName: this.projectForm.value.projectName,
-      clientId: this.projectForm.value.client ? this.projectForm.value.client.id : null,
-      projectCode: this.projectForm.value.projectCode,
+      projectName: this.basicInfoFormGroup.value.projectName,
+      clientId: this.basicInfoFormGroup.value.client ? this.projectForm.value.client.id : null,
+      projectCode: this.basicInfoFormGroup.value.projectCode,
       tasks: this.newTasks,
       userIds: Array.from(this.selectedUsers.value, u => u.userId)
     };
