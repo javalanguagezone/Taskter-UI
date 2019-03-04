@@ -5,12 +5,12 @@ import { UserService } from '../../../shared/services/user.service';
 import { ClientService } from '../../../shared/services/client.service';
 import { FormControl, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, forkJoin, BehaviorSubject, merge } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
 import { Task } from '../../../shared/models/task.model';
 import { CreateProject } from '../../../shared/models/createProject.model';
 import { ProjectService } from '../../services/project.service';
 import { projectFormValidator } from '../../helpers/projectFormValidator';
 import { MatSnackBar } from '@angular/material';
+import { userInfo } from 'os';
 
 @Component({
   selector: 'tsk-create-project',
@@ -23,7 +23,7 @@ export class CreateProjectComponent implements OnInit {
   users: User[] = [];
   clients: Client[] = [];
 
-  selectedUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  selectedUsersIds: number[] = [];
   usersCompleted: Boolean = false;
 
   newTasks: Task[] = [];
@@ -62,39 +62,32 @@ export class CreateProjectComponent implements OnInit {
     .subscribe(([users, clients]) => {
       this.users = users;
       this.clients = clients;
-
-      this.filteredUsers = merge (
-        this.projectForm.get('addUserControl').valueChanges,
-        this.selectedUsers
-      )
-        .pipe(
-          startWith<string>(''),
-          map(value => typeof value === 'string' ? value : ''),
-          map(user => user ? this._filterUsers(user) : this._filterUsers(user))
-        );
     });
   }
 
-  onRemoveUser(index: number): void {
-    const selectedUsers = this.selectedUsers.getValue();
-    selectedUsers.splice(index, 1);
-    this.selectedUsers.next(selectedUsers);
+  onRemoveUser(id: number): void {
+    this.selectedUsersIds = this.selectedUsersIds.filter( value => {
+      return value !== id;
+    });
 
-    if (this.selectedUsers.getValue().length === 0) {
+    if (this.selectedUsersIds.length === 0) {
       this.usersCompleted = false;
     }
   }
 
-  onAddUser(id: number): void {
-    this.selectedUsers.next([...this.selectedUsers.getValue(), this.users.find(user => user.userId === id)]);
-
-    this.usersCompleted = true;
+  userSelected(id: number) {
+    if (this.selectedUsersIds.includes(id)) {
+      this.onRemoveUser(id);
+    } else {
+      this.onAddUser(id);
+    }
+    console.log(this.selectedUsersIds);
   }
 
-  _filterUsers(value: string): User[] {
-    const filterUser = value.toLowerCase();
-    return this.users.filter(user => user.username.toLowerCase().indexOf(filterUser) === 0
-      && !this.selectedUsers.value.includes(user));
+  onAddUser(id: number): void {
+    this.selectedUsersIds.push(id);
+
+    this.usersCompleted = true;
   }
 
   onAddTask(): void {
@@ -128,7 +121,7 @@ export class CreateProjectComponent implements OnInit {
       clientId: this.basicInfoFormGroup.value.client ? this.projectForm.value.client.id : null,
       projectCode: this.basicInfoFormGroup.value.projectCode,
       tasks: this.newTasks,
-      userIds: Array.from(this.selectedUsers.value, u => u.userId)
+      userIds: this.selectedUsersIds
     };
 
     this.errors = projectFormValidator(createProject);
