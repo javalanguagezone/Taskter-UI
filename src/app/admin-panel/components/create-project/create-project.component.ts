@@ -8,9 +8,7 @@ import { Observable, forkJoin, BehaviorSubject, merge } from 'rxjs';
 import { Task } from '../../../shared/models/task.model';
 import { CreateProject } from '../../../shared/models/createProject.model';
 import { ProjectService } from '../../services/project.service';
-import { projectFormValidator } from '../../helpers/projectFormValidator';
 import { MatSnackBar } from '@angular/material';
-import { userInfo } from 'os';
 
 @Component({
   selector: 'tsk-create-project',
@@ -43,8 +41,6 @@ export class CreateProjectComponent implements OnInit {
     client: [null, Validators.required]
   });
 
-  filteredUsers: Observable<User[]>;
-
   constructor(
     private userService: UserService,
     private clientService: ClientService,
@@ -75,19 +71,24 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  userSelected(id: number) {
+  userSelected(id: number): void {
     if (this.selectedUsersIds.includes(id)) {
       this.onRemoveUser(id);
     } else {
       this.onAddUser(id);
     }
-    console.log(this.selectedUsersIds);
   }
 
   onAddUser(id: number): void {
     this.selectedUsersIds.push(id);
 
     this.usersCompleted = true;
+  }
+
+  onNextStepUser(): void {
+    if (!this.usersCompleted) {
+      this.openSnackBar('Error: ', 'You must choose at least one user.');
+    }
   }
 
   onAddTask(): void {
@@ -97,8 +98,12 @@ export class CreateProjectComponent implements OnInit {
       billable: false
     };
 
-    this.projectForm.get('addTaskControl').setValue('');
-    this.newTasks.push(task);
+    if (this.newTasks.find(tsk => tsk.name === task.name ) !== undefined) {
+      this.openSnackBar('Error: ', 'Task with the same name has already been added.');
+    } else if(task.name !== '') {
+      this.projectForm.get('addTaskControl').setValue('');
+      this.newTasks.push(task);
+    }
 
     this.tasksCompleted = true;
   }
@@ -111,6 +116,12 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
+  onNextStepTask(): void {
+    if (!this.tasksCompleted) {
+      this.openSnackBar('Error: ', 'You must enter at least one task.');
+    }
+  }
+
   onBillableChange(index: number): void {
     this.newTasks[index].billable = !this.newTasks[index].billable;
   }
@@ -118,25 +129,21 @@ export class CreateProjectComponent implements OnInit {
   onSubmit(): void {
     const createProject: CreateProject = {
       projectName: this.basicInfoFormGroup.value.projectName,
-      clientId: this.basicInfoFormGroup.value.client ? this.projectForm.value.client.id : null,
+      clientId: this.projectClientFormGroup.value.client ? this.projectClientFormGroup.value.client.id : null,
       projectCode: this.basicInfoFormGroup.value.projectCode,
       tasks: this.newTasks,
       userIds: this.selectedUsersIds
     };
 
-    this.errors = projectFormValidator(createProject);
-
-    if (!this.errors) {
-      this.projectService.addProject(createProject).subscribe(
-        () => this.openSnackBar(),
-        err => console.log(err)
-      );
-    }
+    this.projectService.addProject(createProject).subscribe(
+      () => this.openSnackBar('Success!', 'New Project added!'),
+      err => console.log(err)
+    );
   }
 
-  openSnackBar() {
-    this.snackBar.open('Success!', 'New Project added!', {
-      duration: 2000,
+  openSnackBar(message: string, description: string): void {
+    this.snackBar.open(message, description, {
+      duration: 10000
     });
   }
 }

@@ -3,6 +3,7 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  padding: 10%;
 }
 
 .controlls{
@@ -12,12 +13,16 @@
 }
 
 .form{
-  width: 70%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1em;
 }
 
 .input{
   display: flex;
   justify-content:space-between;
+  margin-top: 1em;
 }
 
 .vertical-flex{
@@ -30,19 +35,22 @@
   margin-top: 2em;
 }
 
-.errors{
-  color: darkred;
-}
-
 .rightLabel{
   display: flex;
   justify-content: flex-end;
   width: 100%;
 }
 
+.rightButton{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+
 .matCard{
-  margin: 1em;
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
 }
