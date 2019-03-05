@@ -41,7 +41,12 @@ export class ProjectService {
      catchError(this.handleError)
    );
    }
-
+   getProjectByClientId(clientId: number) {
+    return this.http.get<Project[]>(`/api/projectsByClient/${clientId}`).pipe(
+     retry(3),
+     catchError(this.handleError)
+   );
+   }
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

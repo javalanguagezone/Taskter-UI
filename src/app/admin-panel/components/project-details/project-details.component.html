@@ -5,7 +5,7 @@
               <h2 class = "title"> Project details:   {{project.projectName}}</h2>
             </div>
             <div style="float:right;">
-                <button mat-button class="back-button" routerLink='/adminPanel/projects' >Back</button>
+                <button mat-button class="back-button" (click)="onBackClicked()" >Back</button>
                 <button mat-button class="edit-button">Edit</button>
 
             </div>

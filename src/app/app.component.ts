@@ -27,7 +27,7 @@ export class AppComponent  implements OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(isOpen => (this.navigationOpen = isOpen));
 
-      router.navigate(['/timeSheet']);
+
   }
 
   closeUserProfile() {

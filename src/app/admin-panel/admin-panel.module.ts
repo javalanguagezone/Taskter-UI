@@ -8,9 +8,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateClientComponent } from './components/create-client/create-client.component';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { ClientsListComponent } from './components/clients-list/clients-list.component';
 
 @NgModule({
-  declarations: [CreateProjectComponent, CreateClientComponent, ProjectsListComponent, ProjectDetailsComponent],
+  declarations: [CreateProjectComponent, CreateClientComponent, ProjectsListComponent, ProjectDetailsComponent, ClientsListComponent],
   imports: [
     CommonModule,
     AdminPanelRoutingModule,

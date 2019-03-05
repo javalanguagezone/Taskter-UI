@@ -1,0 +1,37 @@
+<div class="container">
+  <mat-card>
+      <div class="title">
+          <h1 style="display: inline"> List of all clients</h1>
+        </div>
+        <div style="float:right;">
+            <button mat-button class="add-button" routerLink='/adminPanel/createClient'>Add Client</button>
+        </div>
+
+    <div class="controlls">
+    <mat-form-field>
+      <mat-select [(value)]="selected"  class="dropdown-input" >
+        <mat-option *ngFor="let c of clients" [value]="c" (onSelectionChange)="change($event)">{{c.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  </mat-card>
+
+  <div style="margin-top: 10px">
+      <mat-card>
+
+          <h2> Client's projects</h2>
+          <div class="controlls">
+              <mat-action-list>
+                  <a mat-list-item *ngFor="let p of clientProjects" [routerLink]="['/adminPanel/projects', p.projectID]" > {{p.projectName + ' -' + p.projectCode}}  </a>
+
+                </mat-action-list>
+
+
+
+        </div>
+        </mat-card>
+  </div>
+
+
+</div>
+

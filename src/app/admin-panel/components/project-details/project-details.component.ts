@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/shared/models/project.model';
 import { User } from 'src/app/shared/models/user.model';
 import { forkJoin } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'tsk-project-details',
@@ -16,7 +17,9 @@ export class ProjectDetailsComponent implements OnInit {
   users: User[];
   observables: any = [];
   projectId: number;
-  constructor(private projectService: ProjectService, private route: ActivatedRoute) { }
+  constructor(private projectService: ProjectService,
+              private route: ActivatedRoute,
+              private location: Location) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(
@@ -34,5 +37,8 @@ export class ProjectDetailsComponent implements OnInit {
          this.users = responseList[1] as User[];
        }
     );
+  }
+  onBackClicked() {
+    this.location.back();
   }
 }

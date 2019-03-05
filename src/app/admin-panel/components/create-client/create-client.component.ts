@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from 'src/app/shared/services/client.service';
 import { MatSnackBar } from '@angular/material';
-
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'tsk-create-client',
@@ -16,7 +17,9 @@ export class CreateClientComponent implements OnInit {
 
   constructor(
     private clientservice: ClientService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private location: Location) { }
 
 
   ngOnInit(): void {
@@ -33,15 +36,21 @@ export class CreateClientComponent implements OnInit {
     this.postNewClient();
     this.clientForm.reset();
 
-
   }
   postNewClient() {
     this.clientservice.addNewClient(this.clientForm.value).subscribe(
       () => { },
       (err: any) => {
         console.warn(err);
+      },
+      () => {
+        this.openSnackBar('Client added!', this.clientForm.get('name').value);
+        this.router.navigate(['/adminPanel/clients']);
       }
     );
+  }
+  onBackClicked() {
+    this.location.back();
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {

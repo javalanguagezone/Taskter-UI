@@ -4,6 +4,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { CreateClientComponent } from './components/create-client/create-client.component';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { ClientsListComponent } from './components/clients-list/clients-list.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'projects/:id',
     component: ProjectDetailsComponent
+  },
+  {
+    path: 'clients',
+    component: ClientsListComponent
   }
 ];
 
