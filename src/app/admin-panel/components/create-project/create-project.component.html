@@ -109,15 +109,23 @@
 
       <mat-step>
         <ng-template matStepLabel>Finish</ng-template>
-        <div>
-          <p>Project name: {{this.basicInfoFormGroup.value.projectName}}</p>
-          <p>Project code: {{this.basicInfoFormGroup.value.projectCode}}</p>
-          <!-- <p>Project client: {{this.projectClientFormGroup.value.client.name}}</p> -->
-
+        <div *ngIf="tasksCompleted" class="final">
+          <p class="final-item"><b>Project name:</b> {{this.basicInfoFormGroup.value.projectName}}</p>
+          <p class="final-item"><b>Project code:</b> {{this.basicInfoFormGroup.value.projectCode}}</p>
+          <p class="final-item"><b>Project client:</b> {{this.projectClientFormGroup.value.client.name}}</p>
+          <p class="final-item"><b>Added users: </b></p>
+          <div *ngFor="let user of users">
+              <p *ngIf="selectedUsersIds.includes(user.userId)" class="rightLabel">{{user.firstName}}  {{ user.lastName }}</p>
+          </div>
+          <p><b>Project tasks:</b></p>
+          <div *ngFor="let task of newTasks" >
+            <div *ngIf="task.billable"><p class="rightLabel">{{task.name}} (Billable) </p></div>
+            <div *ngIf="!task.billable"><p class="rightLabel">{{task.name}} (Non-Billable) </p></div>
+          </div>
         </div>
 
         <div class="input">
-          <button mat-button matStepperPrevious>Back</button>
+          <button mat-raised-button matStepperPrevious>Back</button>
           <button
             mat-raised-button
             cdkFocusInitial

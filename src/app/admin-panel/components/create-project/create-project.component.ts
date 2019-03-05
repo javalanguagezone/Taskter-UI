@@ -3,12 +3,13 @@ import { User } from '../../../shared/models/user.model';
 import { Client } from '../../../shared/models/client.model';
 import { UserService } from '../../../shared/services/user.service';
 import { ClientService } from '../../../shared/services/client.service';
-import { FormControl, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, forkJoin, BehaviorSubject, merge } from 'rxjs';
+import { FormControl, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { forkJoin} from 'rxjs';
 import { Task } from '../../../shared/models/task.model';
 import { CreateProject } from '../../../shared/models/createProject.model';
 import { ProjectService } from '../../services/project.service';
 import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsk-create-project',
@@ -46,7 +47,8 @@ export class CreateProjectComponent implements OnInit {
     private clientService: ClientService,
     private fb: FormBuilder,
     private projectService: ProjectService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -136,7 +138,10 @@ export class CreateProjectComponent implements OnInit {
     };
 
     this.projectService.addProject(createProject).subscribe(
-      () => this.openSnackBar('Success!', 'New Project added!'),
+      () => {
+        this.openSnackBar('Success!', 'New Project added!');
+        this.router.navigate(['/adminPanel/projects']);
+      },
       err => console.log(err)
     );
   }
