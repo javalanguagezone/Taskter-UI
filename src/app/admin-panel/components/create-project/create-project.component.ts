@@ -102,7 +102,7 @@ export class CreateProjectComponent implements OnInit {
 
     if (this.newTasks.find(tsk => tsk.name === task.name ) !== undefined) {
       this.openSnackBar('Error: ', 'Task with the same name has already been added.');
-    } else if(task.name !== '') {
+    } else if (task.name !== '') {
       this.projectForm.get('addTaskControl').setValue('');
       this.newTasks.push(task);
     }
