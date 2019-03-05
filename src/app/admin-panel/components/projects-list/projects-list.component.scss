@@ -1,0 +1,49 @@
+/* Structure */
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 20px;
+  width: 50%;
+}
+
+.table-container {
+  margin-top: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1em;
+}
+
+.table-header{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.table-body{
+  margin-top: 10px;
+}
+
+.table-cell{
+  text-align: left;
+  font-size: 18px;
+}
+.center{
+  text-align: center;
+}
+
+.details-button {
+  background-color: rgba(63, 81, 181, 1);
+  color: white;
+}
+.add-button {
+  padding: 0.5em;
+  width: 12em;
+  background-color: rgba(63, 81, 181, 1);
+  color: white;
+  margin-top: 10px;
+  float: left;
+  font-size: 18px;
+}
