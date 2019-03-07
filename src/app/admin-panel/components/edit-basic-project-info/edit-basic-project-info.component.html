@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Edit basic information</h1>
+<div mat-dialog-content>
+<form [formGroup]="basicInfoFormGroup" >
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Project name"
+      formControlName="projectName"
+    /> </mat-form-field
+  ><br />
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Project code"
+      formControlName="projectCode"
+    /> </mat-form-field
+  ><br />
+</form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="closeDialog()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="!basicInfoFormGroup.valid">Save</button>
+</div>
+

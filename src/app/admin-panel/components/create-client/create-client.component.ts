@@ -48,6 +48,7 @@ export class CreateClientComponent implements OnInit {
         this.router.navigate(['/adminPanel/clients']);
       }
     );
+    this.openSnackBar('Cliend added!', this.clientForm.get('name').value);
   }
   onBackClicked() {
     this.location.back();

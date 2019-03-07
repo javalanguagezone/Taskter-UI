@@ -5,6 +5,7 @@ import { throwError, of } from 'rxjs';
 import { CreateProject } from '../../shared/models/createProject.model';
 import { Project } from 'src/app/shared/models/project.model';
 import { User } from 'src/app/shared/models/user.model';
+import { EditBasicProjectInfo } from '../../shared/models/editBasicProjectInfo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,13 @@ export class ProjectService {
      catchError(this.handleError)
    );
    }
+
+  editBasicProjectInformation(data: EditBasicProjectInfo) {
+    return this.http.put(`api/projects/${data.Id}/edit/basicinfo`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

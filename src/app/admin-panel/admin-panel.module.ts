@@ -10,14 +10,25 @@ import { ProjectsListComponent } from './components/projects-list/projects-list.
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { ClientsListComponent } from './components/clients-list/clients-list.component';
 
+import { EditBasicProjectInfoComponent } from './components/edit-basic-project-info/edit-basic-project-info.component';
+
 @NgModule({
-  declarations: [CreateProjectComponent, CreateClientComponent, ProjectsListComponent, ProjectDetailsComponent, ClientsListComponent],
+  declarations: [
+    CreateProjectComponent,
+    CreateClientComponent,
+    ProjectsListComponent,
+    ProjectDetailsComponent,
+    EditBasicProjectInfoComponent,
+    ClientsListComponent
+  ],
+
   imports: [
     CommonModule,
     AdminPanelRoutingModule,
     MaterialDesignModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  entryComponents: [EditBasicProjectInfoComponent]
 })
 export class AdminPanelModule { }

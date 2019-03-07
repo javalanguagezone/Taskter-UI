@@ -27,3 +27,11 @@
   background-color: rgba(238, 238, 238, 1);
   color: black;
 }
+
+.rightButton{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
