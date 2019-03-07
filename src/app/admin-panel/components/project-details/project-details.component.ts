@@ -44,7 +44,7 @@ export class ProjectDetailsComponent implements OnInit {
       Id: this.project.projectID,
       Name: this.project.projectName,
       Code: this.project.projectCode
-    }
+    };
     const dialogueRef = this.dialogue.open(EditBasicProjectInfoComponent, {
       width: '350px',
       data: editData
