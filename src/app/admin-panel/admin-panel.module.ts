@@ -11,6 +11,7 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { ClientsListComponent } from './components/clients-list/clients-list.component';
 
 import { EditBasicProjectInfoComponent } from './components/edit-basic-project-info/edit-basic-project-info.component';
+import { EditProjectTasksComponent } from './components/edit-project-tasks/edit-project-tasks.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { EditBasicProjectInfoComponent } from './components/edit-basic-project-i
     ProjectsListComponent,
     ProjectDetailsComponent,
     EditBasicProjectInfoComponent,
-    ClientsListComponent
+    ClientsListComponent,
+    EditProjectTasksComponent
   ],
 
   imports: [

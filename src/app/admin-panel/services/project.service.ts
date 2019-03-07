@@ -50,7 +50,7 @@ export class ProjectService {
    }
 
   editBasicProjectInformation(data: EditBasicProjectInfo) {
-    return this.http.put(`api/projects/${data.Id}/edit/basicinfo`, data).pipe(
+    return this.http.put(`api/projects/${data.id}/edit/basicinfo`, data).pipe(
       catchError(this.handleError)
     );
   }

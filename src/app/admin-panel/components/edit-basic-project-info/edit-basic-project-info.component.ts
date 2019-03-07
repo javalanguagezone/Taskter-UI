@@ -19,8 +19,8 @@ export class EditBasicProjectInfoComponent implements OnInit {
     ) { }
 
   basicInfoFormGroup = this.fb.group({
-    projectName: [this.data.Name, Validators.required],
-    projectCode: [this.data.Code, Validators.required]
+    projectName: [this.data.name, Validators.required],
+    projectCode: [this.data.code, Validators.required]
   });
 
   closeDialog() {
@@ -28,7 +28,12 @@ export class EditBasicProjectInfoComponent implements OnInit {
   }
 
   save() {
-    this.projectService.editBasicProjectInformation(this.data)
+    const editedData: EditBasicProjectInfo = {
+      id: this.data.id,
+      name: this.basicInfoFormGroup.get('projectName').value,
+      code: this.basicInfoFormGroup.get('projectCode').value,
+    };
+    this.projectService.editBasicProjectInformation(editedData)
       .subscribe(
         data => console.log('Success'),
         err => console.log(err)

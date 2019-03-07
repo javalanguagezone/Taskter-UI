@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material';
 import { EditBasicProjectInfoComponent } from '../edit-basic-project-info/edit-basic-project-info.component';
 import { EditBasicProjectInfo } from '../../../shared/models/editBasicProjectInfo.model';
 import { ThrowStmt } from '@angular/compiler';
+import { Task } from 'src/app/shared/models/task.model';
+import { EditProjectTasksComponent } from '../edit-project-tasks/edit-project-tasks.component';
 @Component({
   selector: 'tsk-project-details',
   templateUrl: './project-details.component.html',
@@ -19,6 +21,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   project: Project;
   users: User[];
+  activeTasks: Task[];
   observables: any = [];
   projectId: number;
 
@@ -31,7 +34,7 @@ export class ProjectDetailsComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(
       params => {
-        this.projectId = +params.get('id');
+        this.projectId = + params.get('id');
       }
     );
 
@@ -44,16 +47,28 @@ export class ProjectDetailsComponent implements OnInit {
          this.users = responseList[1] as User[];
        }
     );
+
+    this.observables[0].subscribe(p => { this.activeTasks = p.tasks;
+      for (const item of this.activeTasks) {
+        if (!item.active) {
+          this.activeTasks = this.activeTasks.filter(x => x !== item);
+        }
+    }
+    } );
+
+
   }
   onBackClicked() {
     this.location.back();
   }
   openDialog(): void {
     const editData: EditBasicProjectInfo = {
-      Id: this.project.projectID,
-      Name: this.project.projectName,
-      Code: this.project.projectCode
+      id: this.project.id,
+      name: this.project.name,
+      code: this.project.code
     }
+
+
     const dialogueRef = this.dialogue.open(EditBasicProjectInfoComponent, {
       width: '350px',
       data: editData
@@ -70,5 +85,14 @@ export class ProjectDetailsComponent implements OnInit {
        }
     );
     });
+  }
+
+  openTaskDialog(): void {
+   const tasks: Task[] = this.project.tasks;
+
+   const dialogueRef = this.dialogue.open(EditProjectTasksComponent, {
+    width: '350px',
+    data: tasks
+  });
   }
 }
