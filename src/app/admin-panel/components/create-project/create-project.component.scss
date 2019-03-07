@@ -1,0 +1,68 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 10%;
+}
+
+.controlls{
+  display: flex;
+  flex-direction: column;
+  width: 100%
+}
+
+.form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.input{
+  display: flex;
+  justify-content:space-between;
+  margin-top: 1em;
+}
+
+.vertical-flex{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.actions{
+  margin-top: 2em;
+}
+
+.rightLabel{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.rightButton{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.matCard{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+
+.final{
+  display: flex;
+  flex-direction: column;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+.final-item{
+  display: flex;
+  justify-content: space-between;
+}

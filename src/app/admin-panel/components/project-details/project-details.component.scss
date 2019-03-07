@@ -1,0 +1,37 @@
+.details-container {
+  margin-top: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1em;
+}
+
+
+.title{
+  display: inline;
+}
+.details{
+  margin-top: 10px;
+}
+.details-row{
+  padding: 10px;
+  margin-top: 10px;
+  background-color: rgba(238, 238, 238, 1);
+}
+
+.edit-button {
+  background-color: rgba(63, 81, 181, 1);
+  color: white;
+  margin-left: 20px;
+}
+.back-button {
+  background-color: rgba(238, 238, 238, 1);
+  color: black;
+}
+
+.rightButton{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}

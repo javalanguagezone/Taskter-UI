@@ -4,6 +4,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { MatCardModule } from '@angular/material/card';
@@ -13,8 +15,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatNativeDateModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { MatNativeDateModule, MatSelectModule, MatInputModule, MatAutocompleteModule } from '@angular/material';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [],
@@ -35,6 +39,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     MatSelectModule,
     MatInputModule,
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatStepperModule,
     MatProgressSpinnerModule,
     MatSnackBarModule
   ],
@@ -54,6 +62,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     MatSelectModule,
     MatInputModule,
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatStepperModule,
     MatProgressSpinnerModule,
     MatSnackBarModule
   ]

@@ -2,30 +2,30 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { User } from '../models/user.model';
+import { Client } from '../models/client.model';
+import { NewClient } from '../models/newClient.model';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class ClientService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers() {
-    return this.http.get<User[]>('api/users')
+  getAllClients() {
+    return this.http.get<Client[]>('api/clients')
     .pipe(
       retry(3),
       catchError(this.handleError)
     );
   }
+  addNewClient(clientName: string) {
 
-  getCurrentUser() {
-    return this.http.get<User>('/api/users/current')
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
+    return this.http.post<NewClient>('/api/client', clientName).pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: HttpErrorResponse) {
