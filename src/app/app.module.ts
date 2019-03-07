@@ -1,18 +1,20 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MomentModule } from 'ngx-moment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
-import { RoleDirective } from './role.directive';
-import { MomentModule } from 'ngx-moment';
 import { MatSidenavModule, MatSnackBarModule } from '@angular/material';
+import { AuthCallbackComponent } from './authorization/components/auth-callback/auth-callback.component';
+import { AuthHttpInterceptorService } from './authorization/services/auth-http-interceptor.service';
+
 @NgModule({
   declarations: [
     AppComponent,
-    RoleDirective
+    AuthCallbackComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +26,13 @@ import { MatSidenavModule, MatSnackBarModule } from '@angular/material';
     MatSidenavModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

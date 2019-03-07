@@ -33,7 +33,7 @@
 
     </mat-accordion>
 
-    <mat-accordion *ngIf="loggedInUser">
+    <mat-accordion *ngIf="loggedInUser$ | async as loggedInUser">
       <mat-expansion-panel *ngIf="loggedInUser.role === 'Administrator'">
         <mat-expansion-panel-header class="sidenav-item">
           <mat-panel-title>
@@ -55,8 +55,6 @@
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-accordion>
-
-
 
   </mat-nav-list>
 

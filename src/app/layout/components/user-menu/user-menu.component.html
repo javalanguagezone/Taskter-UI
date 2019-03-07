@@ -1,7 +1,7 @@
-<div id="userMenuContent">
+<div id="userMenuContent" *ngIf="loggedInUser$ | async as currentUser">
   <div id="card">
-    <img src="{{currentUser.avatarURL}}" />
-    <h2>{{currentUser.firstName}} {{currentUser.lastName}}</h2>
+    <img src="{{currentUser.picture}}" />
+    <h2>{{currentUser.name}}</h2>
     <h4>{{currentUser.role}}</h4>
   </div>
   <br>
@@ -11,7 +11,7 @@
       <mat-icon matListIcon>dashboard</mat-icon>
       Profile
     </a>
-    <a mat-list-item (click)="closeUserMenu()">
+    <a mat-list-item (click)="logout()">
       <mat-icon matListIcon>exit_to_app</mat-icon>
       Logout
     </a>

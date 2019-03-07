@@ -1,24 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../shared/services/user.service';
-import { User } from '../../../shared/models/user.model';
+
 import { LayoutService } from '../../services/layout.service';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/authorization/services/auth.service';
+
 @Component({
   selector: 'tsk-user-menu',
   templateUrl: './user-menu.component.html',
-  styleUrls: ['./user-menu.component.scss'],
+  styleUrls: ['./user-menu.component.scss']
 })
 export class UserMenuComponent implements OnInit {
-
-  currentUser: User = {} as User;
-  constructor(private userService: UserService, private layoutService: LayoutService) { }
+  loggedInUser$: Observable<any>;
+  constructor(private layoutService: LayoutService, private authService: AuthService) {}
 
   ngOnInit() {
-    this.userService.getCurrentUser().subscribe(user => {
-      this.currentUser = user;
-    });
+    this.loggedInUser$ = this.authService.getUserProfile();
   }
 
   closeUserMenu() {
     this.layoutService.closeUserProfile();
+  }
+
+  logout() {
+    this.authService.startLogout();
   }
 }

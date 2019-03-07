@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserService } from '../../../shared/services/user.service';
-import { User } from '../../../shared/models/user.model';
-
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/authorization/services/auth.service';
 import { LayoutService } from 'src/app/layout/services/layout.service';
 
 @Component({
@@ -11,17 +10,12 @@ import { LayoutService } from 'src/app/layout/services/layout.service';
 })
 export class NavigationMenuComponent implements OnInit {
 
-  loggedInUser: User = null;
+  loggedInUser$: Observable<any>;
 
-  constructor(private userService: UserService, private layoutService: LayoutService) { }
+  constructor(private layoutService: LayoutService, private authService: AuthService) { }
 
   ngOnInit() {
-
-    this.userService.getCurrentUser()
-    .subscribe(user => {
-      this.loggedInUser = user;
-      console.log(this.loggedInUser);
-    });
+    this.loggedInUser$ = this.authService.getUserProfile();
   }
   toggleNavigationMenu() {
     this.layoutService.navigationToggle();

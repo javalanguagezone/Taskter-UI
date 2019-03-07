@@ -10,9 +10,9 @@
     <div class="col text-center">
       <p>Taskter</p>
     </div>
-    <div *ngIf="loggedInUser" class="col text-right">
+    <div *ngIf="loggedInUser$ | async as loggedInUser" class="col text-right">
       <button id='avatarButton' mat-icon-button (click)="openUserProfile()">
-        <img src="{{loggedInUser.avatarURL}}" style="width: 40px; height: 40px; border-radius: 5px;" />
+        <img src="{{loggedInUser.picture}}" style="width: 40px; height: 40px; border-radius: 5px;" />
       </button>
     </div>
   </div>
