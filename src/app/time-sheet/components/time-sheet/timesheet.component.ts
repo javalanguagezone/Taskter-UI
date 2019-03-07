@@ -78,7 +78,7 @@ export class TimesheetComponent implements OnInit {
   openDialog(): void {
     const dialogueRef = this.dialogue.open(TimeEntryDialogueComponent, {
       width: '350px',
-      data: this.date
+      data: {date: this.date, EntryId: 0}
     });
 
     dialogueRef.afterClosed().subscribe(result => {
