@@ -12,7 +12,7 @@ import { ClientsListComponent } from './components/clients-list/clients-list.com
 
 import { EditBasicProjectInfoComponent } from './components/edit-basic-project-info/edit-basic-project-info.component';
 import { EditProjectTasksComponent } from './components/edit-project-tasks/edit-project-tasks.component';
-
+import { FromatBillable } from './pipes/billable.pipe';
 @NgModule({
   declarations: [
     CreateProjectComponent,
@@ -21,7 +21,8 @@ import { EditProjectTasksComponent } from './components/edit-project-tasks/edit-
     ProjectDetailsComponent,
     EditBasicProjectInfoComponent,
     ClientsListComponent,
-    EditProjectTasksComponent
+    EditProjectTasksComponent,
+    FromatBillable
   ],
 
   imports: [
@@ -31,6 +32,6 @@ import { EditProjectTasksComponent } from './components/edit-project-tasks/edit-
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [EditBasicProjectInfoComponent]
+  entryComponents: [EditBasicProjectInfoComponent, EditProjectTasksComponent]
 })
 export class AdminPanelModule { }

@@ -55,6 +55,12 @@ export class ProjectService {
     );
   }
 
+  editProjectTasks(data: any) {
+    return this.http.put(`api/projects/${data.id}/edit/tasks`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

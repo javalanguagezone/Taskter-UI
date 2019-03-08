@@ -5,13 +5,13 @@ import { Project } from 'src/app/shared/models/project.model';
 import { User } from 'src/app/shared/models/user.model';
 import { forkJoin } from 'rxjs';
 import { Location } from '@angular/common';
-
 import { MatDialog } from '@angular/material';
 import { EditBasicProjectInfoComponent } from '../edit-basic-project-info/edit-basic-project-info.component';
 import { EditBasicProjectInfo } from '../../../shared/models/editBasicProjectInfo.model';
-import { ThrowStmt } from '@angular/compiler';
 import { Task } from 'src/app/shared/models/task.model';
 import { EditProjectTasksComponent } from '../edit-project-tasks/edit-project-tasks.component';
+import { FromatBillable } from '../../pipes/billable.pipe';
+
 @Component({
   selector: 'tsk-project-details',
   templateUrl: './project-details.component.html',
@@ -21,7 +21,6 @@ export class ProjectDetailsComponent implements OnInit {
 
   project: Project;
   users: User[];
-  activeTasks: Task[];
   observables: any = [];
   projectId: number;
 
@@ -47,21 +46,12 @@ export class ProjectDetailsComponent implements OnInit {
          this.users = responseList[1] as User[];
        }
     );
-
-    this.observables[0].subscribe(p => { this.activeTasks = p.tasks;
-      for (const item of this.activeTasks) {
-        if (!item.active) {
-          this.activeTasks = this.activeTasks.filter(x => x !== item);
-        }
-    }
-    } );
-
-
   }
   onBackClicked() {
     this.location.back();
   }
   openDialog(): void {
+    console.log(this.project.tasks);
     const editData: EditBasicProjectInfo = {
       id: this.project.id,
       name: this.project.name,
@@ -88,11 +78,28 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   openTaskDialog(): void {
-   const tasks: Task[] = this.project.tasks;
+    const tasks: Task[] = this.project.tasks;
 
-   const dialogueRef = this.dialogue.open(EditProjectTasksComponent, {
-    width: '350px',
-    data: tasks
-  });
+    const dialogueRef = this.dialogue.open(EditProjectTasksComponent, {
+      width: '700px',
+      data: {
+        tasks: tasks,
+        projectId: this.project.id
+      }
+    });
+
+    dialogueRef.afterClosed().subscribe( reuslt => {
+      this.observables.push(this.projectService.getProjectById(this.projectId));
+      this.observables.push(this.projectService.getUsersByProjectId(this.projectId));
+
+      forkJoin(this.observables).subscribe(
+         responseList => {
+           this.project = responseList[0] as Project;
+           this.users = responseList[1] as User[];
+           console.log(this.project);
+         }
+        );
+      }
+    );
   }
 }

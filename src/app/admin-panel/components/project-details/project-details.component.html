@@ -40,9 +40,11 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list role="list">
-        <mat-list-item role="listitem" *ngFor="let task of activeTasks">{{
-          task.name
-        }}</mat-list-item>
+        <mat-list-item role="listitem" *ngFor="let task of project.tasks">
+          <div *ngIf="task.active">
+            {{ task.name }} : {{task.billable | formatBillable}}
+          </div>
+        </mat-list-item>
       </mat-list>
       <div class="rightButton">
         <button mat-button class="edit-button" (click)="openTaskDialog()">Edit tasks</button>

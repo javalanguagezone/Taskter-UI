@@ -18,22 +18,24 @@
       Add Task
     </button>
 
-    <div *ngFor="let task of newTasks; let i = index">
+    <div *ngFor="let task of tasks; let i = index">
       <mat-card class="matCard">
+
         {{ task.name }}
-        <mat-checkbox >
+
+        <mat-checkbox [checked]="task.billable" (change)="onBillableChange(i)">
           Billable</mat-checkbox
         >
 
-        <button mat-icon-button (click)="onRemoveTask(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <mat-checkbox [checked]="task.active" (change)="onActiveChange(i)">
+            Active</mat-checkbox
+          >
       </mat-card>
     </div>
   </form>
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button (click)="closeDialog()">Cancel</button>
-  <button mat-raised-button color="primary"  [disabled]="!basicInfoFormGroup.valid">Save</button>
+  <button mat-raised-button color="primary" [disabled]="!tasksCompleted" (click)="save()">Save</button>
 </div>
 

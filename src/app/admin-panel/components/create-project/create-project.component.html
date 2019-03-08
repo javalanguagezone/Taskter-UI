@@ -119,8 +119,7 @@
           </div>
           <p><b>Project tasks:</b></p>
           <div *ngFor="let task of newTasks" >
-            <div *ngIf="task.billable"><p class="rightLabel">{{task.name}} (Billable) </p></div>
-            <div *ngIf="!task.billable"><p class="rightLabel">{{task.name}} (Non-Billable) </p></div>
+            <p class="rightLabel">{{task.name}} ({{task.billable | formatBillable }}) </p>
           </div>
         </div>
 
