@@ -73,11 +73,9 @@ export class EditProjectTasksComponent implements OnInit {
     this.tasks.map(tsk => tsk['projectTaskId'] = tsk.taskID);
     console.log(this.tasks);
     this.projectService.editProjectTasks(this.tasks).subscribe(
-      null,
-      err => console.warn(err)
+      res => this.dialogRef.close(),
+      err => this.openSnackBar('Error:', 'Something went wrong')
     );
-
-    this.dialogRef.close();
   }
   openSnackBar(message: string, description: string): void {
     this.snackBar.open(message, description, {

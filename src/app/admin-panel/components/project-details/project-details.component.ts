@@ -77,6 +77,10 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
+  activeTasks(): Task[] {
+    return this.project.tasks.filter( task => task.active === true);
+  }
+
   openTaskDialog(): void {
     const tasks: Task[] = this.project.tasks;
 
