@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FromatBillable implements PipeTransform {
 
   transform(billable: boolean): any {
-    return billable? 'Billable' : 'Non-Billable';
+    return billable ? 'Billable' : 'Non-Billable';
   }
 
 }

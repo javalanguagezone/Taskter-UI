@@ -56,7 +56,7 @@ export class ProjectDetailsComponent implements OnInit {
       id: this.project.id,
       name: this.project.name,
       code: this.project.code
-    }
+    };
 
 
     const dialogueRef = this.dialogue.open(EditBasicProjectInfoComponent, {
