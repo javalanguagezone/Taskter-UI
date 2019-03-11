@@ -31,7 +31,6 @@ export class ProjectsListComponent implements OnInit {
       .subscribe(project => {
         this.projects = project;
         this.dataSource = new MatTableDataSource(this.projects);
-        console.log(this.projects);
       }
       );
   }

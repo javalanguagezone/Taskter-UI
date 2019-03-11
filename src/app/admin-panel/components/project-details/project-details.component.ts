@@ -51,7 +51,6 @@ export class ProjectDetailsComponent implements OnInit {
     this.location.back();
   }
   openDialog(): void {
-    console.log(this.project.tasks);
     const editData: EditBasicProjectInfo = {
       id: this.project.id,
       name: this.project.name,
