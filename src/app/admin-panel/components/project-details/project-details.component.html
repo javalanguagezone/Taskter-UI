@@ -1,8 +1,9 @@
 <div class="details-container" *ngIf="project">
+
   <mat-card>
     <div>
       <div class="title">
-        <h2 class="title">Project details: {{ project.projectName }}</h2>
+        <h2 class="title">Project details: {{ project.name }}</h2>
       </div>
       <div style="float:right;">
         <button
@@ -17,10 +18,10 @@
 
     <div style="margin-top: 50px">
       <div class="details-row">
-        <b>Name: </b> {{ project.projectName }} <br />
+        <b>Name: </b> {{ project.name }} <br />
       </div>
       <div class="details-row">
-        <b>Code: </b>{{ project.projectCode }} <br />
+        <b>Code: </b>{{ project.code }} <br />
       </div>
       <div class="details-row">
         <b>Client: </b> {{ project.clientName }} <br />
@@ -39,12 +40,12 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list role="list">
-        <mat-list-item role="listitem" *ngFor="let task of project?.tasks">{{
-          task.name
-        }}</mat-list-item>
+        <mat-list-item role="listitem" *ngFor="let task of activeTasks()">
+            {{ task.name }} : {{task.billable | formatBillable}}
+        </mat-list-item>
       </mat-list>
       <div class="rightButton">
-        <button mat-button class="edit-button">Edit</button>
+        <button mat-button class="edit-button" (click)="openTaskDialog()">Edit tasks</button>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

@@ -1,0 +1,31 @@
+.container {
+  margin-top: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1em;
+}
+
+.controlls{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+}
+.title{
+  display: inline;
+}
+.add-button {
+  background-color: rgba(63, 81, 181, 1);
+  color: white;
+  margin-left: 20px;
+}
+
+a {
+  text-decoration-line: none;
+  color:  rgba(63, 81, 181, 1);
+  text-decoration-color:  rgba(63, 81, 181, 1);
+}
+
+a:hover {
+  background-color: rgba(238, 238, 238, 1);
+}

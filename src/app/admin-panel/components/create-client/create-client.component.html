@@ -1,4 +1,7 @@
 <div class="container">
+  <mat-card>
+
+
   <h1>Crete new client</h1>
   <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="form">
     <div class="controlls">
@@ -12,8 +15,12 @@
         <button mat-raised-button cdkFocusInitial color="primary" type="submit" >
           Create Client
         </button>
+        <button mat-raised-button  color="primary" class="back-button" (click)="onBackClicked()">
+           Back
+          </button>
       </mat-dialog-actions>
     </div>
 
   </form>
+</mat-card>
 </div>

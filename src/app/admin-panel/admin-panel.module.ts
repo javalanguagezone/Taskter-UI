@@ -8,16 +8,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateClientComponent } from './components/create-client/create-client.component';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
-import { EditBasicProjectInfoComponent } from './components/edit-basic-project-info/edit-basic-project-info.component';
+import { ClientsListComponent } from './components/clients-list/clients-list.component';
 
+import { EditBasicProjectInfoComponent } from './components/edit-basic-project-info/edit-basic-project-info.component';
+import { EditProjectTasksComponent } from './components/edit-project-tasks/edit-project-tasks.component';
+import { FromatBillable } from './pipes/billable.pipe';
 @NgModule({
   declarations: [
     CreateProjectComponent,
     CreateClientComponent,
     ProjectsListComponent,
     ProjectDetailsComponent,
-    EditBasicProjectInfoComponent
+    EditBasicProjectInfoComponent,
+    ClientsListComponent,
+    EditProjectTasksComponent,
+    FromatBillable
   ],
+
   imports: [
     CommonModule,
     AdminPanelRoutingModule,
@@ -25,6 +32,6 @@ import { EditBasicProjectInfoComponent } from './components/edit-basic-project-i
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [EditBasicProjectInfoComponent]
+  entryComponents: [EditBasicProjectInfoComponent, EditProjectTasksComponent]
 })
 export class AdminPanelModule { }

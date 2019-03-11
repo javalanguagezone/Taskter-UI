@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LayoutService } from './layout/services/layout.service';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsk-root',
@@ -15,7 +16,7 @@ export class AppComponent  implements OnDestroy {
   userMenuOpen: boolean;
   navigationOpen: boolean;
 
-  constructor(private layoutService: LayoutService) {
+  constructor(private layoutService: LayoutService, router: Router) {
     this.layoutService
       .onUserProfileToggle()
       .pipe(takeUntil(this.onDestroy$))
@@ -25,6 +26,8 @@ export class AppComponent  implements OnDestroy {
       .onNavigationToggle()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(isOpen => (this.navigationOpen = isOpen));
+
+
   }
 
   closeUserProfile() {

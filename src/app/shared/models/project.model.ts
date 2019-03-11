@@ -1,9 +1,9 @@
 import { Task } from './task.model';
 
 export interface Project {
-  projectID: number;
-  projectName: string;
+  id: number;
+  name: string;
   clientName: string;
-  projectCode: string;
+  code: string;
   tasks: Task[];
 }

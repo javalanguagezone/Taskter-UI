@@ -42,9 +42,21 @@ export class ProjectService {
      catchError(this.handleError)
    );
    }
+   getProjectByClientId(clientId: number) {
+    return this.http.get<Project[]>(`/api/projectsByClient/${clientId}`).pipe(
+     retry(3),
+     catchError(this.handleError)
+   );
+   }
 
   editBasicProjectInformation(data: EditBasicProjectInfo) {
-    return this.http.put(`api/projects/${data.Id}/edit/basicinfo`, data).pipe(
+    return this.http.put(`api/projects/${data.id}/edit/basicinfo`, data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  editProjectTasks(data: any) {
+    return this.http.put(`api/projects/${data.id}/edit/tasks`, data).pipe(
       catchError(this.handleError)
     );
   }

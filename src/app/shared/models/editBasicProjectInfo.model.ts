@@ -1,5 +1,5 @@
 export interface EditBasicProjectInfo {
-  Id: Number;
-  Name: String;
-  Code: String;
+  id: Number;
+  name: String;
+  code: String;
 }

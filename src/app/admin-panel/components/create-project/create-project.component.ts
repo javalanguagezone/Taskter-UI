@@ -97,7 +97,8 @@ export class CreateProjectComponent implements OnInit {
     const task: Task = {
       taskID: undefined,
       name: this.projectForm.value.addTaskControl,
-      billable: false
+      billable: false,
+      active: true
     };
 
     if (this.newTasks.find(tsk => tsk.name === task.name ) !== undefined) {

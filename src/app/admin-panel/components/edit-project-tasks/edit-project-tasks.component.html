@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Edit basic information</h1>
+<div mat-dialog-content>
+  <form [formGroup]="projectForm" class="form">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Add task"
+        formControlName="addTaskControl"
+      />
+    </mat-form-field>
+    {{ " " }}
+    <button
+      mat-stroked-button
+      (click)="onAddTask()"
+      [disabled]="projectForm.get('addTaskControl').invalid"
+      color="primary"
+    >
+      Add Task
+    </button>
+
+    <div *ngFor="let task of tasks; let i = index">
+      <mat-card class="matCard">
+
+        {{ task.name }}
+
+        <mat-checkbox [checked]="task.billable" (change)="onBillableChange(i)">
+          Billable</mat-checkbox
+        >
+
+        <mat-checkbox [checked]="task.active" (change)="onActiveChange(i)">
+            Active</mat-checkbox
+          >
+      </mat-card>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="closeDialog()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="!tasksCompleted" (click)="save()">Save</button>
+</div>
+
