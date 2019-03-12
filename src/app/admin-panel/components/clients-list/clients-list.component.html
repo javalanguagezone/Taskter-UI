@@ -22,7 +22,7 @@
           <h2> Client's projects</h2>
           <div class="controlls">
               <mat-action-list>
-                  <a mat-list-item *ngFor="let p of clientProjects" [routerLink]="['/adminPanel/projects', p.projectID]" > {{p.projectName + ' -' + p.projectCode}}  </a>
+                  <a mat-list-item *ngFor="let p of clientProjects" [routerLink]="['/adminPanel/projects', p.id]" > {{p.name + ' -' + p.code}}  </a>
 
                 </mat-action-list>
 
