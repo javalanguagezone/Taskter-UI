@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DurationErrorStateMatcher } from './helpers/durationErrorStateMatcher';
 import { isNumber } from 'util';
+import { Project } from 'src/app/shared/models/project.model';
 @Component({
   selector: 'tsk-time-entry-dialogue',
   templateUrl: './time-entry-dialogue.component.html',
@@ -25,7 +26,7 @@ export class TimeEntryDialogueComponent implements OnInit {
   observables: any = [];
   currentUser: User = {} as User;
   currentDate: moment.Moment;
-  userProjects: UserProject[] = [];
+  userProjects: Project[] = [];
   projectTasks: Task[] = [];
   TimeEntryForm: FormGroup;
   editEntry: TaskEntryUpdate;
@@ -62,7 +63,7 @@ export class TimeEntryDialogueComponent implements OnInit {
     forkJoin(this.observables).subscribe(
       responseList => {
         this.currentUser = responseList[0] as User;
-        this.userProjects = responseList[1] as UserProject[];
+        this.userProjects = responseList[1] as Project[];
         this.editEntry = responseList[2] as TaskEntryUpdate;
         if (this.isEdit) {
           this.displayEntry();
@@ -94,7 +95,7 @@ export class TimeEntryDialogueComponent implements OnInit {
     } else {
       this.f.taskID.disable();
     }
-    this.projectTasks = this.userProjects.find(x => x.projectID === selectedProjectId).tasks;
+    this.projectTasks = this.userProjects.find(x => x.id === selectedProjectId).tasks;
   }
 
   toggleSpinner() {

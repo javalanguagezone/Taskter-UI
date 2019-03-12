@@ -82,7 +82,7 @@ export class TimesheetComponent implements OnInit {
     });
 
     dialogueRef.afterClosed().subscribe(result => {
-      console.log('dialog closed!');
+      this.getTaskByDate(this.date.year(), this.date.month() + 1, this.date.date());
     });
   }
 }
